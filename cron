@@ -1,0 +1,6 @@
+#Sample cron
+
+#logrotate is at 6:25, + time for rsync (hourly?), 12 gives us roughly 6 hours
+0 12 * * * ~/src/wikidata_getclaims_property_use.sh
+#This doesn't matter when it runs....
+0 6 * * * ~/src/wikidata_site_stats.sh
