@@ -1,7 +1,6 @@
 #!/bin/bash
 #
-# A table needs to exist for this script to function (see the file in /sql/create)
-
+# A table needs to exist for this script to function, see create_table.sql
 # If I want data for the 22nd I need logs rotated on 22nd and 23rd
 
 if [ $# -eq 0 ]; then
