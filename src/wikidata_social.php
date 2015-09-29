@@ -11,9 +11,7 @@
  * mm-wikidatatech-pass mailpass2
  * mm-user user@domain.foo
  *
- * This script also requires a database table to write into!
- * //date,twitter,facebook,googleplus,identica,newsletter,mail,techmail,irc
- * CREATE TABLE IF NOT EXISTS wikidata_social ( date DATE NOT NULL, twitter INT(6), facebook INT(6), googleplus INT(6), identica INT(6), newsletter INT(6), mail INT(6), techmail INT(6), irc INT(6) );
+ * This script also requires a database table to write into (see the file in /sql/create)
  */
 
 libxml_use_internal_errors( true );

@@ -1,8 +1,6 @@
 #!/bin/bash
 #
-# A table needs to exist for this script to function:
-# CREATE TABLE IF NOT EXISTS wikidata_getclaims_property_use ( date DATE NOT NULL, property VARCHAR(6) NOT NULL, count INT(12) );
-#
+# A table needs to exist for this script to function (see the file in /sql/create)
 
 # If I want data for the 22nd I need logs rotated on 22nd and 23rd
 
