@@ -22,7 +22,7 @@ libxml_use_internal_errors(true);
  * @return string[] service name keys and key values
  */
 function getConfig() {
-	$config = trim( file_get_contents( __DIR__ . '/config' ) );
+	$config = trim( file_get_contents( __DIR__ . '/../config' ) );
 	$configLines = explode( "\n", $config );
 	$config = array();
 	foreach( $configLines as $configLine ) {
