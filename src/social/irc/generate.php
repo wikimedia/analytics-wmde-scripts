@@ -28,9 +28,9 @@ class WikidataSocialMetric{
 
 	private function getIrcChannelMembers() {
 		echo "Getting irc channel members\n";
-		$data = $this->curlGet( 'http://ircindexer.net/chan_stats1.php?network=freenode&channel=wikidata' );
-		preg_match_all( '/\d+/', $data, $matches );
-		return $matches[0][0];
+		$data = $this->curlGet( 'http://en.irc2go.com/webchat/?net=freenode&room=wikidata' );
+		preg_match_all( '/(\d+) users/', $data, $matches );
+		return $matches[1][0];
 	}
 
 	private function curlGet( $url ) {
