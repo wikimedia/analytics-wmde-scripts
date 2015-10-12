@@ -3,7 +3,9 @@ social irc
 ====================
 
 This shows the number of users currently in the #wikidata irc channel on freenode.
-This metric is generated using a regex match on the ircindexer.net service.
+This metric is generated using a regex match on the irc2go.com service.
+
+Once https://phabricator.wikimedia.org/T115247 is resolved we could use Wm-bot!
 
 If this service stops working there are alternatives.
 Another alternative would be to make the script actually join the channel to perform the check.
