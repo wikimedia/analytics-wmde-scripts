@@ -32,7 +32,7 @@ if [ ! -f $nextApilog ]; then
 fi
 
 # Run the main command
-output=`zgrep action=wbgetclaims $apilog $nextapilog | grep wikidatawiki | egrep -o 'property=P[0-9]+' | sort | uniq -c | sort -nr`
+output=`zgrep $dateISO $apilog $nextapilog | grep action=wbgetclaims | grep wikidatawiki | egrep -o 'property=P[0-9]+' | sort | uniq -c | sort -nr`
 
 # Start building the SQL
 sql='INSERT INTO wikidata_getclaims_property_use (date,property,count) VALUES '
