@@ -20,10 +20,9 @@ MAILTO=cron@wikimedia.de
 6 6 * * * php ~/wikidata-data/graphite/social/techmail.php
 7 6 * * * php ~/wikidata-data/graphite/social/twitter.php
 
-10 6 * * * cd ~/wikidata-data/src/site_stats/active_users && ./generate.sh && ./export.sh
-11 6 * * * cd ~/wikidata-data/src/site_stats/good_articles && ./generate.sh && ./export.sh
-12 6 * * * cd ~/wikidata-data/src/site_stats/total_edits && ./generate.sh && ./export.sh
-13 6 * * * cd ~/wikidata-data/src/site_stats/total_pages && ./generate.sh && ./export.sh
-14 6 * * * cd ~/wikidata-data/src/site_stats/users && ./generate.sh && ./export.sh
-15 6 * * * cd ~/wikidata-data/src/site_stats/admins && ./generate.sh && ./export.sh
-16 6 * * * cd ~/wikidata-data/src/site_stats/bureaucrats && ./generate.sh && ./export.sh
+10 6 * * * ~/wikidata-data/graphite/site_stats/good_articles.sh
+11 6 * * * ~/wikidata-data/graphite/site_stats/total_edits.sh
+12 6 * * * ~/wikidata-data/graphite/site_stats/total_pages.sh
+13 6 * * * ~/wikidata-data/graphite/site_stats/users.sh
+14 6 * * * ~/wikidata-data/graphite/site_stats/admins.sh
+15 6 * * * ~/wikidata-data/graphite/site_stats/bureaucrats.sh
