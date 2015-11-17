@@ -1,5 +1,7 @@
 #Sample cron
 
+* * * * * php ~/wikidata-data/graphite/dispatch.php
+
 #logrotate is at 6:25, + time for rsync (hourly?), 12 gives us roughly 6 hours
 0 12 * * * cd ~/wikidata-data/src/api/getclaims_property_use && ./generate.sh && ./export.sh
 
