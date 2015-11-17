@@ -17,7 +17,6 @@
 11 6 * * * cd ~/wikidata-data/src/site_stats/good_articles && ./generate.sh && ./export.sh
 12 6 * * * cd ~/wikidata-data/src/site_stats/total_edits && ./generate.sh && ./export.sh
 13 6 * * * cd ~/wikidata-data/src/site_stats/total_pages && ./generate.sh && ./export.sh
-14 6 * * * cd ~/wikidata-data/src/site_stats/total_views && ./generate.sh && ./export.sh
-15 6 * * * cd ~/wikidata-data/src/site_stats/users && ./generate.sh && ./export.sh
-16 6 * * * cd ~/wikidata-data/src/site_stats/admins && ./generate.sh && ./export.sh
-17 6 * * * cd ~/wikidata-data/src/site_stats/bureaucrats && ./generate.sh && ./export.sh
+14 6 * * * cd ~/wikidata-data/src/site_stats/users && ./generate.sh && ./export.sh
+15 6 * * * cd ~/wikidata-data/src/site_stats/admins && ./generate.sh && ./export.sh
+16 6 * * * cd ~/wikidata-data/src/site_stats/bureaucrats && ./generate.sh && ./export.sh
