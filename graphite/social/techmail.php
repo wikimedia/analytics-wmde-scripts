@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * @author Addshore
+ *
+ * This shows the number of email accounts subscriber to the [wikidata-tech mailing list](https://lists.wikimedia.org/mailman/listinfo/wikidata-tech).
+ * Mailman does not provide an api or a public count thus this metric needs to access the roster using a registered email and password.
+ *
  * This script requires various bits of private infomation which are currently in the config file.
  * This file contains 1 value per line, the key and value are seperated with a space
  *
@@ -21,26 +26,9 @@ class WikidataSocialMetric{
 	private $config = null;
 
 	public function execute() {
-		$mysqlIni = parse_ini_file( '/etc/mysql/conf.d/analytics-research-client.cnf' );
-		$pdo = new PDO( "mysql:host=analytics-store.eqiad.wmnet;dbname=staging", $mysqlIni['user'], $mysqlIni['password'] );
-
 		$config = $this->getConfig();
-
-		$sql = 'INSERT INTO wikidata_social_techmail (date,subscribers) VALUES ';
-		$sql .=
-			'(' .
-			$pdo->quote( date( "Y-m-d" ) ) . ', ' .
-			$pdo->quote( $this->getMailingListSubscribers( 'wikidata-tech', $config['mm-user'], $config['mm-wikidatatech-pass'] ) ) .
-			');';
-
-		echo "Writing SQL\n";
-		$sqlResult = $pdo->exec( $sql );
-
-		if( $sqlResult === false ){
-			print_r($pdo->errorInfo());
-		}
-
-		echo "All done!";
+		$value = $this->getMailingListSubscribers( 'wikidata-tech', $config['mm-user'], $config['mm-wikidatatech-pass'] );
+		exec( "echo \"daily.wikidata.social.email.wikidata-tech.subscribers $value `date +%s`\" | nc -q0 graphite.eqiad.wmnet 2003" );
 	}
 
 	/**
@@ -61,7 +49,6 @@ class WikidataSocialMetric{
 	}
 
 	private function getMailingListSubscribers( $listname, $mailmanuser, $mailmanpass ) {
-		echo "Getting $listname mailing list subscribers\n";
 		$vars = array(
 			'roster-email' => $mailmanuser,
 			'roster-pw' => $mailmanpass,

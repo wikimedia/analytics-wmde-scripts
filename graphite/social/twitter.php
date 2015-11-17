@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * @author Addshore
+ *
+ * This shows the number of followers the [Wikidata account](https://twitter.com/Wikidata) has on twitter.
+ * This metric is generated using an xpath query on the twitter page.
+ */
+
 libxml_use_internal_errors( true );
 $metrics = new WikidataSocialMetric();
 $metrics->execute();
@@ -7,24 +14,8 @@ $metrics->execute();
 class WikidataSocialMetric{
 
 	public function execute() {
-		$mysqlIni = parse_ini_file( '/etc/mysql/conf.d/analytics-research-client.cnf' );
-		$pdo = new PDO( "mysql:host=analytics-store.eqiad.wmnet;dbname=staging", $mysqlIni['user'], $mysqlIni['password'] );
-
-		$sql = 'INSERT INTO wikidata_social_twitter (date,followers) VALUES ';
-		$sql .=
-			'(' .
-			$pdo->quote( date( "Y-m-d" ) ) . ', ' .
-			$pdo->quote( $this->getTwitterFollowers() ) .
-			');';
-
-		echo "Writing SQL\n";
-		$sqlResult = $pdo->exec( $sql );
-
-		if( $sqlResult === false ){
-			print_r($pdo->errorInfo());
-		}
-
-		echo "All done!";
+		$value = $this->getTwitterFollowers();
+		exec( "echo \"daily.wikidata.social.twitter.followers $value `date +%s`\" | nc -q0 graphite.eqiad.wmnet 2003" );
 	}
 
 	/**
@@ -32,7 +23,6 @@ class WikidataSocialMetric{
 	 * @return null|string
 	 */
 	private function getTwitterFollowers() {
-		echo "Getting twitter followers\n";
 		$dom = new DomDocument();
 		$dom->loadHTML($this->curlGet( 'https://twitter.com/Wikidata' ));
 		$xpath = new DomXPath($dom);

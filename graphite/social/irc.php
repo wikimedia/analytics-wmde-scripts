@@ -1,33 +1,30 @@
 <?php
 
+/**
+ * @author Addshore
+ *
+ * This shows the number of users currently in the #wikidata irc channel on freenode.
+ * This metric is generated using a regex match on the irc2go.com service.
+ *
+ * Once https://phabricator.wikimedia.org/T115247 is resolved we could use Wm-bot!
+ *
+ * If this service stops working there are alternatives.
+ * Another alternative would be to make the script actually join the channel to perform the check.
+ *
+ * This metric probably heavily depends on the time that it is taken (currently once daily).
+ */
+
 $metrics = new WikidataSocialMetric();
 $metrics->execute();
 
 class WikidataSocialMetric{
 
 	public function execute() {
-		$mysqlIni = parse_ini_file( '/etc/mysql/conf.d/analytics-research-client.cnf' );
-		$pdo = new PDO( "mysql:host=analytics-store.eqiad.wmnet;dbname=staging", $mysqlIni['user'], $mysqlIni['password'] );
-
-		$sql = 'INSERT INTO wikidata_social_irc (date,members) VALUES ';
-		$sql .=
-			'(' .
-			$pdo->quote( date( "Y-m-d" ) ) . ', ' .
-			$pdo->quote( $this->getIrcChannelMembers() ) .
-			');';
-
-		echo "Writing SQL\n";
-		$sqlResult = $pdo->exec( $sql );
-
-		if( $sqlResult === false ){
-			print_r($pdo->errorInfo());
-		}
-
-		echo "All done!";
+		$value = $this->getIrcChannelMembers();
+		exec( "echo \"daily.wikidata.social.irc.members $value `date +%s`\" | nc -q0 graphite.eqiad.wmnet 2003" );
 	}
 
 	private function getIrcChannelMembers() {
-		echo "Getting irc channel members\n";
 		$data = $this->curlGet( 'http://en.irc2go.com/webchat/?net=freenode&room=wikidata' );
 		preg_match_all( '/(\d+) users/', $data, $matches );
 		return $matches[1][0];

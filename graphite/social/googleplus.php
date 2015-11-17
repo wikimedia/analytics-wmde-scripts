@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * @author Addshore
+ *
+ * This shows the number of followers the [Wikidata account](https://plus.google.com/105776413863749545202) has on google+.
+ * This metric is generated using the googleplus api.
+ *
  * This script requires various some private information which is currently in a config file.
  * This file contains 1 value per line, the key and value are separated with a space
  *
@@ -20,26 +25,9 @@ class WikidataSocialMetric{
 	private $config = null;
 
 	public function execute() {
-		$mysqlIni = parse_ini_file( '/etc/mysql/conf.d/analytics-research-client.cnf' );
-		$pdo = new PDO( "mysql:host=analytics-store.eqiad.wmnet;dbname=staging", $mysqlIni['user'], $mysqlIni['password'] );
-
 		$config = $this->getConfig();
-
-		$sql = 'INSERT INTO wikidata_social_googleplus (date,followers) VALUES ';
-		$sql .=
-			'(' .
-			$pdo->quote( date( "Y-m-d" ) ) . ', ' .
-			$pdo->quote( $this->getGooglePlusFollowers( $config['google'] ) ) .
-			');';
-
-		echo "Writing SQL\n";
-		$sqlResult = $pdo->exec( $sql );
-
-		if( $sqlResult === false ){
-			print_r($pdo->errorInfo());
-		}
-
-		echo "All done!";
+		$value = $this->getGooglePlusFollowers( $config['google'] );
+		exec( "echo \"daily.wikidata.social.googleplus.followers $value `date +%s`\" | nc -q0 graphite.eqiad.wmnet 2003" );
 	}
 
 	/**
@@ -60,7 +48,6 @@ class WikidataSocialMetric{
 	}
 
 	private function getGooglePlusFollowers( $googlePlusKey ) {
-		echo "Getting Google+ followers\n";
 		$url = 'https://www.googleapis.com/plus/v1/people/105776413863749545202?key=' . $googlePlusKey;
 		return json_decode($this->curlGet($url))->{'circledByCount'};
 	}

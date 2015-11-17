@@ -1,19 +1,24 @@
-#Sample cron
+MAILTO=cron@wikimedia.de
 
+# Sample cron
+# m h  dom mon dow   command
+
+# Run every minuite
 * * * * * php ~/wikidata-data/graphite/dispatch.php
 
-#logrotate is at 6:25, + time for rsync (hourly?), 12 gives us roughly 6 hours
+# Logrotate is at 6:25, + time for rsync (hourly?), 12 gives us roughly 6 hours
+# This MUST be run on stat1002
 0 12 * * * cd ~/wikidata-data/src/api/getclaims_property_use && ./generate.sh && ./export.sh
 
-#It doesn't matter when these run
-0 6 * * * cd ~/wikidata-data/src/social/facebook && php ./generate.php && ./export.sh
-1 6 * * * cd ~/wikidata-data/src/social/googleplus && php ./generate.php && ./export.sh
-2 6 * * * cd ~/wikidata-data/src/social/identica && php ./generate.php && ./export.sh
-3 6 * * * cd ~/wikidata-data/src/social/irc && php ./generate.php && ./export.sh
-4 6 * * * cd ~/wikidata-data/src/social/mail && php ./generate.php && ./export.sh
-5 6 * * * cd ~/wikidata-data/src/social/newsletter && php ./generate.php && ./export.sh
-6 6 * * * cd ~/wikidata-data/src/social/techmail && php ./generate.php && ./export.sh
-7 6 * * * cd ~/wikidata-data/src/social/twitter && php ./generate.php && ./export.sh
+# It doesn't matter when or where these run
+0 6 * * * php ~/wikidata-data/graphite/social/facebook.php
+1 6 * * * php ~/wikidata-data/graphite/social/googleplus.php
+2 6 * * * php ~/wikidata-data/graphite/social/identica.php
+3 6 * * * php ~/wikidata-data/graphite/social/irc.php
+4 6 * * * php ~/wikidata-data/graphite/social/mail.php
+5 6 * * * php ~/wikidata-data/graphite/social/newsletter.php
+6 6 * * * php ~/wikidata-data/graphite/social/techmail.php
+7 6 * * * php ~/wikidata-data/graphite/social/twitter.php
 
 10 6 * * * cd ~/wikidata-data/src/site_stats/active_users && ./generate.sh && ./export.sh
 11 6 * * * cd ~/wikidata-data/src/site_stats/good_articles && ./generate.sh && ./export.sh

@@ -1,33 +1,23 @@
 <?php
 
+/**
+ * @author Addshore
+ *
+ * This shows the number of pages subscribed to the wikidata weekly summary post.
+ * This metric is generated using a regex match on https://meta.wikimedia.org/wiki/Global_message_delivery/Targets/Wikidata.
+ */
+
 $metrics = new WikidataSocialMetric();
 $metrics->execute();
 
 class WikidataSocialMetric{
 
 	public function execute() {
-		$mysqlIni = parse_ini_file( '/etc/mysql/conf.d/analytics-research-client.cnf' );
-		$pdo = new PDO( "mysql:host=analytics-store.eqiad.wmnet;dbname=staging", $mysqlIni['user'], $mysqlIni['password'] );
-
-		$sql = 'INSERT INTO wikidata_social_newsletter (date,subscribers) VALUES ';
-		$sql .=
-			'(' .
-			$pdo->quote( date( "Y-m-d" ) ) . ', ' .
-			$pdo->quote( $this->getNewsletterSubscribers() ) .
-			');';
-
-		echo "Writing SQL\n";
-		$sqlResult = $pdo->exec( $sql );
-
-		if( $sqlResult === false ){
-			print_r($pdo->errorInfo());
-		}
-
-		echo "All done!";
+		$value = $this->getNewsletterSubscribers();
+		exec( "echo \"daily.wikidata.social.newsletter.subscribers $value `date +%s`\" | nc -q0 graphite.eqiad.wmnet 2003" );
 	}
 
 	private function getNewsletterSubscribers() {
-		echo "Getting newsletter subscribers\n";
 		$url = 'https://meta.wikimedia.org/wiki/Global_message_delivery/Targets/Wikidata?action=raw';
 		$raw = $this->curlGet( $url );
 		return substr_count( $raw, '{{target' );
