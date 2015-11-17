@@ -6,6 +6,9 @@ MAILTO=cron@wikimedia.de
 # Run every minuite
 * * * * * php ~/wikidata-data/graphite/dispatch.php
 
+# Daily
+0 5 * * * ~/wikidata-data/graphite/entityUsage.sh
+
 # Logrotate is at 6:25, + time for rsync (hourly?), 12 gives us roughly 6 hours
 # This MUST be run on stat1002
 0 12 * * * ~/wikidata-data/graphite/api/getclaims_property_use.sh
