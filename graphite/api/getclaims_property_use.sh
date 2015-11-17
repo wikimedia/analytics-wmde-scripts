@@ -35,5 +35,5 @@ output=`zgrep $dateISO $apilog $nextapilog | grep action=wbgetclaims | grep wiki
 while read -r line; do
                 property=`cut -d "=" -f 2 <<< "$line"`
                 value=`cut -d " " -f 1 <<< "$line"`
-                echo "daily.wikidata.api.getclaims_property_use.$property $value `date -d \"yesterday\" +%s`" | nc -q0 graphite.eqiad.wmnet 2003
+                echo "daily.wikidata.api.wbgetclaims.properties.$property $value `date -d \"yesterday\" +%s`" | nc -q0 graphite.eqiad.wmnet 2003
 done <<< "$output"
