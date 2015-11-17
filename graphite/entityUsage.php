@@ -10,6 +10,7 @@ if( $dblist === false ) {
 	die( "Failed to get db list!" );
 }
 $dbs = explode( "\n", $dblist );
+$dbs = array_filter( $dbs );
 
 $sqlConf = parse_ini_file( '/etc/mysql/conf.d/analytics-research-client.cnf' );
 
