@@ -8,7 +8,7 @@ MAILTO=cron@wikimedia.de
 
 # Logrotate is at 6:25, + time for rsync (hourly?), 12 gives us roughly 6 hours
 # This MUST be run on stat1002
-0 12 * * * cd ~/wikidata-data/src/api/getclaims_property_use && ./generate.sh && ./export.sh
+0 12 * * * ~/wikidata-data/graphite/api/getclaims_property_use.sh
 
 # It doesn't matter when or where these run
 0 6 * * * php ~/wikidata-data/graphite/social/facebook.php
