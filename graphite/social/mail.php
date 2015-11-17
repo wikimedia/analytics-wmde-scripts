@@ -36,7 +36,7 @@ class WikidataSocialMetric{
 	 */
 	private function getConfig() {
 		if( $this->config === null ) {
-			$config = trim( file_get_contents( __DIR__ . '/../../../config' ) );
+			$config = trim( file_get_contents( __DIR__ . '/../../config' ) );
 			$configLines = explode( "\n", $config );
 			$config = array();
 			foreach( $configLines as $configLine ) {
