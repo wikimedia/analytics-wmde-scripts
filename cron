@@ -29,3 +29,5 @@ MAILTO=cron@wikimedia.de
 13 6 * * * ~/wikidata-data/graphite/site_stats/users.sh
 14 6 * * * ~/wikidata-data/graphite/site_stats/admins.sh
 15 6 * * * ~/wikidata-data/graphite/site_stats/bureaucrats.sh
+16 6 * * * ~/wikidata-data/graphite/site_stats/bots.sh
+17 6 * * * ~/wikidata-data/graphite/site_stats/propertycreators.sh
