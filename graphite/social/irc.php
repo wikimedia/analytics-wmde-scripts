@@ -14,6 +14,7 @@
  * This metric probably heavily depends on the time that it is taken (currently once daily).
  */
 
+require_once( __DIR__ . '/../../src/WikimediaCurl.php' );
 $metrics = new WikidataSocialMetric();
 $metrics->execute();
 
@@ -25,21 +26,9 @@ class WikidataSocialMetric{
 	}
 
 	private function getIrcChannelMembers() {
-		$data = $this->curlGet( 'http://en.irc2go.com/webchat/?net=freenode&room=wikidata' );
+		$data = WikimediaCurl::externalCurlGet( 'http://en.irc2go.com/webchat/?net=freenode&room=wikidata' );
 		preg_match_all( '/(\d+) users/', $data, $matches );
 		return $matches[1][0];
-	}
-
-	private function curlGet( $url ) {
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL,$url);
-		curl_setopt($ch, CURLOPT_PROXY, 'webproxy:8080');
-		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_HEADER, 0);
-		$curl_scraped_page = curl_exec($ch);
-		curl_close($ch);
-		return $curl_scraped_page;
 	}
 
 }

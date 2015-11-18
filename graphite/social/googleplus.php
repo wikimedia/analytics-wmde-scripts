@@ -14,6 +14,7 @@
  * google somekeyhere
  */
 
+require_once( __DIR__ . '/../../src/WikimediaCurl.php' );
 $metrics = new WikidataSocialMetric();
 $metrics->execute();
 
@@ -49,19 +50,8 @@ class WikidataSocialMetric{
 
 	private function getGooglePlusFollowers( $googlePlusKey ) {
 		$url = 'https://www.googleapis.com/plus/v1/people/105776413863749545202?key=' . $googlePlusKey;
-		return json_decode($this->curlGet($url))->{'circledByCount'};
-	}
-
-	private function curlGet( $url ) {
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL,$url);
-		curl_setopt($ch, CURLOPT_PROXY, 'webproxy:8080');
-		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_HEADER, 0);
-		$curl_scraped_page = curl_exec($ch);
-		curl_close($ch);
-		return $curl_scraped_page;
+		$response = WikimediaCurl::externalCurlGet( $url );
+		return json_decode($response)->{'circledByCount'};
 	}
 
 }

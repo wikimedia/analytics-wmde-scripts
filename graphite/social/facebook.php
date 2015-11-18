@@ -8,6 +8,7 @@
  * The metric is then extracted using a regex.
  */
 
+require_once( __DIR__ . '/../../src/WikimediaCurl.php' );
 $metrics = new WikidataSocialMetric();
 $metrics->execute();
 
@@ -20,21 +21,9 @@ class WikidataSocialMetric{
 
 	private function getFacebookLikes() {
 		$url = 'http://m.facebook.com/wikidata';
-		$response = $this->curlGet($url);
+		$response = WikimediaCurl::externalCurlGet( $url );
 		preg_match( '/([\d,]+) people like this/i', $response, $matches );
 		return str_replace( ',', '', $matches[1] );
-	}
-
-	private function curlGet( $url ) {
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL,$url);
-		curl_setopt($ch, CURLOPT_PROXY, 'webproxy:8080');
-		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_HEADER, 0);
-		$curl_scraped_page = curl_exec($ch);
-		curl_close($ch);
-		return $curl_scraped_page;
 	}
 
 }

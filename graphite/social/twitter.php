@@ -24,25 +24,15 @@ class WikidataSocialMetric{
 	 */
 	private function getTwitterFollowers() {
 		$dom = new DomDocument();
-		$dom->loadHTML($this->curlGet( 'https://twitter.com/Wikidata' ));
+		$url = 'https://twitter.com/Wikidata';
+		$response = WikimediaCurl::externalCurlGet( $url );
+		$dom->loadHTML( $response );
 		$xpath = new DomXPath($dom);
 		$nodes = $xpath->query( '//a[@data-nav="followers"]/span[@class="ProfileNav-value"]' );
 		if( $nodes->length !== 1 ) {
 			return null;
 		}
 		return str_replace( ',', '', $nodes->item(0)->textContent );
-	}
-
-	private function curlGet( $url ) {
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL,$url);
-		curl_setopt($ch, CURLOPT_PROXY, 'webproxy:8080');
-		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_HEADER, 0);
-		$curl_scraped_page = curl_exec($ch);
-		curl_close($ch);
-		return $curl_scraped_page;
 	}
 
 }
