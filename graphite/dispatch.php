@@ -8,7 +8,7 @@
 $opts = array(
 	'http' => array(
 		'method' => "GET",
-		'header' => "User-Agent: Wikidata-Graphite-Dispatch-Tracking\r\n",
+		'header' => "User-Agent: WMDE Wikidata metrics gathering\r\n",
 	),
 );
 
