@@ -7,6 +7,7 @@
  * This metric is generated using an xpath query on the twitter page.
  */
 
+require_once( __DIR__ . '/../../src/WikimediaCurl.php' );
 libxml_use_internal_errors( true );
 $metrics = new WikidataSocialMetric();
 $metrics->execute();
