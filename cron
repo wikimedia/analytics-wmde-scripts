@@ -5,6 +5,7 @@ MAILTO=cron@wikimedia.de
 
 # Run every minuite
 * * * * * php ~/wikidata-data/graphite/dispatch.php
+* * * * * php ~/wikidata-data/graphite/sparql/triples.php
 
 # Daily
 0 5 * * * php ~/wikidata-data/graphite/entityUsage.php
