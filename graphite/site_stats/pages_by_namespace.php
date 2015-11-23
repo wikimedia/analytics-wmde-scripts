@@ -4,14 +4,14 @@
  * @author Addshore
  */
 
+require_once( __DIR__ . '/../../src/WikimediaDb.php' );
 $metrics = new WikidataPagesByNamespace();
 $metrics->execute();
 
 class WikidataPagesByNamespace{
 
 	public function execute() {
-		$sqlConf = parse_ini_file( '/etc/mysql/conf.d/analytics-research-client.cnf' );
-		$pdo = new PDO( "mysql:host=analytics-store.eqiad.wmnet", $sqlConf['user'], $sqlConf['password'] );
+		$pdo = WikimediaDb::getPdo();
 		$queryResult = $pdo->query( $this->getSql() );
 
 		if( $queryResult === false ) {

@@ -5,6 +5,8 @@
  * @author Addshore
  */
 
+require_once( __DIR__ . '/../src/WikimediaDb.php' );
+
 $dblist = file_get_contents( 'https://noc.wikimedia.org/conf/wikidataclient.dblist' );
 if( $dblist === false ) {
 	die( "Failed to get db list!" );
@@ -12,10 +14,9 @@ if( $dblist === false ) {
 $dbs = explode( "\n", $dblist );
 $dbs = array_filter( $dbs );
 
-$sqlConf = parse_ini_file( '/etc/mysql/conf.d/analytics-research-client.cnf' );
+$pdo = WikimediaDb::getPdo();
 
 foreach( $dbs as $dbname ) {
-	$pdo = new PDO( "mysql:host=analytics-store.eqiad.wmnet", $sqlConf['user'], $sqlConf['password'] );
 	$sql = "SELECT eu_aspect as aspect, count(*) as count FROM $dbname.wbc_entity_usage GROUP BY eu_aspect";
 	$queryResult = $pdo->query( $sql );
 	if( $queryResult === false ) {
