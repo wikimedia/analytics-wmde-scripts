@@ -20,7 +20,7 @@ class WikidataPagesByNamespace{
 
 		$rows = $queryResult->fetchAll();
 
-		$namespaceTotals = array( 0 => 0, 120 => 0 );
+		$namespaceTotals = array( 0 => 0, 1 => 0, 120 => 0 );
 		foreach( $rows as $rowNumber => $row ) {
 			$namespace = $row['namespace'];
 			$type = $row['redirect'] == 1 ? 'redirects' : 'nonredirects';
@@ -44,7 +44,7 @@ class WikidataPagesByNamespace{
 	private function getSql() {
 		return "SELECT page_namespace AS namespace, page_is_redirect AS redirect, count(*) AS count " .
 			"FROM wikidatawiki.page " .
-			"WHERE page_namespace = 0 OR page_namespace = 120 " .
+			"WHERE page_namespace = 0 OR page_namespace = 120 OR page_namespace = 1" .
 			"GROUP BY page_namespace, page_is_redirect";
 	}
 
