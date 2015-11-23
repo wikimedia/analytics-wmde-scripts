@@ -1,0 +1,56 @@
+<?php
+
+/**
+ * @author Addshore
+ *
+ * Get minutely stats about the state of the query engine
+ *  - Number of triples
+ *  - Lag of the store
+ */
+
+$metrics = new WikidataSparqlTriples();
+$metrics->execute();
+
+class WikidataSparqlTriples{
+
+	public function execute() {
+		// WDQS currently caches for 120 seconds, avoid this by adding whitespace
+		$whitespace = str_repeat( ' ', date( 'i' ) );
+
+		$query = "prefix schema: <http://schema.org/>";
+		$query .= "SELECT * WHERE { {";
+		$query .= "SELECT ( COUNT( * ) AS ?count ) { ?s ?p ?o } ";
+		$query .= "} UNION {";
+		$query .= "SELECT * WHERE { <http://www.wikidata.org> schema:dateModified ?y }";
+		$query .= "} $whitespace }";
+
+		$response = $this->file_get_contents( "https://query.wikidata.org/bigdata/namespace/wdq/sparql?format=json&query=" . urlencode( $query ) );
+
+		if( $response === false ) {
+			throw new RuntimeException( "The request failed!" );
+		}
+
+		$data = json_decode( $response, true );
+
+		$tripleCount = $data['results']['bindings'][0]['count']['value'];
+		exec( "echo \"wikidata.query.triples $tripleCount `date +%s`\" | nc -q0 graphite.eqiad.wmnet 2003" );
+
+		$lastUpdated = $data['results']['bindings'][1]['y']['value'];
+		$lag = time() - strtotime( $lastUpdated );
+		exec( "echo \"wikidata.query.lag $lag `date +%s`\" | nc -q0 graphite.eqiad.wmnet 2003" );
+	}
+
+	private function file_get_contents( $filename ) {
+		$opts = array(
+			'http' => array(
+				'method' => "GET",
+				'header' => "User-Agent: WMDE Wikidata metrics gathering\r\n",
+			),
+		);
+
+		$context = stream_context_create( $opts );
+
+		return file_get_contents( $filename, false, $context );
+	}
+
+}
