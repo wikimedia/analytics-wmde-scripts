@@ -22,21 +22,7 @@ class WikidataSocialMetric{
 	private function getIdenticaFollowers() {
 		$url = 'https://identi.ca/wikidata';
 		$dom = new DomDocument();
-		$response = WikimediaCurl::externalCurlGet( $url );
-
-		/**
-		 * identi.ca likes to be unreliable and give us nothing.
-		 * So pause and retry once when trying to get the number!
-		 */
-		if( empty( $response ) ) {
-			echo "Got an empty response, retrying in 30 seconds.";
-			sleep( 30 );
-			$response = WikimediaCurl::externalCurlGet( $url );
-			if( empty( $response ) ) {
-				die( "Got 2 empty responses. Failed!" );
-			}
-		}
-
+		$response = WikimediaCurl::retryingExternalCurlGet( $url );
 		$dom->loadHTML( $response );
 		$xpath = new DomXPath($dom);
 		$nodes = $xpath->query( '//a[@href="/wikidata/followers"]/span[@class="label"]' );

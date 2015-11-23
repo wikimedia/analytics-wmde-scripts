@@ -21,7 +21,7 @@ class WikidataSocialMetric{
 
 	private function getFacebookLikes() {
 		$url = 'http://m.facebook.com/wikidata';
-		$response = WikimediaCurl::externalCurlGet( $url );
+		$response = WikimediaCurl::retryingExternalCurlGet( $url );
 		preg_match( '/([\d,]+) people like this/i', $response, $matches );
 		return str_replace( ',', '', $matches[1] );
 	}
