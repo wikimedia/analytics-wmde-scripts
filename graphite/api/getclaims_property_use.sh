@@ -15,8 +15,8 @@ dateStamp=`echo $dateISO | tr -d '-'`
 nextDateStamp=`echo $nextDateISO | tr -d '-'`
 
 # Get the location of the last api log
-apilog="/a/mw-log/archive/api.log-$dateStamp.gz"
-nextapilog="/a/mw-log/archive/api.log-$nextDateStamp.gz"
+apilog="/a/mw-log/archive/api/api.log-$dateStamp.gz"
+nextapilog="/a/mw-log/archive/api/api.log-$nextDateStamp.gz"
 
 # Make sure the files we want exist
 if [ ! -f $apilog ]; then
