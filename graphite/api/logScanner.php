@@ -18,6 +18,17 @@ class WikidataApiLogScanner {
 	private $dayAfter;
 	private $targetDate;
 
+	private $formatWhitelist = array(
+		'dbg', 'dbgfm',
+		'json', 'jsonfm',
+		'php', 'phpfm',
+		'raw', 'rawfm',
+		'txt', 'txtfm',
+		'xmlk', 'xmlfm',
+		'yaml', 'yamlfm',
+		'none',
+	);
+
 	/**
 	 * @param string $targetDate must be parse-able by PHP
 	 */
@@ -66,9 +77,7 @@ class WikidataApiLogScanner {
 							// Extract the property (if set)
 							if( $propertyStart = ( strpos( $line, ' property=' ) + 10 ) ) {
 								$property = strtoupper( substr( $line, $propertyStart, strpos( $line, ' ', $propertyStart ) - $propertyStart ) );
-								if( strpos( $property, 'P' ) === 0 ) {
-									@$counters['wbgetclaims.properties'][$property]++;
-								}
+								@$counters['wbgetclaims.properties'][$property]++;
 							}
 
 						}
@@ -79,9 +88,7 @@ class WikidataApiLogScanner {
 				// Extract the format (if set)
 				if( $formatStart = ( strpos( $line, ' format=' ) + 8 ) ) {
 					$format = strtolower( substr( $line, $formatStart, strpos( $line, ' ', $formatStart ) - $formatStart ) );
-					if( $format !== '' ) {
-						@$counters['formats'][$format]++;
-					}
+					@$counters['formats'][$format]++;
 				}
 
 			}
@@ -91,6 +98,12 @@ class WikidataApiLogScanner {
 		// Send everything to graphite!
 		foreach( $counters as $name => $counter ) {
 			foreach( $counter as $key => $value ) {
+				if(
+					( $name == 'wbgetclaims.properties' && strpos( $key, 'P' ) !== 0 ) ||
+					( $name == 'formats' && !in_array( $key, $this->formatWhitelist ) )
+				) {
+					continue;
+				}
 				$this->sendMetric(
 					'daily.wikidata.api.' . $name . '.' . $key,
 					$value
