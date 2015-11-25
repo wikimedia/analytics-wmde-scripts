@@ -6,6 +6,7 @@ MAILTO=cron@wikimedia.de
 * * * * * ~/wikidata-data/minutely.sh
 
 # Daily
+0 3 * * * ~/wikidata-data/daily_datamodel.sh
 0 4 * * * php ~/wikidata-data/graphite/entityUsage.php
 0 5 * * * ~/wikidata-data/daily_social.sh
 0 6 * * * ~/wikidata-data/daily_site_stats.sh
