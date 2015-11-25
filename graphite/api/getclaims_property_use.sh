@@ -6,8 +6,12 @@
 # This metric is taken from the api.log file archives generated on fluorine that are rsynced to stat1002.
 # The 24 hour period is from 00:00 to 23:59 UTC.
 
-# Run for yesterday
-dateISO=`date --date=yesterday --iso-8601=date`
+# Run for date given, or yesterday
+if [ $# -eq 0 ]; then
+    dateISO=`date --date=yesterday --iso-8601=date`
+else
+    dateISO=$1
+fi
 nextDateISO=`date --date="$dateISO + 1 day" --iso-8601=date`
 
 # Get a date stamp to be used later
