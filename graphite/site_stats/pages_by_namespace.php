@@ -12,7 +12,7 @@ class WikidataPagesByNamespace{
 
 	public function execute() {
 		$pdo = WikimediaDb::getPdo();
-		$queryResult = $pdo->query( $this->getSql() );
+		$queryResult = $pdo->query( file_get_contents( __DIR__ . '/sql/pages_by_namespace.sql' ) );
 
 		if( $queryResult === false ) {
 			throw new RuntimeException( "Something went wrong with the db query" );
@@ -39,13 +39,6 @@ class WikidataPagesByNamespace{
 				$total
 			);
 		}
-	}
-
-	private function getSql() {
-		return "SELECT page_namespace AS namespace, page_is_redirect AS redirect, count(*) AS count " .
-			"FROM wikidatawiki.page " .
-			"WHERE page_namespace = 0 OR page_namespace = 120 OR page_namespace = 1 " .
-			"GROUP BY page_namespace, page_is_redirect";
 	}
 
 	private function sendMetric( $name, $value ) {
