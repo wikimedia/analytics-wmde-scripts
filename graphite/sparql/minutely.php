@@ -32,12 +32,21 @@ class WikidataSparqlTriples{
 
 		$data = json_decode( $response, true );
 
-		$tripleCount = $data['results']['bindings'][0]['count']['value'];
-		exec( "echo \"wikidata.query.triples $tripleCount `date +%s`\" | nc -q0 graphite.eqiad.wmnet 2003" );
+		foreach( $data['results']['bindings'] as $binding ) {
 
-		$lastUpdated = $data['results']['bindings'][1]['y']['value'];
-		$lag = time() - strtotime( $lastUpdated );
-		exec( "echo \"wikidata.query.lag $lag `date +%s`\" | nc -q0 graphite.eqiad.wmnet 2003" );
+			if( array_key_exists( 'count', $binding ) ) {
+				$tripleCount = $binding['count']['value'];
+				exec( "echo \"wikidata.query.triples $tripleCount `date +%s`\" | nc -q0 graphite.eqiad.wmnet 2003" );
+			} elseif( array_key_exists( 'y', $binding ) ) {
+				$lastUpdated = $binding['y']['value'];
+				$lag = time() - strtotime( $lastUpdated );
+				exec( "echo \"wikidata.query.lag $lag `date +%s`\" | nc -q0 graphite.eqiad.wmnet 2003" );
+			} else {
+				trigger_error( "Binding returned with unexpected keys " . json_encode( $binding ), E_USER_WARNING );
+			}
+
+		}
+
 	}
 
 	private function file_get_contents( $filename ) {
