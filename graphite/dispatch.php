@@ -20,6 +20,11 @@ $json =
 		false,
 		$context
 	);
+
+if( $json === false ) {
+	throw new RuntimeException( "Failed to get dispatch lag from API" );
+}
+
 $json = json_decode( $json, true );
 $json = $json['query']['statistics']['dispatch'];
 

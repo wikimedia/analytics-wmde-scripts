@@ -1,37 +1,15 @@
 MAILTO=cron@wikimedia.de
 
-# Sample cron
 # m h  dom mon dow   command
 
-# Run every minuite
-* * * * * php ~/wikidata-data/graphite/dispatch.php
-* * * * * php ~/wikidata-data/graphite/sparql/minutely.php
+# Run minutely
+* * * * * ~/wikidata-data/minutely.sh
 
 # Daily
-0 5 * * * php ~/wikidata-data/graphite/entityUsage.php
+0 4 * * * php ~/wikidata-data/graphite/entityUsage.php
+0 5 * * * ~/wikidata-data/daily_social.sh
+0 6 * * * ~/wikidata-data/daily_site_stats.sh
 
 # Logrotate is at 6:25, + time for rsync (hourly?), 12 gives us roughly 6 hours
 # This MUST be run on stat1002
 0 12 * * * ~/wikidata-data/graphite/api/getclaims_property_use.sh
-
-# It doesn't matter when or where these run
-0 6 * * * php ~/wikidata-data/graphite/social/facebook.php
-1 6 * * * php ~/wikidata-data/graphite/social/googleplus.php
-2 6 * * * php ~/wikidata-data/graphite/social/identica.php
-3 6 * * * php ~/wikidata-data/graphite/social/irc.php
-4 6 * * * php ~/wikidata-data/graphite/social/mail.php
-5 6 * * * php ~/wikidata-data/graphite/social/newsletter.php
-6 6 * * * php ~/wikidata-data/graphite/social/techmail.php
-7 6 * * * php ~/wikidata-data/graphite/social/twitter.php
-
-10 6 * * * ~/wikidata-data/graphite/site_stats/good_articles.sh
-11 6 * * * ~/wikidata-data/graphite/site_stats/total_edits.sh
-12 6 * * * ~/wikidata-data/graphite/site_stats/total_pages.sh
-13 6 * * * ~/wikidata-data/graphite/site_stats/users.sh
-14 6 * * * ~/wikidata-data/graphite/site_stats/admins.sh
-15 6 * * * ~/wikidata-data/graphite/site_stats/bureaucrats.sh
-16 6 * * * ~/wikidata-data/graphite/site_stats/bots.sh
-17 6 * * * ~/wikidata-data/graphite/site_stats/propertycreators.sh
-18 6 * * * php ~/wikidata-data/graphite/site_stats/pages_by_namespace.php
-19 6 * * * php ~/wikidata-data/graphite/site_stats/user_languages.php
-20 6 * * * php ~/wikidata-data/graphite/site_stats/page_size.php

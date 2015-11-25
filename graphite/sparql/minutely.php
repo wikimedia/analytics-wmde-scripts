@@ -27,7 +27,7 @@ class WikidataSparqlTriples{
 		$response = $this->file_get_contents( "https://query.wikidata.org/bigdata/namespace/wdq/sparql?format=json&query=" . urlencode( $query ) );
 
 		if( $response === false ) {
-			throw new RuntimeException( "The request failed!" );
+			throw new RuntimeException( "The SPARQL request failed!" );
 		}
 
 		$data = json_decode( $response, true );
@@ -42,7 +42,7 @@ class WikidataSparqlTriples{
 				$lag = time() - strtotime( $lastUpdated );
 				exec( "echo \"wikidata.query.lag $lag `date +%s`\" | nc -q0 graphite.eqiad.wmnet 2003" );
 			} else {
-				trigger_error( "Binding returned with unexpected keys " . json_encode( $binding ), E_USER_WARNING );
+				trigger_error( "SPARQL binding returned with unexpected keys " . json_encode( $binding ), E_USER_WARNING );
 			}
 
 		}

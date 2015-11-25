@@ -28,11 +28,11 @@ class WikimediaCurl {
 			}
 
 			if( $result === false ) {
-				trigger_error( "curl request failed - sleeping for $nextWait seconds", E_USER_WARNING );
+				trigger_error( "CURL failed - sleeping for $nextWait seconds: $url", E_USER_WARNING );
 			} elseif( empty( $result ) ) {
-				trigger_error( "curl request returned empty - sleeping for $nextWait seconds", E_USER_WARNING );
+				trigger_error( "CURL returned empty - sleeping for $nextWait seconds: $url", E_USER_WARNING );
 			} else {
-				throw new LogicException( "Retrying request for unknown reason" );
+				throw new LogicException( "Retrying request for unknown reason: $url" );
 			}
 
 			sleep( $nextWait );
