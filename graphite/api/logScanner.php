@@ -100,7 +100,8 @@ class WikidataApiLogScanner {
 			foreach( $counter as $key => $value ) {
 				if(
 					( $name == 'wbgetclaims.properties' && strpos( $key, 'P' ) !== 0 ) ||
-					( $name == 'formats' && !in_array( $key, $this->formatWhitelist ) )
+					( $name == 'formats' && !in_array( $key, $this->formatWhitelist ) ) ||
+					strpos( $key, '_' ) !== false
 				) {
 					continue;
 				}
