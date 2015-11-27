@@ -28,7 +28,6 @@ These scripts should be triggered from a cron that looks something like this:
     
     # Run minutely
     * * * * * ~/wikidata-data/minutely.sh
-    * * * * * php ~/wikidata-data/graphite/rc.php
     
     # Daily
     0 3 * * * ~/wikidata-data/daily_datamodel.sh
