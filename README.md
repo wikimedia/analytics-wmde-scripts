@@ -31,13 +31,13 @@ These scripts should be triggered from a cron that looks something like this:
     
     # Daily
     0 3 * * * ~/wikidata-data/daily_datamodel.sh
-    0 4 * * * php ~/wikidata-data/graphite/entityUsage.php
+    0 4 * * * ~/wikidata-data/graphite/entityUsage.php
     0 5 * * * ~/wikidata-data/daily_social.sh
     0 6 * * * ~/wikidata-data/daily_site_stats.sh
     
     # Logrotate is at 6:25, + time for rsync (hourly?), 12 gives us roughly 6 hours
     # This MUST be run on stat1002
-    0 12 * * * php ~/wikidata-data/graphite/api/logScanner.php
+    0 12 * * * ~/wikidata-data/graphite/api/logScanner.php
 
 ## Graphite
 

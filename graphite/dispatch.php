@@ -1,3 +1,4 @@
+#!/usr/bin/php
 <?php
 /**
  * Track Wikidata dispatch lag in graphite

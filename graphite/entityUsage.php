@@ -1,3 +1,4 @@
+#!/usr/bin/php
 <?php
 /**
  * Track Wikidata usage on clients in graphite
