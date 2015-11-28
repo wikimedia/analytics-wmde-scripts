@@ -5,4 +5,4 @@
 ~/wikidata-data/graphite/datamodel/sitelinks_per_site.php
 ~/wikidata-data/graphite/datamodel/sitelinks_per_item.php
 ~/wikidata-data/graphite/datamodel/statements_per_entity.php
-~/wikidata-data/sparql/ranks.php
+~/wikidata-data/graphite/sparql/ranks.php
