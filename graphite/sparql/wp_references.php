@@ -10,10 +10,10 @@
  *     imported from -> Wikipedia language X
  */
 
-$metrics = new WikidataReferences();
+$metrics = new WikidataWikipediaReferences();
 $metrics->execute();
 
-class WikidataReferences{
+class WikidataWikipediaReferences{
 
 	public function execute() {
 		$itemIds = $this->getWikipediaItemIds();
