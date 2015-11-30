@@ -21,6 +21,7 @@ class WikidataStatementCounter{
 
 		$rows = $queryResult->fetchAll();
 
+		$totals = array();
 		foreach( $rows as $row ) {
 			if( $row['namespace'] == '0' ) {
 				$entityType = 'item';
@@ -30,9 +31,18 @@ class WikidataStatementCounter{
 				throw new LogicException( 'Couldn\'t identify namespace: ' . $row['namespace'] );
 			}
 
+			@$totals[$entityType] += ( $row['statements'] * $row['count'] );
+
 			$this->sendMetric(
 				"daily.wikidata.datamodel.$entityType.statements.count." . $row['statements'],
 				$row['count']
+			);
+		}
+
+		foreach( $totals as $entityType => $value ) {
+			$this->sendMetric(
+				"daily.wikidata.datamodel.$entityType.statements.total",
+				$value
 			);
 		}
 	}
