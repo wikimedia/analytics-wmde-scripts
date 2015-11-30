@@ -28,6 +28,8 @@ class WikidataWikipediaReferences{
 		$query = "PREFIX prov: <http://www.w3.org/ns/prov#>";
 		$query .= "PREFIX wd: <http://www.wikidata.org/entity/>";
 		$query .= "PREFIX wdt: <http://www.wikidata.org/prop/direct/>";
+		// TODO FIXME this does not currently account for statements that may be imported from 2 wikis
+		// Note: They will thus be counted twice if their wikis are in different chunks
 		$query .= "SELECT (count(distinct(?s)) AS ?scount) WHERE {";
 		$subQueries = array();
 		foreach( $itemIds as $itemId ) {

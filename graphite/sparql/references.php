@@ -26,6 +26,7 @@ class WikidataReferences{
 
 	private function getReferenceCount( $propertyId ) {
 		$query = "Prefix prov: <http://www.w3.org/ns/prov#>";
+		// TODO this count should be distinct
 		$query .= "SELECT (count(?s) AS ?scount) WHERE {";
 		$query .= "?wdref <http://www.wikidata.org/prop/reference/$propertyId> ?x .";
 		$query .= "?s prov:wasDerivedFrom ?wdref";
