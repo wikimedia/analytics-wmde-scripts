@@ -7,4 +7,5 @@
 ~/wikidata-data/graphite/datamodel/statements_per_entity.php
 ~/wikidata-data/graphite/sparql/ranks.php
 ~/wikidata-data/graphite/sparql/wp_references.php
+~/wikidata-data/graphite/sparql/references.php
 ~/wikidata-data/graphite/sparql/instanceof.php
