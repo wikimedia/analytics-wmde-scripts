@@ -85,7 +85,7 @@ class WikimediaCurl {
 			if ( $i === 0 ) {
 				$headers['http_code'] = $line;
 			} else {
-				list ( $key, $value ) = explode( ': ', $line );
+				@list ( $key, $value ) = explode( ': ', $line );
 				if ( !empty( $key ) ) {
 					$headers[$key] = $value;
 				}
