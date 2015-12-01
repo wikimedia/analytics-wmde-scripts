@@ -24,15 +24,16 @@ class WikidataUserLanguages{
 
 	private function setUpTempTables( PDO $pdo ) {
 		$filesToRunToSetup = array(
-			'tmptbl_babel_cats_level_1.sql',
-			'tmptbl_babel_cats_level_2.sql',
-			'tmptbl_user_babel_langs.sql',
-			'tmptbl_user_interface_langs.sql',
-			'tmptbl_user_interface_langs_no_babel.sql',
+			'user_languages/tmptbl_babel_cats_level_1.sql',
+			'user_languages/tmptbl_babel_cats_level_2.sql',
+			'user_languages/tmptbl_user_babel_langs.sql',
+			'user_languages/tmptbl_user_interface_langs.sql',
+			'user_languages/tmptbl_user_interface_langs_no_babel.sql',
+			'tmptbl_active_user_changes.sql',
 		);
 
 		foreach( $filesToRunToSetup as $fileName ) {
-			if( $pdo->query( file_get_contents( __DIR__ . '/sql/user_languages/' . $fileName ) ) === false ) {
+			if( $pdo->query( file_get_contents( __DIR__ . '/sql/' . $fileName ) ) === false ) {
 				throw new RuntimeException( "Failed to run file " . $fileName );
 			}
 		}
