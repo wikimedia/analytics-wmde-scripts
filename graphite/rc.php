@@ -49,6 +49,7 @@ class WikidataRc {
 		$counters = array(
 			'total' => 0,
 			'bot' => 0,
+			'anon' => 0,
 			'length' => 0,
 			'oauth' => array(),
 			'summary' => array(),
@@ -60,6 +61,10 @@ class WikidataRc {
 
 			if( array_key_exists( 'bot', $rc ) ) {
 				$counters['bot']++;
+			}
+
+			if( array_key_exists( 'anon', $rc ) ) {
+				$counters['anon']++;
 			}
 
 			foreach( $rc['tags'] as $tag ) {
@@ -102,7 +107,7 @@ class WikidataRc {
 		$rcStart = $forDateTime->format( 'YmdHi' ) . '59';
 
 		$url = "https://www.wikidata.org/w/api.php?action=query&list=recentchanges&format=json";
-		$url .= "&rcprop=comment|tags|sizes|flags&rclimit=500&rctype=new|edit";
+		$url .= "&rcprop=comment|userid|tags|sizes|flags&rclimit=500&rctype=new|edit";
 		$url .= "&rcstart=$rcStart&rcend=$rcEnd";
 		if( $rccontinue !== null ) {
 			$url .= '&rccontinue=' . $rccontinue;
