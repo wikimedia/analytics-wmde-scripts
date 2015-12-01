@@ -33,6 +33,8 @@ class WikidataSparqlTriples{
 			throw new RuntimeException( "The SPARQL request failed!" );
 		}
 
+		$headers = $response[0];
+		$servedBy = $headers['X-Served-By'];
 		$data = json_decode( $response[1], true );
 
 		foreach( $data['results']['bindings'] as $binding ) {
@@ -40,10 +42,12 @@ class WikidataSparqlTriples{
 			if( array_key_exists( 'count', $binding ) ) {
 				$tripleCount = $binding['count']['value'];
 				exec( "echo \"wikidata.query.triples $tripleCount `date +%s`\" | nc -q0 graphite.eqiad.wmnet 2003" );
+				exec( "echo \"wikidata.query.triples.$servedBy $tripleCount `date +%s`\" | nc -q0 graphite.eqiad.wmnet 2003" );
 			} elseif( array_key_exists( 'y', $binding ) ) {
 				$lastUpdated = $binding['y']['value'];
 				$lag = time() - strtotime( $lastUpdated );
 				exec( "echo \"wikidata.query.lag $lag `date +%s`\" | nc -q0 graphite.eqiad.wmnet 2003" );
+				exec( "echo \"wikidata.query.lag.$servedBy $lag `date +%s`\" | nc -q0 graphite.eqiad.wmnet 2003" );
 			} else {
 				trigger_error( "SPARQL binding returned with unexpected keys " . json_encode( $binding ), E_USER_WARNING );
 			}

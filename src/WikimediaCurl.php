@@ -11,7 +11,7 @@ class WikimediaCurl {
 	 * @param string $url
 	 * @param bool $useWebProxy
 	 *
-	 * @return array( header, body )|false
+	 * @return array( array header, string body )|false
 	 */
 	public static function curlGet( $url, $useWebProxy = false ) {
 		$ch = curl_init();
@@ -29,13 +29,13 @@ class WikimediaCurl {
 			return false;
 		}
 
-		$header_size = curl_getinfo( $ch, CURLINFO_HEADER_SIZE );
-		$header = substr( $response, 0, $header_size );
-		$body = substr( $response, $header_size );
+		$headerSize = curl_getinfo( $ch, CURLINFO_HEADER_SIZE );
+		$headers = self::parseHeaders( substr( $response, 0, $headerSize ) );
+		$body = substr( $response, $headerSize );
 
 		curl_close( $ch );
 
-		return array( $header, $body );
+		return array( $headers, $body );
 	}
 
 	/**
@@ -46,7 +46,7 @@ class WikimediaCurl {
 	 * @param string $url
 	 * @param bool $useWebProxy
 	 *
-	 * @return array( header, body )|false
+	 * @return array( array header, string body )|false
 	 */
 	public static function retryingCurlGet( $url, $useWebProxy = false ) {
 		$retriesLeft = 7;
@@ -73,6 +73,26 @@ class WikimediaCurl {
 		}
 
 		return $result;
+	}
+
+	/**
+	 * @param string $headerText
+	 * @return array
+	 */
+	private function parseHeaders( $headerText ) {
+		$headers = array();
+		foreach ( explode( "\r\n", $headerText ) as $i => $line ) {
+			if ( $i === 0 ) {
+				$headers['http_code'] = $line;
+			} else {
+				list ( $key, $value ) = explode( ': ', $line );
+				if ( !empty( $key ) ) {
+					$headers[$key] = $value;
+				}
+			}
+		}
+
+		return $headers;
 	}
 
 }
