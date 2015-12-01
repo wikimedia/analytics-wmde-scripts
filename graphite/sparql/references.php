@@ -5,6 +5,8 @@
  * @author Addshore
  */
 
+require_once( __DIR__ . '/../../src/WikimediaCurl.php' );
+
 $metrics = new WikidataReferences();
 $metrics->execute();
 
@@ -58,26 +60,13 @@ class WikidataReferences{
 	 * @return array
 	 */
 	private function doSparqlQuery ( $query ) {
-		$response = $this->file_get_contents( "https://query.wikidata.org/bigdata/namespace/wdq/sparql?format=json&query=" . urlencode( $query ) );
+		$response = WikimediaCurl::curlGet( "https://query.wikidata.org/bigdata/namespace/wdq/sparql?format=json&query=" . urlencode( $query ) );
 
 		if( $response === false ) {
 			throw new RuntimeException( "The SPARQL request failed!" );
 		}
 
 		return json_decode( $response, true );
-	}
-
-	private function file_get_contents( $filename ) {
-		$opts = array(
-			'http' => array(
-				'method' => "GET",
-				'header' => "User-Agent: WMDE Wikidata metrics gathering\r\n",
-			),
-		);
-
-		$context = stream_context_create( $opts );
-
-		return file_get_contents( $filename, false, $context );
 	}
 
 	private function sendMetric( $name, $value ) {

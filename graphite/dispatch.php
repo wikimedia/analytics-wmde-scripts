@@ -6,21 +6,10 @@
  * @author Addshore
  */
 
-$opts = array(
-	'http' => array(
-		'method' => "GET",
-		'header' => "User-Agent: WMDE Wikidata metrics gathering\r\n",
-	),
-);
+require_once( __DIR__ . '/../src/WikimediaCurl.php' );
 
-$context = stream_context_create( $opts );
-
-$json =
-	file_get_contents(
-		'https://www.wikidata.org/w/api.php?action=query&meta=siteinfo&format=json&siprop=statistics',
-		false,
-		$context
-	);
+$url = 'https://www.wikidata.org/w/api.php?action=query&meta=siteinfo&format=json&siprop=statistics';
+$json = WikimediaCurl::curlGet( $url );
 
 if( $json === false ) {
 	throw new RuntimeException( "Failed to get dispatch lag from API" );

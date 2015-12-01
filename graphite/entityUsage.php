@@ -7,8 +7,9 @@
  */
 
 require_once( __DIR__ . '/../src/WikimediaDb.php' );
+require_once( __DIR__ . '/../src/WikimediaCurl.php' );
 
-$dblist = file_get_contents( 'https://noc.wikimedia.org/conf/wikidataclient.dblist' );
+$dblist = WikimediaCurl::curlGet( 'https://noc.wikimedia.org/conf/wikidataclient.dblist' );
 if( $dblist === false ) {
 	throw new RuntimeException( 'Failed to get db list for EntityUsage tracking!' );
 }

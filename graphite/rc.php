@@ -5,6 +5,8 @@
  * @author Addshore
  */
 
+require_once( __DIR__ . '/../src/WikimediaCurl.php' );
+
 $metrics = new WikidataRc();
 $metrics->execute();
 
@@ -33,7 +35,7 @@ class WikidataRc {
 		$data = array();
 		$rccontinue = null;
 		while( true ) {
-			$rawResponse = $this->file_get_contents( $this->getUrl( $this->apiDateTime, $rccontinue ) );
+			$rawResponse = WikimediaCurl::curlGet( $this->getUrl( $this->apiDateTime, $rccontinue ) );
 			if( $rawResponse === false ) {
 				throw new RuntimeException( "Failed to get recent changes from API" );
 			}
@@ -114,19 +116,6 @@ class WikidataRc {
 		}
 
 		return $url;
-	}
-
-	private function file_get_contents( $filename ) {
-		$opts = array(
-			'http' => array(
-				'method' => "GET",
-				'header' => "User-Agent: WMDE Wikidata metrics gathering\r\n",
-			),
-		);
-
-		$context = stream_context_create( $opts );
-
-		return file_get_contents( $filename, false, $context );
 	}
 
 	private function sendMetric( $name, $value, DateTime $targetDate ) {

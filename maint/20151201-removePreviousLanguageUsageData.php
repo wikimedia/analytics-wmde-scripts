@@ -11,9 +11,11 @@
  * and back fill the dates where we already have data.
  */
 
+require_once( __DIR__ . '/../src/WikimediaCurl.php' );
+
 // This URL holds the data with which to back fill
 $dataUrl = "https://graphite.wikimedia.org/render/?target=daily.wikidata.site_stats.language_usage.*&from=20151130&until=20151201&format=json";
-$json = file_get_contents( $dataUrl );
+$json = WikimediaCurl::curlGet( $dataUrl );
 $data = json_decode( $json, true );
 
 // Dates to be back filled

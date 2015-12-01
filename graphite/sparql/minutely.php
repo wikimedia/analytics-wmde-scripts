@@ -9,6 +9,8 @@
  *  - Lag of the store
  */
 
+require_once( __DIR__ . '/../../src/WikimediaCurl.php' );
+
 $metrics = new WikidataSparqlTriples();
 $metrics->execute();
 
@@ -25,7 +27,7 @@ class WikidataSparqlTriples{
 		$query .= "SELECT * WHERE { <http://www.wikidata.org> schema:dateModified ?y }";
 		$query .= "} $whitespace }";
 
-		$response = $this->file_get_contents( "https://query.wikidata.org/bigdata/namespace/wdq/sparql?format=json&query=" . urlencode( $query ) );
+		$response = WikimediaCurl::curlGet( "https://query.wikidata.org/bigdata/namespace/wdq/sparql?format=json&query=" . urlencode( $query ) );
 
 		if( $response === false ) {
 			throw new RuntimeException( "The SPARQL request failed!" );
@@ -48,19 +50,6 @@ class WikidataSparqlTriples{
 
 		}
 
-	}
-
-	private function file_get_contents( $filename ) {
-		$opts = array(
-			'http' => array(
-				'method' => "GET",
-				'header' => "User-Agent: WMDE Wikidata metrics gathering\r\n",
-			),
-		);
-
-		$context = stream_context_create( $opts );
-
-		return file_get_contents( $filename, false, $context );
 	}
 
 }
