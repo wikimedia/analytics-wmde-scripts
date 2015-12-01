@@ -24,11 +24,11 @@ class WikidataUserLanguages{
 
 	private function setUpTempTables( PDO $pdo ) {
 		$filesToRunToSetup = array(
-			'babel_cats_level_1.sql',
-			'babel_cats_level_2.sql',
-			'user_babel_langs.sql',
-			'user_interface_langs.sql',
-			'user_interface_langs_no_babel.sql',
+			'tmptbl_babel_cats_level_1.sql',
+			'tmptbl_babel_cats_level_2.sql',
+			'tmptbl_user_babel_langs.sql',
+			'tmptbl_user_interface_langs.sql',
+			'tmptbl_user_interface_langs_no_babel.sql',
 		);
 
 		foreach( $filesToRunToSetup as $fileName ) {

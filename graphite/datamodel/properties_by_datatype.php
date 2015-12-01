@@ -13,7 +13,7 @@ class WikidataPropertiesByDataType{
 
 	public function execute() {
 		$pdo = WikimediaDb::getPdo();
-		$queryResult = $pdo->query( file_get_contents( __DIR__ . '/sql/properties_by_datatype.sql' ) );
+		$queryResult = $pdo->query( file_get_contents( __DIR__ . '/sql/select_properties_by_datatype.sql' ) );
 
 		if( $queryResult === false ) {
 			throw new RuntimeException( "Something went wrong with the db query" );

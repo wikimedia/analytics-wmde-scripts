@@ -13,7 +13,7 @@ class WikidataSiteSitelinkCounter{
 
 	public function execute() {
 		$pdo = WikimediaDb::getPdo();
-		$queryResult = $pdo->query( file_get_contents( __DIR__ . '/sql/sitelinks_per_site.sql' ) );
+		$queryResult = $pdo->query( file_get_contents( __DIR__ . '/sql/select_sitelinks_per_site.sql' ) );
 
 		if( $queryResult === false ) {
 			throw new RuntimeException( "Something went wrong with the db query" );

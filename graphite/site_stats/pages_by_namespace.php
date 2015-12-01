@@ -13,7 +13,7 @@ class WikidataPagesByNamespace{
 
 	public function execute() {
 		$pdo = WikimediaDb::getPdo();
-		$queryResult = $pdo->query( file_get_contents( __DIR__ . '/sql/pages_by_namespace.sql' ) );
+		$queryResult = $pdo->query( file_get_contents( __DIR__ . '/sql/select_pages_by_namespace.sql' ) );
 
 		if( $queryResult === false ) {
 			throw new RuntimeException( "Something went wrong with the db query" );

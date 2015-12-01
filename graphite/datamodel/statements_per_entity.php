@@ -13,7 +13,7 @@ class WikidataStatementCounter{
 
 	public function execute() {
 		$pdo = WikimediaDb::getPdo();
-		$queryResult = $pdo->query( file_get_contents( __DIR__ . '/sql/statements_per_entity.sql' ) );
+		$queryResult = $pdo->query( file_get_contents( __DIR__ . '/sql/select_statements_per_entity.sql' ) );
 
 		if( $queryResult === false ) {
 			throw new RuntimeException( "Something went wrong with the db query" );
