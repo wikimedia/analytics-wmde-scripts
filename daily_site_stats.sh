@@ -3,7 +3,7 @@
 ~/wikidata-data/graphite/site_stats/good_articles.sh
 ~/wikidata-data/graphite/site_stats/total_edits.sh
 ~/wikidata-data/graphite/site_stats/total_pages.sh
-~/wikidata-data/graphite/site_stats/active_users.sh
+~/wikidata-data/graphite/site_stats/active_users.php
 ~/wikidata-data/graphite/site_stats/users.sh
 ~/wikidata-data/graphite/site_stats/admins.sh
 ~/wikidata-data/graphite/site_stats/bureaucrats.sh
