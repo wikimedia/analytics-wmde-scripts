@@ -39,7 +39,7 @@ class WikidataRc {
 			if( $rawResponse === false ) {
 				throw new RuntimeException( "Failed to get recent changes from API" );
 			}
-			$response = json_decode( $rawResponse, true );
+			$response = json_decode( $rawResponse[1], true );
 			$data = array_merge( $data, $response['query']['recentchanges'] );
 			if( array_key_exists( 'continue', $response ) && array_key_exists( 'rccontinue', $response['continue'] ) ) {
 				$rccontinue = $response['continue']['rccontinue'];

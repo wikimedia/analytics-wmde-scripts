@@ -13,7 +13,7 @@ $dblist = WikimediaCurl::curlGet( 'https://noc.wikimedia.org/conf/wikidataclient
 if( $dblist === false ) {
 	throw new RuntimeException( 'Failed to get db list for EntityUsage tracking!' );
 }
-$dbs = explode( "\n", $dblist );
+$dbs = explode( "\n", $dblist[1] );
 $dbs = array_filter( $dbs );
 
 $pdo = WikimediaDb::getPdo();

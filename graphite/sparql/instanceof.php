@@ -63,7 +63,7 @@ class WikidataInstanceOf{
 			throw new RuntimeException( "The SPARQL request failed!" );
 		}
 
-		return json_decode( $response, true );
+		return json_decode( $response[1], true );
 	}
 
 	private function sendMetric( $name, $value ) {

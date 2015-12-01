@@ -15,7 +15,7 @@ if( $json === false ) {
 	throw new RuntimeException( "Failed to get dispatch lag from API" );
 }
 
-$json = json_decode( $json, true );
+$json = json_decode( $json[1], true );
 $json = $json['query']['statistics']['dispatch'];
 
 $stats = array();

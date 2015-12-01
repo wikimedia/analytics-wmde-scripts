@@ -11,7 +11,7 @@ class WikimediaCurl {
 	 * @param string $url
 	 * @param bool $useWebProxy
 	 *
-	 * @return mixed
+	 * @return array( header, body )|false
 	 */
 	public static function curlGet( $url, $useWebProxy = false ) {
 		$ch = curl_init();
@@ -21,11 +21,21 @@ class WikimediaCurl {
 		}
 		curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, 1 );
 		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
-		curl_setopt( $ch, CURLOPT_HEADER, 0 );
+		curl_setopt( $ch, CURLOPT_HEADER, 1 );
 		curl_setopt( $ch, CURLOPT_USERAGENT, "WMDE Wikidata metrics gathering" );
-		$curl_scraped_page = curl_exec( $ch );
+
+		$response = curl_exec( $ch );
+		if( $response === false ) {
+			return false;
+		}
+
+		$header_size = curl_getinfo( $ch, CURLINFO_HEADER_SIZE );
+		$header = substr( $response, 0, $header_size );
+		$body = substr( $response, $header_size );
+
 		curl_close( $ch );
-		return $curl_scraped_page;
+
+		return array( $header, $body );
 	}
 
 	/**
@@ -36,7 +46,7 @@ class WikimediaCurl {
 	 * @param string $url
 	 * @param bool $useWebProxy
 	 *
-	 * @return mixed
+	 * @return array( header, body )|false
 	 */
 	public static function retryingCurlGet( $url, $useWebProxy = false ) {
 		$retriesLeft = 7;
@@ -45,14 +55,14 @@ class WikimediaCurl {
 
 		while( $retriesLeft > 0 ) {
 			$result = self::curlGet( $url, $useWebProxy );
-			if( $result !== false && !empty( $result ) ) {
+			if( $result !== false && !empty( $result[1] ) ) {
 				return $result;
 			}
 
 			if( $result === false ) {
-				trigger_error( "CURL failed - sleeping for $nextWait seconds: $url", E_USER_WARNING );
-			} elseif( empty( $result ) ) {
-				trigger_error( "CURL returned empty - sleeping for $nextWait seconds: $url", E_USER_WARNING );
+				trigger_error( "CURL request failed - sleeping for $nextWait seconds: $url", E_USER_WARNING );
+			} elseif( empty( $result[1] ) ) {
+				trigger_error( "CURL body returned empty - sleeping for $nextWait seconds: $url", E_USER_WARNING );
 			} else {
 				throw new LogicException( "Retrying request for unknown reason: $url" );
 			}

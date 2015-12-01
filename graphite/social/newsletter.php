@@ -22,7 +22,7 @@ class WikidataSocialMetric{
 	private function getNewsletterSubscribers() {
 		$url = 'https://meta.wikimedia.org/wiki/Global_message_delivery/Targets/Wikidata?action=raw';
 		$raw = WikimediaCurl::retryingCurlGet( $url, true );
-		return substr_count( $raw, '{{target' );
+		return substr_count( $raw[1], '{{target' );
 	}
 
 }

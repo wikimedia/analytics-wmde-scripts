@@ -28,7 +28,7 @@ class WikidataSocialMetric{
 		$dom = new DomDocument();
 		$url = 'https://twitter.com/Wikidata';
 		$response = WikimediaCurl::retryingCurlGet( $url, true );
-		$dom->loadHTML( $response );
+		$dom->loadHTML( $response[1] );
 		$xpath = new DomXPath($dom);
 		$nodes = $xpath->query( '//a[@data-nav="followers"]/span[@class="ProfileNav-value"]' );
 		if( $nodes->length !== 1 ) {

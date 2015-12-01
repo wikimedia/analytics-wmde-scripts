@@ -26,7 +26,7 @@ class WikidataSparqlRanks{
 			throw new RuntimeException( "The SPARQL request failed!" );
 		}
 
-		$data = json_decode( $response, true );
+		$data = json_decode( $response[1], true );
 
 		foreach( $data['results']['bindings'] as $binding ) {
 

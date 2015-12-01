@@ -28,7 +28,7 @@ class WikidataSocialMetric{
 
 	private function getIrcChannelMembers() {
 		$data = WikimediaCurl::retryingCurlGet( 'http://en.irc2go.com/webchat/?net=freenode&room=wikidata', true );
-		preg_match_all( '/(\d+) users/', $data, $matches );
+		preg_match_all( '/(\d+) users/', $data[1], $matches );
 		return $matches[1][0];
 	}
 
