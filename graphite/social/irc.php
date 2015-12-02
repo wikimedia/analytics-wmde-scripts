@@ -5,16 +5,11 @@
  * @author Addshore
  *
  * This shows the number of users currently in the #wikidata irc channel on freenode.
- * This metric is generated using a regex match on the irc2go.com service.
- *
- * Once https://phabricator.wikimedia.org/T115247 is resolved we could use Wm-bot!
- *
- * If this service stops working there are alternatives.
- * Another alternative would be to make the script actually join the channel to perform the check.
  *
  * This metric probably heavily depends on the time that it is taken (currently once daily).
  */
 
+libxml_use_internal_errors( true );
 require_once( __DIR__ . '/../../src/WikimediaCurl.php' );
 $metrics = new WikidataSocialMetric();
 $metrics->execute();
@@ -27,9 +22,15 @@ class WikidataSocialMetric{
 	}
 
 	private function getIrcChannelMembers() {
-		$data = WikimediaCurl::retryingCurlGet( 'http://en.irc2go.com/webchat/?net=freenode&room=wikidata', true );
-		preg_match_all( '/(\d+) users/', $data[1], $matches );
-		return $matches[1][0];
+		$dom = new DomDocument();
+		$response = WikimediaCurl::retryingCurlGet( 'http://wm-bot.wmflabs.org/~wm-bot/db/systemdata.htm', true );
+		$dom->loadHTML( $response[1] );
+		$xpath = new DomXPath($dom);
+		$nodes = $xpath->query( '//*[@id="H-wikidata"]/td[1]/span' );
+		if( $nodes->length !== 1 ) {
+			return null;
+		}
+		return $nodes->item(0)->textContent;
 	}
 
 }
