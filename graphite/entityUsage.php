@@ -38,6 +38,7 @@ foreach( $dbs as $dbname ) {
 	if( $queryResult === false ) {
 		echo "EntityUsage page DB query failed for $dbname, Skipping!!\n";
 	} else {
+		$queryResult = $queryResult->fetchAll();
 		$metricName = 'daily.wikidata.entity_usage_pages.' . $dbname;
 		$value = $queryResult[0]['pages'];
 		exec( "echo \"$metricName $value `date +%s`\" | nc -q0 graphite.eqiad.wmnet 2003" );
