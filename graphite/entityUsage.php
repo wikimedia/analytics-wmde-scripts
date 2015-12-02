@@ -33,7 +33,7 @@ foreach( $dbs as $dbname ) {
 	}
 
 	// Count usage (excluding sitelinks) on distinct pages
-	$sql = "SELECT COUNT(DISTINCT eu_page_id) AS pages FROM wbc_entity_usage WHERE eu_aspect != 'S'";
+	$sql = "SELECT COUNT(DISTINCT eu_page_id) AS pages FROM $dbname.wbc_entity_usage WHERE eu_aspect != 'S'";
 	$queryResult = $pdo->query( $sql );
 	if( $queryResult === false ) {
 		echo "EntityUsage page DB query failed for $dbname, Skipping!!\n";
