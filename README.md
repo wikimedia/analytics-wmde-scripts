@@ -4,7 +4,7 @@ This repository actually has nothing to do with limn.
 
 It instead contains a bunch of scripts collecting data for the Wikidata dashboards currently in Grafana.
 
-All scripts in this repo have deliberately been written with NO external dependancies or libraries to mean deploying in places (such as potentially the WMF cluster) is super easy.
+All scripts in this repo have deliberately been written with NO external dependencies or libraries to mean deploying in places (such as potentially the WMF cluster) is super easy.
 
 ## Configuration
 
@@ -33,6 +33,7 @@ These scripts should be triggered from a cron that looks something like this:
     0 3 * * * ~/wikidata-data/daily_datamodel.sh
     0 4 * * * ~/wikidata-data/graphite/entityUsage.php
     0 5 * * * ~/wikidata-data/daily_social.sh
+    30 5 * * * ~/wikidata-data/daily_misc.sh
     0 6 * * * ~/wikidata-data/daily_site_stats.sh
     
     # Logrotate is at 6:25, + time for rsync (hourly?), 12 gives us roughly 6 hours
