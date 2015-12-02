@@ -21,7 +21,18 @@ class WikidataStatementCounter{
 
 		$rows = $queryResult->fetchAll();
 
-		$totals = array();
+		$totals = array(
+			'item' => 0,
+			'property' => 0,
+		);
+		$maxes = array(
+			'item' => 0,
+			'property' => 0,
+		);
+		$entitiesWithStatements = array(
+			'item' => 0,
+			'property' => 0,
+		);
 		foreach( $rows as $row ) {
 			if( $row['namespace'] == '0' ) {
 				$entityType = 'item';
@@ -31,12 +42,17 @@ class WikidataStatementCounter{
 				throw new LogicException( 'Couldn\'t identify namespace: ' . $row['namespace'] );
 			}
 
-			@$totals[$entityType] += ( $row['statements'] * $row['count'] );
+			$totals[$entityType] += ( $row['statements'] * $row['count'] );
+			$entitiesWithStatements[$entityType] += $row['count'];
 
 			$this->sendMetric(
 				"daily.wikidata.datamodel.$entityType.statements.count." . $row['statements'],
 				$row['count']
 			);
+
+			if( $maxes[$entityType] < $row['statements'] ) {
+				$maxes[$entityType] = $row['statements'];
+			}
 		}
 
 		foreach( $totals as $entityType => $value ) {
@@ -44,7 +60,19 @@ class WikidataStatementCounter{
 				"daily.wikidata.datamodel.$entityType.statements.total",
 				$value
 			);
+			$this->sendMetric(
+				"daily.wikidata.datamodel.$entityType.statements.avg",
+				$value / $entitiesWithStatements[$entityType]
+			);
 		}
+
+		foreach( $maxes as $entityType => $value ) {
+			$this->sendMetric(
+				"daily.wikidata.datamodel.$entityType.statements.max",
+				$value
+			);
+		}
+
 	}
 
 	private function sendMetric( $name, $value ) {
