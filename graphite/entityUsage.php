@@ -19,19 +19,28 @@ $dbs = array_filter( $dbs );
 $pdo = WikimediaDb::getPdo();
 
 foreach( $dbs as $dbname ) {
+	// Count each type of entity usage
 	$sql = "SELECT eu_aspect as aspect, count(*) as count FROM $dbname.wbc_entity_usage GROUP BY eu_aspect";
 	$queryResult = $pdo->query( $sql );
 	if( $queryResult === false ) {
-		echo "EntityUsage DB query failed for $dbname, Retrying!\n";
-		$queryResult = $pdo->query( $sql );
-		if( $queryResult === false ) {
-			echo "EntityUsage DB query failed for $dbname, Skipping!!\n";
-			continue;
+		echo "EntityUsage DB query failed for $dbname, Skipping!!\n";
+	} else {
+		foreach( $queryResult as $row ) {
+			$value = $row['count'];
+			$metricName = 'daily.wikidata.entity_usage.' . $dbname . '.' . str_replace( '.', '_', $row['aspect'] );
+			exec( "echo \"$metricName $value `date +%s`\" | nc -q0 graphite.eqiad.wmnet 2003" );
 		}
 	}
-	foreach( $queryResult as $row ) {
-		$value = $row['count'];
-		$metricName = 'daily.wikidata.entity_usage.' . $dbname . '.' . str_replace( '.', '_', $row['aspect'] );
+
+	// Count usage (excluding sitelinks) on distinct pages
+	$sql = "SELECT COUNT(DISTINCT eu_page_id) AS pages FROM wbc_entity_usage WHERE eu_aspect != 'S'";
+	$queryResult = $pdo->query( $sql );
+	if( $queryResult === false ) {
+		echo "EntityUsage page DB query failed for $dbname, Skipping!!\n";
+	} else {
+		$metricName = 'daily.wikidata.entity_usage_pages.' . $dbname;
+		$value = $queryResult[0]['pages'];
 		exec( "echo \"$metricName $value `date +%s`\" | nc -q0 graphite.eqiad.wmnet 2003" );
 	}
+
 }
