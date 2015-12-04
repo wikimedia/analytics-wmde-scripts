@@ -71,6 +71,10 @@ class WikidataStatementCounter{
 				"daily.wikidata.datamodel.$entityType.statements.max",
 				$value
 			);
+			$this->sendMetric(
+				"daily.wikidata.datamodel.$entityType.hasStatements",
+				$entitiesWithStatements[$entityType]
+			);
 		}
 
 	}

@@ -44,6 +44,10 @@ class WikidataItemSitelinkCounter{
 			"daily.wikidata.datamodel.item.sitelinks.avg",
 			$sitelinks / $itemsWithSitelinks
 		);
+		$this->sendMetric(
+			"daily.wikidata.datamodel.item.hasSitelinks",
+			$itemsWithSitelinks
+		);
 	}
 
 	private function sendMetric( $name, $value ) {
