@@ -21,12 +21,29 @@ class WikidataItemSitelinkCounter{
 
 		$rows = $queryResult->fetchAll();
 
+		$max = 0;
+		$sitelinks = 0;
+		$itemsWithSitelinks = 0;
 		foreach( $rows as $row ) {
 			$this->sendMetric(
 				"daily.wikidata.datamodel.item.sitelinks.count." . $row['sitelinks'],
 				$row['count']
 			);
+			$itemsWithSitelinks += $row['count'];
+			$sitelinks += ( $row['sitelinks'] * $row['count'] );
+			if( $row['sitelinks'] > $max ) {
+				$max = $row['sitelinks'];
+			}
 		}
+
+		$this->sendMetric(
+			"daily.wikidata.datamodel.item.sitelinks.max",
+			$max
+		);
+		$this->sendMetric(
+			"daily.wikidata.datamodel.item.sitelinks.avg",
+			$sitelinks / $itemsWithSitelinks
+		);
 	}
 
 	private function sendMetric( $name, $value ) {
