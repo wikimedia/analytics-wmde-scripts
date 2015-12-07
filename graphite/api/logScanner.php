@@ -71,7 +71,7 @@ class WikidataApiLogScanner {
 					$action = strtolower( substr( $line, $actionStart, strpos( $line, ' ', $actionStart ) - $actionStart ) );
 
 					// Only count wikibase modules
-					if( strpos( $action, 'wb' ) === 0 ) {
+					if( preg_match( '/^wb\w+$/', $action ) ) {
 						@$counters['actions'][$action]++;
 						if( $action === 'wbgetclaims' ) {
 
@@ -100,7 +100,7 @@ class WikidataApiLogScanner {
 		foreach( $counters as $name => $counter ) {
 			foreach( $counter as $key => $value ) {
 				if(
-					( $name == 'wbgetclaims.properties' && preg_match( '/P\d+/' ,$key ) ) ||
+					( $name == 'wbgetclaims.properties' && preg_match( '/^P\d+$/' ,$key ) ) ||
 					( $name == 'formats' && !in_array( $key, $this->formatWhitelist ) ) ||
 					strpos( $key, '_' ) !== false
 				) {
