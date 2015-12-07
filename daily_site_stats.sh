@@ -9,6 +9,7 @@
 ~/wikidata-data/graphite/site_stats/bureaucrats.sh
 ~/wikidata-data/graphite/site_stats/bots.sh
 ~/wikidata-data/graphite/site_stats/propertycreators.sh
+~/wikidata-data/graphite/site_stats/rolling_rc.php
 ~/wikidata-data/graphite/site_stats/pages_by_namespace.php
 ~/wikidata-data/graphite/site_stats/user_languages.php
 ~/wikidata-data/graphite/site_stats/page_size.php
