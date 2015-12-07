@@ -100,7 +100,7 @@ class WikidataApiLogScanner {
 		foreach( $counters as $name => $counter ) {
 			foreach( $counter as $key => $value ) {
 				if(
-					( $name == 'wbgetclaims.properties' && strpos( $key, 'P' ) !== 0 ) ||
+					( $name == 'wbgetclaims.properties' && preg_match( '/P\d+/' ,$key ) ) ||
 					( $name == 'formats' && !in_array( $key, $this->formatWhitelist ) ) ||
 					strpos( $key, '_' ) !== false
 				) {
