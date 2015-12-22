@@ -7,14 +7,14 @@
 
 require_once( __DIR__ . '/../src/WikimediaCurl.php' );
 
-$url = 'https://www.wikidata.org/w/api.php?action=query&prop=revisions&titles=Wikidata:Showcase_items&rvprop=content';
+$url = 'https://www.wikidata.org/w/api.php?action=query&prop=revisions&format=json&titles=Wikidata:Showcase_items&rvprop=content';
 $json = WikimediaCurl::curlGet( $url );
 
 if( $json === false ) {
 	throw new RuntimeException( "Failed to get showcase items from API" );
 }
 
-$json = json_decode( $json, true );
+$json = json_decode( $json[1], true );
 $pageArray = array_pop( $json['query']['pages'] );
 $pageContent = $pageArray['revisions'][0]['*'];
 
