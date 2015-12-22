@@ -14,7 +14,7 @@ if( $json === false ) {
 	throw new RuntimeException( "Failed to get showcase items from API" );
 }
 
-$json = json_decode( $json[1], true );
+$json = json_decode( $json, true );
 $pageArray = array_pop( $json['query']['pages'] );
 $pageContent = $pageArray['revisions'][0]['*'];
 
