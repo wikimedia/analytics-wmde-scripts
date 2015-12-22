@@ -33,7 +33,7 @@ foreach( $dirs as $dir ) {
 	$dirParts = explode( '/', $dir );
 	$date = array_pop( $dirParts );
 
-	$file = $dir . '/reference.json';
+	$file = $dir . '/metrics.json';
 	if( !file_exists( $file ) ) {
 		echo 'File not found: ' . $file . "\n";
 		continue;
