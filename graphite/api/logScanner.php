@@ -78,7 +78,9 @@ class WikidataApiLogScanner {
 							// Extract the property (if set)
 							if( $propertyStart = ( strpos( $line, ' property=' ) + 10 ) ) {
 								$property = strtoupper( substr( $line, $propertyStart, strpos( $line, ' ', $propertyStart ) - $propertyStart ) );
-								@$counters['wbgetclaims.properties'][$property]++;
+								if( substr( $property, 0, 1 ) == 'P' ) {
+									@$counters['wbgetclaims.properties'][$property]++;
+								}
 							}
 
 						}
