@@ -47,7 +47,7 @@ foreach( $dbs as $dbname ) {
 					$thisWikiHasSomeUse = true;
 					@$metrics['daily.catwatch.userprops.recentchanges.count'] += $row['users'];
 				}
-			} elseif( $row['settingAtZero'] == 'watchlisthidecategorization ' ) {
+			} elseif( $row['settingAtZero'] == 'watchlisthidecategorization' ) {
 				if( $row['users'] > 0 ) {
 					$thisWikiHasSomeUse = true;
 					@$metrics['daily.catwatch.userprops.watchlist.count'] += $row['users'];
