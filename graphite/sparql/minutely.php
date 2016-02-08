@@ -12,11 +12,12 @@
 require_once( __DIR__ . '/../../src/WikimediaCurl.php' );
 
 $metrics = new WikidataSparqlTriples();
-$metrics->execute();
+$metrics->execute( 'http://wdqs1001.eqiad.wmnet:8888/sparql' );
+$metrics->execute( 'http://wdqs1002.eqiad.wmnet:8888/sparql' );
 
 class WikidataSparqlTriples{
 
-	public function execute() {
+	public function execute( $host ) {
 		// WDQS currently caches for 120 seconds, avoid this by adding whitespace
 		$whitespace = str_repeat( ' ', date( 'i' ) );
 
@@ -27,7 +28,7 @@ class WikidataSparqlTriples{
 		$query .= "SELECT * WHERE { <http://www.wikidata.org> schema:dateModified ?y }";
 		$query .= "} $whitespace }";
 
-		$response = WikimediaCurl::curlGet( "https://query.wikidata.org/bigdata/namespace/wdq/sparql?format=json&query=" . urlencode( $query ) );
+		$response = WikimediaCurl::curlGet( $host . "?format=json&query=" . urlencode( $query ) );
 
 		if( $response === false ) {
 			throw new RuntimeException( "The SPARQL request failed!" );
