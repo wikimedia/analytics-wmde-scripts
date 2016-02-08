@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @author Adddshore
+ * @author Addshore
  *
  * Convenience function for pushing curl requests through the Wikimedia webproxy
  */
