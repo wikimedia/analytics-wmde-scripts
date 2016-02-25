@@ -1,5 +1,5 @@
 #!/bin/bash
 
-~/wikidata-data/graphite/dispatch.php
-~/wikidata-data/graphite/rc.php
-~/wikidata-data/graphite/sparql/minutely.php
+~/scripts/graphite/dispatch.php
+~/scripts/graphite/rc.php
+~/scripts/graphite/sparql/minutely.php
