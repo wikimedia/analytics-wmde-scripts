@@ -10,7 +10,7 @@
 
 //TODO this will not work on windows (but that is not our target)
 //http://stackoverflow.com/questions/1894917/how-to-get-the-home-directory-from-a-php-cli-script
-$dataDir = $_SERVER['HOME'] . '/wikidata-analysis/data/';
+$dataDir = $_SERVER['HOME'] . '/toolkit-analyzer-build/data/';
 //Make sure the output dir exists
 if ( !file_exists( $dataDir ) ) {
 	throw new Exception( "Data directory does not exist" );
