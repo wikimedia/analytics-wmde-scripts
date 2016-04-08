@@ -1,14 +1,18 @@
 #!/usr/bin/php
 <?php
 
-/**
- * @author Addshore
- */
-
 require_once( __DIR__ . '/../../src/WikimediaDb.php' );
 $counter = new WikidataStatementCounter();
 $counter->execute();
 
+
+/**
+ * It should be noted that per the ItemContent and PropertyContent classes in Wikibase
+ * the wb-claims page prop value will exist for all entities that are not redirects.
+ * This includes entities that have 0 claims / statements.
+ *
+ * @author Addshore
+ */
 class WikidataStatementCounter{
 
 	public function execute() {
