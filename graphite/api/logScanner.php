@@ -4,6 +4,9 @@
 /**
  * Extracts data from API logs
  *
+ * @note Logrotate is at 6:25, + time for rsync (hourly?), 12 gives us roughly 6 hours
+ * @note this is built for stat1002
+ *
  * @author Addshore
  */
 

@@ -4,16 +4,16 @@
 /**
  * @author Addshore
  *
- * This makes an assumption that the data directory is ~/wikidata-analysis/data
- * See https://github.com/wmde/wikidata-analysis
+ * Data directory must be pssed into the script as the first parameter
  */
 
-//TODO this will not work on windows (but that is not our target)
-//http://stackoverflow.com/questions/1894917/how-to-get-the-home-directory-from-a-php-cli-script
-$dataDir = $_SERVER['HOME'] . '/toolkit-analyzer-build/data/';
+if( !array_key_exists(1, $argv) ) {
+	throw new Exception( "Data directory not passed into script" );
+}
+$dataDir = $argv[1];
 //Make sure the output dir exists
 if ( !file_exists( $dataDir ) ) {
-	throw new Exception( "Data directory does not exist" );
+	throw new Exception( "Data directory does not exist: " . $dataDir );
 }
 
 //Get all the output directories

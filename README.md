@@ -18,26 +18,6 @@ The file should look something like the below:
     mm-wikidatatech-pass password2
     mm-user foo@bar.baz
 
-## Running the scripts
-
-These scripts should be triggered from a cron that looks something like this:
-
-    MAILTO=cron@domainname.org
-    
-    # Run minutely
-    * * * * * ~/scripts/minutely.sh
-    
-    # Daily
-    0 3 * * * ~/scripts/daily_datamodel.sh
-    0 4 * * * ~/scripts/graphite/entityUsage.php
-    0 5 * * * ~/scripts/daily_social.sh
-    30 5 * * * ~/scripts/daily_misc.sh
-    0 6 * * * ~/scripts/daily_site_stats.sh
-    
-    # Logrotate is at 6:25, + time for rsync (hourly?), 12 gives us roughly 6 hours
-    # This MUST be run on stat1002
-    0 12 * * * ~/scripts/graphite/api/logScanner.php
-
 ## Graphite
 
 Metrics are currently stored in the following paths in graphite:
