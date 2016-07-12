@@ -3,13 +3,12 @@
 
 /**
  * @author Addshore
- * Data directory must be passed into the script as the first parameter
  */
 
-if( !array_key_exists(1, $argv) ) {
-	throw new Exception( "Data directory not passed into script" );
-}
-$dataDir = $argv[1];
+require_once( __DIR__ . '/../../lib/load.php' );
+
+$config = Config::getConfig();
+$dataDir = $config['dump-dir'];
 //Make sure the output dir exists
 if ( !file_exists( $dataDir ) ) {
 	throw new Exception( "Data directory does not exist: " . $dataDir );
