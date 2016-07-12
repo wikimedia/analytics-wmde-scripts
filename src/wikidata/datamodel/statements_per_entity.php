@@ -56,7 +56,7 @@ class WikidataStatementCounter{
 			$totals[$entityType] += ( $row['statements'] * $row['count'] );
 			$entitiesWithStatements[$entityType] += $row['count'];
 
-			$this->sendMetric(
+			WikimediaGraphite::sendNow(
 				"daily.wikidata.datamodel.$entityType.statements.count." . $row['statements'],
 				$row['count']
 			);
@@ -67,31 +67,27 @@ class WikidataStatementCounter{
 		}
 
 		foreach( $totals as $entityType => $value ) {
-			$this->sendMetric(
+			WikimediaGraphite::sendNow(
 				"daily.wikidata.datamodel.$entityType.statements.total",
 				$value
 			);
-			$this->sendMetric(
+			WikimediaGraphite::sendNow(
 				"daily.wikidata.datamodel.$entityType.statements.avg",
 				$value / $entitiesWithStatements[$entityType]
 			);
 		}
 
 		foreach( $maxes as $entityType => $value ) {
-			$this->sendMetric(
+			WikimediaGraphite::sendNow(
 				"daily.wikidata.datamodel.$entityType.statements.max",
 				$value
 			);
-			$this->sendMetric(
+			WikimediaGraphite::sendNow(
 				"daily.wikidata.datamodel.$entityType.hasStatements",
 				$entitiesWithStatements[$entityType]
 			);
 		}
 
-	}
-
-	private function sendMetric( $name, $value ) {
-		exec( "echo \"$name $value `date +%s`\" | nc -q0 graphite.eqiad.wmnet 2003" );
 	}
 
 }

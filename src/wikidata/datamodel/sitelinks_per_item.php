@@ -28,7 +28,7 @@ class WikidataItemSitelinkCounter{
 		$sitelinks = 0;
 		$itemsWithSitelinks = 0;
 		foreach( $rows as $row ) {
-			$this->sendMetric(
+			WikimediaGraphite::sendNow(
 				"daily.wikidata.datamodel.item.sitelinks.count." . $row['sitelinks'],
 				$row['count']
 			);
@@ -39,22 +39,18 @@ class WikidataItemSitelinkCounter{
 			}
 		}
 
-		$this->sendMetric(
+		WikimediaGraphite::sendNow(
 			"daily.wikidata.datamodel.item.sitelinks.max",
 			$max
 		);
-		$this->sendMetric(
+		WikimediaGraphite::sendNow(
 			"daily.wikidata.datamodel.item.sitelinks.avg",
 			$sitelinks / $itemsWithSitelinks
 		);
-		$this->sendMetric(
+		WikimediaGraphite::sendNow(
 			"daily.wikidata.datamodel.item.hasSitelinks",
 			$itemsWithSitelinks
 		);
-	}
-
-	private function sendMetric( $name, $value ) {
-		exec( "echo \"$name $value `date +%s`\" | nc -q0 graphite.eqiad.wmnet 2003" );
 	}
 
 }

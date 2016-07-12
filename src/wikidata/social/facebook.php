@@ -19,7 +19,7 @@ class WikidataSocialMetric{
 
 	public function execute() {
 		$value = $this->getFacebookLikes();
-		exec( "echo \"daily.wikidata.social.facebook.likes $value `date +%s`\" | nc -q0 graphite.eqiad.wmnet 2003" );
+		WikimediaGraphite::sendNow( 'daily.wikidata.social.facebook.likes', $value );
 	}
 
 	private function getFacebookLikes() {

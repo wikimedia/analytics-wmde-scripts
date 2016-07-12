@@ -20,7 +20,7 @@ class WikidataSocialMetric{
 
 	public function execute() {
 		$value = $this->getIrcChannelMembers();
-		exec( "echo \"daily.wikidata.social.irc.members $value `date +%s`\" | nc -q0 graphite.eqiad.wmnet 2003" );
+		WikimediaGraphite::sendNow( 'daily.wikidata.social.irc.members', $value );
 	}
 
 	private function getIrcChannelMembers() {

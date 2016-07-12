@@ -24,21 +24,16 @@ class WikidataPageSizes{
 
 		foreach( $rows as $row ) {
 			$namespace = $row['namespace'];
-			$this->sendMetric(
+			WikimediaGraphite::sendNow(
 				"daily.wikidata.site_stats.page_length.$namespace.avg",
 				$row['avg']
 			);
-			$this->sendMetric(
+			WikimediaGraphite::sendNow(
 				"daily.wikidata.site_stats.page_length.$namespace.max",
 				$row['max']
 			);
 
 		}
-	}
-
-
-	private function sendMetric( $name, $value ) {
-		exec( "echo \"$name $value `date +%s`\" | nc -q0 graphite.eqiad.wmnet 2003" );
 	}
 
 }

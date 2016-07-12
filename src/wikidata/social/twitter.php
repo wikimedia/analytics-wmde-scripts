@@ -19,7 +19,7 @@ class WikidataSocialMetric{
 
 	public function execute() {
 		$value = $this->getTwitterFollowers();
-		exec( "echo \"daily.wikidata.social.twitter.followers $value `date +%s`\" | nc -q0 graphite.eqiad.wmnet 2003" );
+		WikimediaGraphite::sendNow( 'daily.wikidata.social.twitter.followers', $value );
 	}
 
 	/**

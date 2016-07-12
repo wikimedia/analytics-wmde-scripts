@@ -34,10 +34,10 @@ class WikidataSparqlRanks{
 
 			if( array_key_exists( 'preferred', $binding ) ) {
 				$rankCount = $binding['preferred']['value'];
-				exec( "echo \"daily.wikidata.datamodel.ranks.preferred $rankCount `date +%s`\" | nc -q0 graphite.eqiad.wmnet 2003" );
+				WikimediaGraphite::sendNow( 'daily.wikidata.datamodel.ranks.preferred', $rankCount );
 			} elseif( array_key_exists( 'deprecated', $binding ) ) {
 				$rankCount = $binding['deprecated']['value'];
-				exec( "echo \"daily.wikidata.datamodel.ranks.deprecated $rankCount `date +%s`\" | nc -q0 graphite.eqiad.wmnet 2003" );
+				WikimediaGraphite::sendNow( 'daily.wikidata.datamodel.ranks.deprecated', $rankCount );
 			} else {
 				trigger_error( "SPARQL binding returned with unexpected keys " . json_encode( $binding ), E_USER_WARNING );
 			}

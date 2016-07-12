@@ -26,17 +26,8 @@ class WikidataPropertiesByDataType{
 
 		foreach( $rows as $row ) {
 			$type = $row['type'];
-
-			$this->sendMetric(
-				"daily.wikidata.datamodel.property.datatype.$type",
-				$row['count']
-			);
+			WikimediaGraphite::sendNow( "daily.wikidata.datamodel.property.datatype.$type", $row['count'] );
 		}
-	}
-
-
-	private function sendMetric( $name, $value ) {
-		exec( "echo \"$name $value `date +%s`\" | nc -q0 graphite.eqiad.wmnet 2003" );
 	}
 
 }

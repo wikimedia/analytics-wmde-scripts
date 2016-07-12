@@ -25,15 +25,11 @@ class WikidataSiteSitelinkCounter{
 		$rows = $queryResult->fetchAll();
 
 		foreach( $rows as $row ) {
-			$this->sendMetric(
+			WikimediaGraphite::sendNow(
 				"daily.wikidata.datamodel.item.sitelinks.sites." . $row['site'],
 				$row['count']
 			);
 		}
-	}
-
-	private function sendMetric( $name, $value ) {
-		exec( "echo \"$name $value `date +%s`\" | nc -q0 graphite.eqiad.wmnet 2003" );
 	}
 
 }

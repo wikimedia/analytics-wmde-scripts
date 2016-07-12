@@ -29,7 +29,7 @@ class WikidataPagesByNamespace{
 			$namespace = $row['namespace'];
 			$type = $row['redirect'] == 1 ? 'redirects' : 'nonredirects';
 
-			$this->sendMetric(
+			WikimediaGraphite::sendNow(
 				"daily.wikidata.site_stats.pages_by_namespace.$namespace.$type",
 				$row['count']
 			);
@@ -38,15 +38,11 @@ class WikidataPagesByNamespace{
 		}
 
 		foreach( $namespaceTotals as $namespace => $total ) {
-			$this->sendMetric(
+			WikimediaGraphite::sendNow(
 				"daily.wikidata.site_stats.pages_by_namespace.$namespace.total",
 				$total
 			);
 		}
-	}
-
-	private function sendMetric( $name, $value ) {
-		exec( "echo \"$name $value `date +%s`\" | nc -q0 graphite.eqiad.wmnet 2003" );
 	}
 
 }
