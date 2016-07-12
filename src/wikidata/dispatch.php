@@ -30,5 +30,5 @@ $stats['average.pending'] = $json['average']['pending'];
 $stats['average.lag'] = $json['average']['lag'];
 
 foreach ( $stats as $name => $value ) {
-	exec( "echo \"wikidata.dispatch.$name:$value|g\" | nc -w 1 -u statsd.eqiad.wmnet 8125" );
+	WikimediaStatsd::sendGauge( "wikidata.dispatch.$name", $value );
 }

@@ -23,4 +23,4 @@ $pageContent = $pageArray['revisions'][0]['*'];
 
 $showcaseItems = substr_count( $pageContent, '{{ShowcaseItem|' );
 
-exec( "echo \"daily.wikidata.showcaseItems $showcaseItems `date +%s`\" | nc -q0 graphite.eqiad.wmnet 2003" );
+WikimediaGraphite::sendNow( 'daily.wikidata.showcaseItems', $showcaseItems );

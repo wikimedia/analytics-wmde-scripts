@@ -29,16 +29,11 @@ class WikidataTermsByLanguage{
 			$termType = $row['term_type'];
 			$lang = $row['term_language'];
 
-			$this->sendMetric(
+			WikimediaGraphite::sendNow(
 				"daily.wikidata.datamodel.$entityType.$termType.$lang",
 				$row['count']
 			);
 		}
-	}
-
-
-	private function sendMetric( $name, $value ) {
-		exec( "echo \"$name $value `date +%s`\" | nc -q0 graphite.eqiad.wmnet 2003" );
 	}
 
 }

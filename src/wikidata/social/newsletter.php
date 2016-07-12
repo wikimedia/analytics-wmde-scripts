@@ -18,7 +18,7 @@ class WikidataSocialMetric{
 
 	public function execute() {
 		$value = $this->getNewsletterSubscribers();
-		exec( "echo \"daily.wikidata.social.newsletter.subscribers $value `date +%s`\" | nc -q0 graphite.eqiad.wmnet 2003" );
+		WikimediaGraphite::sendNow( 'daily.wikidata.social.newsletter.subscribers', $value );
 	}
 
 	private function getNewsletterSubscribers() {

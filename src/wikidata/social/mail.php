@@ -26,7 +26,7 @@ class WikidataSocialMetric{
 	public function execute() {
 		$config = Config::getConfig();
 		$value = $this->getMailingListSubscribers( 'wikidata', $config['mm-user'], $config['mm-wikidata-pass'] );
-		exec( "echo \"daily.wikidata.social.email.wikidata.subscribers $value `date +%s`\" | nc -q0 graphite.eqiad.wmnet 2003" );
+		WikimediaGraphite::sendNow( 'daily.wikidata.social.email.wikidata.subscribers', $value );
 	}
 
 	private function getMailingListSubscribers( $listname, $mailmanuser, $mailmanpass ) {

@@ -40,7 +40,7 @@ class WikidataInstanceOf{
 		}
 
 		foreach( $results as $key => $value ) {
-			$this->sendMetric( "daily.wikidata.datamodel.instanceof.$key", $value );
+			WikimediaGraphite::sendNow( "daily.wikidata.datamodel.instanceof.$key", $value );
 		}
 	}
 
@@ -67,10 +67,6 @@ class WikidataInstanceOf{
 		}
 
 		return json_decode( $response[1], true );
-	}
-
-	private function sendMetric( $name, $value ) {
-		exec( "echo \"$name $value `date +%s`\" | nc -q0 graphite.eqiad.wmnet 2003" );
 	}
 
 }

@@ -139,9 +139,7 @@ class WikidataApiLogScanner {
 
 	private function sendMetric( $name, $value ) {
 		$targetDate = $this->targetDate->format( 'Y-m-d' );
-		exec(
-			"echo \"$name $value `date -d \"$targetDate\" +%s`\" | nc -q0 graphite.eqiad.wmnet 2003"
-		);
+		WikimediaGraphite::send( $name, $value, $targetDate );
 	}
 
 }

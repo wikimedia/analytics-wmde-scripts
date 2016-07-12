@@ -45,7 +45,7 @@ class WikidataPhabricator{
 			$name = str_replace( ' ', '_', $name );
 			$value = $colCounts[$key];
 			$metricName = 'daily.wikidata.phabricator.board.columns.' . $name;
-			exec( "echo \"$metricName $value `date +%s`\" | nc -q0 graphite.eqiad.wmnet 2003" );
+			WikimediaGraphite::sendNow( $metricName, $value );
 		}
 	}
 

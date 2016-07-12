@@ -31,13 +31,8 @@ class WikidataActiveUsers{
 			}
 			$rows = $result->fetchAll();
 			$users = $rows[0]['users'];
-			$this->sendMetric( "daily.wikidata.site_stats.active_users.$changeCount", $users );
+			WikimediaGraphite::sendNow( "daily.wikidata.site_stats.active_users.$changeCount", $users );
 		}
-	}
-
-
-	private function sendMetric( $name, $value ) {
-		exec( "echo \"$name $value `date +%s`\" | nc -q0 graphite.eqiad.wmnet 2003" );
 	}
 
 }

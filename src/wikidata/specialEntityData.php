@@ -71,7 +71,7 @@ foreach( $resultLines as $lineNumber => $line ) {
 
 foreach( $metrics as $metricName => $value ) {
 	$targetDate = $dateYesterday->format( 'Y-m-d' );
-	exec( "echo \"$metricName $value `date -d \"$targetDate\" +%s`\" | nc -q0 graphite.eqiad.wmnet 2003" );
+	WikimediaGraphite::send( $metricName, $value, $targetDate );
 }
 
 unlink( $outputFile );

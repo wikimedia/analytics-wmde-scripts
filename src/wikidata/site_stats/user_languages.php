@@ -49,7 +49,7 @@ class WikidataUserLanguages{
 		}
 		$rows = $queryResult->fetchAll();
 		foreach( $rows as $row ) {
-			$this->sendMetric(
+			WikimediaGraphite::sendNow(
 				"daily.wikidata.site_stats.babel_users",
 				$row['count']
 			);
@@ -66,15 +66,11 @@ class WikidataUserLanguages{
 		$rows = $queryResult->fetchAll();
 
 		foreach( $rows as $row ) {
-			$this->sendMetric(
+			WikimediaGraphite::sendNow(
 				"daily.wikidata.site_stats.language_usage." . $row['language'],
 				$row['count']
 			);
 		}
-	}
-
-	private function sendMetric( $name, $value ) {
-		exec( "echo \"$name $value `date +%s`\" | nc -q0 graphite.eqiad.wmnet 2003" );
 	}
 
 }

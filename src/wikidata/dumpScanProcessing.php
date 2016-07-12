@@ -40,7 +40,7 @@ foreach( $dirs as $dir ) {
 	$data = json_decode( file_get_contents( $file ), true );
 	foreach( $data as $name => $value ) {
 		$metricName = "daily.wikidata.datamodel.$name";
-		exec( "echo \"$metricName $value `date -d \"$date\" +%s`\" | nc -q0 graphite.eqiad.wmnet 2003" );
+		WikimediaGraphite::send( $metricName, $value, $date );
 	}
 
 }

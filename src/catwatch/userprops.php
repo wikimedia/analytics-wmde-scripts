@@ -63,5 +63,5 @@ foreach( $dbs as $dbname ) {
 }
 
 foreach( $metrics as $metricName => $value ) {
-	exec( "echo \"$metricName $value `date +%s`\" | nc -q0 graphite.eqiad.wmnet 2003" );
+	WikimediaGraphite::sendNow( $metricName, $value );
 }

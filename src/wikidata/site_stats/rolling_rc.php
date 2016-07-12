@@ -23,16 +23,11 @@ class WikidataRollingRc{
 		$rows = $queryResult->fetchAll();
 
 		foreach( $rows as $row ) {
-			$this->sendMetric(
+			WikimediaGraphite::sendNow(
 				"daily.wikidata.site_stats.rc.rolling30d",
 				$row['count']
 			);
 		}
-	}
-
-
-	private function sendMetric( $name, $value ) {
-		exec( "echo \"$name $value `date +%s`\" | nc -q0 graphite.eqiad.wmnet 2003" );
 	}
 
 }

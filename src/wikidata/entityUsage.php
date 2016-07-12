@@ -29,7 +29,7 @@ foreach( $dbs as $dbname ) {
 		foreach( $queryResult as $row ) {
 			$value = $row['count'];
 			$metricName = 'daily.wikidata.entity_usage.' . $dbname . '.' . str_replace( '.', '_', $row['aspect'] );
-			exec( "echo \"$metricName $value `date +%s`\" | nc -q0 graphite.eqiad.wmnet 2003" );
+			WikimediaGraphite::sendNow( $metricName, $value );
 		}
 	}
 
@@ -42,7 +42,7 @@ foreach( $dbs as $dbname ) {
 		$queryResult = $queryResult->fetchAll();
 		$metricName = 'daily.wikidata.entity_usage_pages.' . $dbname;
 		$value = $queryResult[0]['pages'];
-		exec( "echo \"$metricName $value `date +%s`\" | nc -q0 graphite.eqiad.wmnet 2003" );
+		WikimediaGraphite::sendNow( $metricName, $value );
 	}
 
 }
