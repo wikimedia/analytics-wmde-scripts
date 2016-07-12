@@ -9,6 +9,7 @@ This repo is cloned in the statistics::wmde role in the wmf puppet repo.
 Some of the social scripts require configuration settings to work.
 
 These should be stored in a file called 'config' in the root of this repo.
+The config keys and values are delimited with spaces.
 
 The file should look something like the below:
 

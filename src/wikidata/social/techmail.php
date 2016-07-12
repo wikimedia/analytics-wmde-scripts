@@ -23,32 +23,10 @@ $metrics->execute();
 
 class WikidataSocialMetric{
 
-	/**
-	 * @var array|null
-	 */
-	private $config = null;
-
 	public function execute() {
-		$config = $this->getConfig();
+		$config = Config::getConfig();
 		$value = $this->getMailingListSubscribers( 'wikidata-tech', $config['mm-user'], $config['mm-wikidatatech-pass'] );
 		exec( "echo \"daily.wikidata.social.email.wikidata-tech.subscribers $value `date +%s`\" | nc -q0 graphite.eqiad.wmnet 2003" );
-	}
-
-	/**
-	 * @return string[] service name keys and key values
-	 */
-	private function getConfig() {
-		if( $this->config === null ) {
-			$config = trim( file_get_contents( __DIR__ . '/../../config' ) );
-			$configLines = explode( "\n", $config );
-			$config = array();
-			foreach( $configLines as $configLine ) {
-				$lineSplit = explode( ' ', trim( $configLine ), 2 );
-				$config[$lineSplit[0]] = $lineSplit[1];
-			}
-			$this->config = $config;
-		}
-		return $this->config;
 	}
 
 	private function getMailingListSubscribers( $listname, $mailmanuser, $mailmanpass ) {
