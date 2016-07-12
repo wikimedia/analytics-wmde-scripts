@@ -11,7 +11,7 @@
  * and back fill the dates where we already have data.
  */
 
-require_once( __DIR__ . '/../src/WikimediaCurl.php' );
+require_once( __DIR__ . '/../lib/load.php' );
 
 // This URL holds the data with which to back fill
 $dataUrl = "https://graphite.wikimedia.org/render/?target=daily.wikidata.site_stats.language_usage.*&from=20151130&until=20151201&format=json";

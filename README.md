@@ -1,8 +1,8 @@
 # analytics/wmde/scripts
 
-This repo contains a bunch of scripts collecting data for the Wikidata dashboards currently in Grafana.
+This repo contains a bunch of scripts collecting data for the WMDE development teams.
 
-All scripts in this repo have deliberately been written with NO external dependencies or libraries to mean deploying in places (such as potentially the WMF cluster) is super easy.
+This repo is cloned in the statistics::wmde role in the wmf puppet repo.
 
 ## Configuration
 
@@ -24,3 +24,5 @@ Metrics are currently stored in the following paths in graphite:
 
     wikidata.*
     daily.wikidata.*
+
+The paths to **statsd.eqiad.wmnet** and **graphite.eqiad.wmnet** are hardcoded everywhere.

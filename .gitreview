@@ -1,6 +1,6 @@
 [gerrit]
 host=gerrit.wikimedia.org
 port=29418
-project=analytics/limn-wikidata-data
+project=analytics/wmde/scripts
 defaultbranch=master
 defaultrebase=0
