@@ -3,14 +3,12 @@
 
 /**
  * @author Addshore
- * Extracts data from api log files including the formats used, actions used and properties used
- * with wbgetclaims and sends the data to graphite.
+ * Extracts data from api log files including the formats used, actions used and sends the data to graphite.
  *
  * @note Logrotate is at 6:25, + time for rsync (hourly?), 12 gives us roughly 6 hours
  * @note this is built for stat1002
  *
  * Used by: https://grafana.wikimedia.org/dashboard/db/wikidata-api
- *          https://grafana.wikimedia.org/dashboard/db/wikidata-api-wbgetclaims
  */
 
 if ( array_key_exists( 1, $argv ) ) {
@@ -52,7 +50,6 @@ class WikidataApiLogScanner {
 		$counters = array(
 			'formats' => array(),
 			'actions' => array(),
-			'wbgetclaims.properties' => array(),
 		);
 
 		$targetDate = $this->targetDate->format( 'Y-m-d' );
@@ -79,17 +76,6 @@ class WikidataApiLogScanner {
 					// Only count wikibase modules
 					if( preg_match( '/^wb\w+$/', $action ) ) {
 						@$counters['actions'][$action]++;
-						if( $action === 'wbgetclaims' ) {
-
-							// Extract the property (if set)
-							if( $propertyStart = ( strpos( $line, ' property=' ) + 10 ) ) {
-								$property = strtoupper( substr( $line, $propertyStart, strpos( $line, ' ', $propertyStart ) - $propertyStart ) );
-								if( substr( $property, 0, 1 ) == 'P' ) {
-									@$counters['wbgetclaims.properties'][$property]++;
-								}
-							}
-
-						}
 					}
 
 				}
@@ -108,7 +94,6 @@ class WikidataApiLogScanner {
 		foreach( $counters as $name => $counter ) {
 			foreach( $counter as $key => $value ) {
 				if(
-					( $name == 'wbgetclaims.properties' && preg_match( '/^P\d+$/' ,$key ) == false ) ||
 					( $name == 'formats' && !in_array( $key, $this->formatWhitelist ) ) ||
 					strpos( $key, '_' ) !== false
 				) {
