@@ -16,7 +16,7 @@ class Config {
 	public static function getConfig() {
 		if ( self::$configArray === null ) {
 
-			$config = trim( file_get_contents( __DIR__ . '/../config' ) );
+			$config = trim( file_get_contents( __DIR__ . '/../../config' ) );
 			$configLines = explode( "\n", $config );
 			$configArray = array();
 			foreach( $configLines as $configLine ) {
