@@ -6,13 +6,22 @@
 class WikimediaGraphite {
 
 	public static function send( $metricName, $value, $date ) {
-		$graphiteHost = Config::getValue( 'graphite_host' );
-		exec( "echo \"$metricName $value `date -d \"$date\" +%s`\" | nc -q0 $graphiteHost 2003" );
+		list( $host, $port ) = self::getHostAndPort();
+		exec( "echo \"$metricName $value `date -d \"$date\" +%s`\" | nc -q0 $host $port" );
 	}
 
 	public static function sendNow( $metricName, $value ) {
-		$graphiteHost = Config::getValue( 'graphite_host' );
-		exec( "echo \"$metricName $value `date +%s`\" | nc -q0 $graphiteHost 2003" );
+		list( $host, $port ) = self::getHostAndPort();
+		exec( "echo \"$metricName $value `date +%s`\" | nc -q0 $host $port" );
+	}
+
+	private static function getHostAndPort() {
+		$host = Config::getValue( 'graphite_host' );
+		$port = '2003';
+		if ( strstr( $host, ':' ) ) {
+			return explode( ':', $host );
+		}
+		return array( $host, $port );
 	}
 
 }
