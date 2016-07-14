@@ -17,7 +17,7 @@ class WikimediaCurl {
 		$ch = curl_init();
 		curl_setopt( $ch, CURLOPT_URL, $url );
 		if ( $useWebProxy ) {
-			curl_setopt( $ch, CURLOPT_PROXY, 'webproxy:8080' );
+			curl_setopt( $ch, CURLOPT_PROXY, Config::getValue( 'web_proxy' ) );
 		}
 		curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, 1 );
 		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
