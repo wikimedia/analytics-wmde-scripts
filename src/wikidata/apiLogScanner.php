@@ -131,9 +131,10 @@ class WikidataApiLogScanner {
 	}
 
 	private function getFilesNames() {
+		$logDir = Config::getValue( 'api_log_dir' );
 		return array(
-			'/a/mw-log/archive/api/api.log-' . $this->targetDate->format( 'Ymd' ) . '.gz',
-			'/a/mw-log/archive/api/api.log-' . $this->dayAfter->format( 'Ymd' ) . '.gz',
+			$logDir . '/api.log-' . $this->targetDate->format( 'Ymd' ) . '.gz',
+			$logDir . '/api.log-' . $this->dayAfter->format( 'Ymd' ) . '.gz',
 		);
 	}
 
