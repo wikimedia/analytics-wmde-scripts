@@ -38,6 +38,7 @@ eval "$1/src/wikidata/phabricatorTasks.php"
 eval "$1/src/wikidata/showcaseItems.php"
 eval "$1/src/wikidata/specialEntityData.php"
 eval "$1/src/catwatch/userprops.php"
+eval "$1/src/betafeatures/counts.php"
 
 # Site Stats
 eval "$1/src/wikidata/site_stats/good_articles.php"
