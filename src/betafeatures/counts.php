@@ -41,7 +41,7 @@ foreach( $dbs as $dbname ) {
 		continue;
 	}
 	// Count each type of entity usage
-	$sql = "SELECT * FROM betafeatures_user_counts";
+	$sql = "SELECT * FROM $dbname.betafeatures_user_counts";
 	$queryResult = $pdo->query( $sql );
 
 	if( $queryResult === false ) {
