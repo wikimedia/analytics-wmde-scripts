@@ -36,29 +36,59 @@ $pdo = WikimediaDb::getPdo();
 
 $metrics = array();
 
+// Create temporary tables
+$sql = "CREATE TEMPORARY TABLE IF NOT EXISTS staging.wmde_analytics_betafeature_users";
+$sql .= "( user_name VARCHAR(255) NOT NULL, feature VARBINARY(255) NOT NULL, PRIMARY KEY (user_name, feature) )";
+$queryResult = $pdo->query( $sql );
+if ( $queryResult === false ) {
+	die( "Failed to create staging.wmde_analytics_betafeature_users" );
+}
+
 foreach( $dbs as $dbname ) {
 	if( $dbname === 'labswiki' ) {
 		continue;
 	}
-	// Count each type of entity usage
+	// Aggregate the overall betafeatures_user_counts
 	$sql = "SELECT * FROM $dbname.betafeatures_user_counts";
 	$queryResult = $pdo->query( $sql );
-
 	if( $queryResult === false ) {
-		echo "beta features DB query failed for $dbname, Skipping!!\n";
+		echo "beta features DB query 1 failed for $dbname, Skipping!!\n";
 	} else {
-
 		foreach( $queryResult as $row ) {
 			$feature = $row['feature'];
 			$number = $row['number'];
 			@$metrics[$feature] += $number;
 		}
+	}
 
+	// Record individuals
+	foreach( $currentFeatures as $feature ) {
+		$sql = "INSERT IGNORE INTO staging.wmde_analytics_betafeature_users ( user_name, feature )";
+		$sql .= " SELECT user_name, up_property FROM $dbname.user_properties";
+		$sql .= " JOIN $dbname.user ON up_user = user_id";
+		$sql .= " WHERE up_property = '$feature' AND up_value = '1'";
+		$queryResult = $pdo->query( $sql );
+		if( $queryResult === false ) {
+			echo "beta features DB query 2 failed for $dbname for feature $feature, Skipping!!\n";
+		}
 	}
 }
 
 foreach( $metrics as $featureName => $value ) {
 	if ( in_array( $featureName, $currentFeatures ) && $value > 0 ) {
 		WikimediaGraphite::sendNow( 'daily.betafeatures.user_counts.totals.' . $featureName, $value );
+	}
+}
+
+$sql = "SELECT COUNT(*) AS count, up_property as feature";
+$sql .= " FROM staging.wmde_analytics_betafeature_users";
+$sql .= " GROUP BY up_property";
+if( $queryResult === false ) {
+	echo "beta features select from staging.wmde_analytics_betafeature_users failed!!\n";
+} else {
+	foreach( $queryResult as $row ) {
+		$feature = $row['feature'];
+		$count = $row['count'];
+		WikimediaGraphite::sendNow( 'daily.betafeatures.global_user_counts.totals.' . $featureName, $value );
 	}
 }
