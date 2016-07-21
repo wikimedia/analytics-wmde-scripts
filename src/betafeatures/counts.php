@@ -24,6 +24,7 @@ $currentFeatures = array(
 );
 
 require_once( __DIR__ . '/../../lib/load.php' );
+Output::startScript( __FILE__ );
 
 $dblist = WikimediaCurl::curlGet( 'https://noc.wikimedia.org/conf/all.dblist' );
 if( $dblist === false ) {
@@ -52,7 +53,7 @@ foreach( $dbs as $dbname ) {
 	$sql = "SELECT * FROM $dbname.betafeatures_user_counts";
 	$queryResult = $pdo->query( $sql );
 	if( $queryResult === false ) {
-		echo "beta features DB query 1 failed for $dbname, Skipping!!\n";
+		Output::timestampedMessage( "beta features DB query 1 failed for $dbname, Skipping!! " );
 	} else {
 		foreach( $queryResult as $row ) {
 			$feature = $row['feature'];
@@ -69,7 +70,7 @@ foreach( $dbs as $dbname ) {
 		$sql .= " WHERE up_property = '$feature' AND up_value = '1'";
 		$queryResult = $pdo->query( $sql );
 		if( $queryResult === false ) {
-			echo "beta features DB query 2 failed for $dbname for feature $feature, Skipping!!\n";
+			Output::timestampedMessage( "beta features DB query 2 failed for $dbname for feature $feature, Skipping!!" );
 		}
 	}
 }
@@ -84,7 +85,7 @@ $sql = "SELECT COUNT(*) AS count, up_property as feature";
 $sql .= " FROM staging.wmde_analytics_betafeature_users";
 $sql .= " GROUP BY up_property";
 if( $queryResult === false ) {
-	echo "beta features select from staging.wmde_analytics_betafeature_users failed!!\n";
+	Output::timestampedMessage( "beta features select from staging.wmde_analytics_betafeature_users failed!!" );
 } else {
 	foreach( $queryResult as $row ) {
 		$feature = $row['feature'];

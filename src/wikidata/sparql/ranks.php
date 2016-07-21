@@ -8,6 +8,7 @@
  */
 
 require_once( __DIR__ . '/../../../lib/load.php' );
+Output::startScript( __FILE__ );
 
 $metrics = new WikidataSparqlRanks();
 $metrics->execute();

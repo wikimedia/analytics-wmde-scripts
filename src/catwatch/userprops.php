@@ -10,6 +10,7 @@
  */
 
 require_once( __DIR__ . '/../../lib/load.php' );
+Output::startScript( __FILE__ );
 
 $dblist = WikimediaCurl::curlGet( 'https://noc.wikimedia.org/conf/all.dblist' );
 if( $dblist === false ) {
@@ -36,7 +37,7 @@ foreach( $dbs as $dbname ) {
 	$queryResult = $pdo->query( $sql );
 
 	if( $queryResult === false ) {
-		echo "CatWatch DB query failed for $dbname, Skipping!!\n";
+		Output::timestampedMessage( "CatWatch DB query failed for $dbname, Skipping!!" );
 	} else {
 
 		foreach( $queryResult as $row ) {

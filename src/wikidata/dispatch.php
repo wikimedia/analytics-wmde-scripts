@@ -8,6 +8,7 @@
  */
 
 require_once( __DIR__ . '/../../lib/load.php' );
+Output::startScript( __FILE__ );
 
 $url = 'https://www.wikidata.org/w/api.php?action=query&meta=siteinfo&format=json&siprop=statistics';
 $json = WikimediaCurl::curlGet( $url );

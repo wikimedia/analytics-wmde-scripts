@@ -9,6 +9,7 @@
  */
 
 require_once( __DIR__ . '/../../lib/load.php' );
+Output::startScript( __FILE__ );
 
 $url = 'https://www.wikidata.org/w/api.php?action=query&prop=revisions&format=json&titles=Wikidata:Showcase_items&rvprop=content';
 $json = WikimediaCurl::curlGet( $url );

@@ -11,6 +11,8 @@
  */
 
 require_once( __DIR__ . '/../../../lib/load.php' );
+Output::startScript( __FILE__ );
+
 $metrics = new WikidataSocialMetric();
 $metrics->execute();
 

@@ -9,6 +9,7 @@
  */
 
 require_once( __DIR__ . '/../../lib/load.php' );
+Output::startScript( __FILE__ );
 
 $dblist = WikimediaCurl::curlGet( 'https://noc.wikimedia.org/conf/wikidataclient.dblist' );
 if( $dblist === false ) {
@@ -24,7 +25,7 @@ foreach( $dbs as $dbname ) {
 	$sql = "SELECT eu_aspect as aspect, count(*) as count FROM $dbname.wbc_entity_usage GROUP BY eu_aspect";
 	$queryResult = $pdo->query( $sql );
 	if( $queryResult === false ) {
-		echo "EntityUsage DB query failed for $dbname, Skipping!!\n";
+		Output::timestampedMessage( "EntityUsage DB query failed for $dbname, Skipping!!" );
 	} else {
 		foreach( $queryResult as $row ) {
 			$value = $row['count'];
@@ -37,7 +38,7 @@ foreach( $dbs as $dbname ) {
 	$sql = "SELECT COUNT(DISTINCT eu_page_id) AS pages FROM $dbname.wbc_entity_usage WHERE eu_aspect != 'S'";
 	$queryResult = $pdo->query( $sql );
 	if( $queryResult === false ) {
-		echo "EntityUsage page DB query failed for $dbname, Skipping!!\n";
+		Output::timestampedMessage( "EntityUsage page DB query failed for $dbname, Skipping!!" );
 	} else {
 		$queryResult = $queryResult->fetchAll();
 		$metricName = 'daily.wikidata.entity_usage_pages.' . $dbname;
