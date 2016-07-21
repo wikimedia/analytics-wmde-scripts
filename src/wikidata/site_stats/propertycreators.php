@@ -14,7 +14,7 @@ class WikidataPropertycreators{
 
 	public function execute() {
 		$pdo = WikimediaDb::getPdo();
-		$result = $pdo->query( "select count(*) as count from user_groups where ug_group = 'propertycreator' group by ug_group" );
+		$result = $pdo->query( "select count(*) as count from wikidatawiki.user_groups where ug_group = 'propertycreator' group by ug_group" );
 
 		if( $result === false ) {
 			throw new RuntimeException(

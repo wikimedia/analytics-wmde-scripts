@@ -14,7 +14,7 @@ class WikidataGoodArticles{
 
 	public function execute() {
 		$pdo = WikimediaDb::getPdo();
-		$result = $pdo->query( "select ss_good_articles from site_stats" );
+		$result = $pdo->query( "select ss_good_articles from wikidatawiki.site_stats" );
 
 		if( $result === false ) {
 			throw new RuntimeException( "Something went wrong with the db query for good_articles" );
