@@ -18,6 +18,9 @@
  * Used by: https://grafana.wikimedia.org/dashboard/db/wikidata-social-followers
  */
 
+require_once( __DIR__ . '/../../../lib/load.php' );
+Output::startScript( __FILE__ );
+
 $metrics = new WikidataSocialMetric();
 $metrics->execute();
 

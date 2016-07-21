@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 # @author Addshore
 #
 # This script should be run every sunday at 01 hours

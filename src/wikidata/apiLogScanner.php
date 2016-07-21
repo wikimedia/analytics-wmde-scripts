@@ -11,6 +11,9 @@
  * Used by: https://grafana.wikimedia.org/dashboard/db/wikidata-api
  */
 
+require_once( __DIR__ . '/../../lib/load.php' );
+Output::startScript( __FILE__ );
+
 if ( array_key_exists( 1, $argv ) ) {
 	$scanner = new WikidataApiLogScanner( $argv[1] );
 } else {

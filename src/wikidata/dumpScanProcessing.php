@@ -6,6 +6,7 @@
  */
 
 require_once( __DIR__ . '/../../lib/load.php' );
+Output::startScript( __FILE__ );
 
 $config = Config::getConfig();
 $dataDir = $config['dump-dir'];
@@ -22,7 +23,7 @@ $dirs = array_reverse( $dirs );
 //Only get the last 10 dumps
 $dirs = array_slice( $dirs, 0, 10 );
 if( count( $dirs ) <= 1 ) {
-	echo "Not many output dirs found!\n";
+	Output::timestampedMessage( "Not many output dirs found!" );
 }
 
 //Get the outputs and send to graphite
@@ -33,7 +34,7 @@ foreach( $dirs as $dir ) {
 
 	$file = $dir . '/metrics.json';
 	if( !file_exists( $file ) ) {
-		echo 'File not found: ' . $file . "\n";
+		Output::timestampedMessage( 'File not found: ' . $file );
 		continue;
 	}
 

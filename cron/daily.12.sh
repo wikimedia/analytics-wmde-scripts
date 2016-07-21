@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 # @author Addshore
 #
 # This script should be run through cron at 12 hours every day.

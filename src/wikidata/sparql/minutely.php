@@ -12,6 +12,7 @@
  */
 
 require_once( __DIR__ . '/../../../lib/load.php' );
+Output::startScript( __FILE__ );
 
 $metrics = new WikidataSparqlTriples();
 $metrics->execute( 'http://wdqs1001.eqiad.wmnet:8888/sparql' );

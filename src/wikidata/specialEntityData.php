@@ -8,9 +8,12 @@
  * Used by: https://grafana.wikimedia.org/dashboard/db/wikidata-special-entitydata
  */
 
+require_once( __DIR__ . '/../../lib/load.php' );
+Output::startScript( __FILE__ );
+
 if ( array_key_exists( 1, $argv ) ) {
 	$daysAgo = $argv[1];
-	echo "Getting data from $daysAgo days ago\n";
+	Output::timestampedMessage( "Getting data from $daysAgo days ago" );
 } else {
 	$daysAgo = 1;
 }

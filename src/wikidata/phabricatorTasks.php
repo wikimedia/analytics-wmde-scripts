@@ -9,8 +9,10 @@
  * Used by: https://grafana.wikimedia.org/dashboard/db/wikidata-tasks
  */
 
-libxml_use_internal_errors( true );
 require_once( __DIR__ . '/../../lib/load.php' );
+Output::startScript( __FILE__ );
+
+libxml_use_internal_errors( true );
 $metrics = new WikidataPhabricator();
 $metrics->execute();
 
