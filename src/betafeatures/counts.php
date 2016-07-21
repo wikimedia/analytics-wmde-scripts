@@ -45,7 +45,7 @@ if ( $queryResult === false ) {
 }
 
 foreach( $dbs as $dbname ) {
-	if( $dbname === 'labswiki' ) {
+	if( $dbname === 'labswiki' || $dbname === 'labtestwiki' ) {
 		continue;
 	}
 	// Aggregate the overall betafeatures_user_counts
