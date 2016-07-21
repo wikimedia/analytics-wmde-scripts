@@ -11,4 +11,4 @@ if [ -z "$1" ]
 fi
 
 # Logrotate is at 6:25, + time for rsync (hourly?), 12 gives us roughly 6 hours
-eval "$1/src/wikidata/apiLogScanner.sh"
+eval "$1/src/wikidata/apiLogScanner.php"
