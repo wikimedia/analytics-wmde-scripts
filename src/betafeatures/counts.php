@@ -84,6 +84,7 @@ foreach( $metrics as $featureName => $value ) {
 $sql = "SELECT COUNT(*) AS count, up_property as feature";
 $sql .= " FROM staging.wmde_analytics_betafeature_users";
 $sql .= " GROUP BY up_property";
+$queryResult = $pdo->query( $sql );
 if( $queryResult === false ) {
 	Output::timestampedMessage( "beta features select from staging.wmde_analytics_betafeature_users failed!!" );
 } else {
