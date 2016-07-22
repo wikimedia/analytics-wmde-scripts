@@ -24,7 +24,7 @@ $pdo = WikimediaDb::getPdo();
 $metrics = array();
 
 foreach( $dbs as $dbname ) {
-	if( $dbname === 'labswiki' ) {
+	if( $dbname === 'labswiki' || $dbname === 'labtest' ) {
 		continue;
 	}
 	$thisWikiHasSomeUse = false;
