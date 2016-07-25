@@ -53,7 +53,7 @@ foreach( $dbs as $dbname ) {
 	$sql = "SELECT * FROM $dbname.betafeatures_user_counts";
 	$queryResult = $pdo->query( $sql );
 	if( $queryResult === false ) {
-		Output::timestampedMessage( "beta features DB query 1 failed for $dbname, Skipping!! " );
+		Output::timestampedMessage( "SELECT 1 failed for $dbname, Skipping!! " );
 	} else {
 		foreach( $queryResult as $row ) {
 			$feature = $row['feature'];
@@ -70,7 +70,7 @@ foreach( $dbs as $dbname ) {
 		$sql .= " WHERE up_property = '$feature' AND up_value = '1'";
 		$queryResult = $pdo->query( $sql );
 		if( $queryResult === false ) {
-			Output::timestampedMessage( "beta features DB query 2 failed for $dbname for feature $feature, Skipping!!" );
+			Output::timestampedMessage( "INSERT INTO FAILED for $dbname for feature $feature, Skipping!!" );
 		}
 	}
 }
@@ -86,11 +86,9 @@ $sql .= " FROM staging.wmde_analytics_betafeature_users";
 $sql .= " GROUP BY feature";
 $queryResult = $pdo->query( $sql );
 if( $queryResult === false ) {
-	Output::timestampedMessage( "beta features select from staging.wmde_analytics_betafeature_users failed!!" );
+	Output::timestampedMessage( "SELECT FROM staging.wmde_analytics_betafeature_users FAILED!!" );
 } else {
 	foreach( $queryResult as $row ) {
-		$feature = $row['feature'];
-		$count = $row['count'];
-		WikimediaGraphite::sendNow( 'daily.betafeatures.global_user_counts.totals.' . $featureName, $value );
+		WikimediaGraphite::sendNow( 'daily.betafeatures.global_user_counts.totals.' . $row['feature'], $row['count'] );
 	}
 }
