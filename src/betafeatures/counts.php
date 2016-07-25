@@ -89,6 +89,11 @@ if( $queryResult === false ) {
 	Output::timestampedMessage( "SELECT FROM staging.wmde_analytics_betafeature_users FAILED!!" );
 } else {
 	foreach( $queryResult as $row ) {
-		WikimediaGraphite::sendNow( 'daily.betafeatures.global_user_counts.totals.' . $row['feature'], $row['count'] );
+		if ( in_array( $row['feature'], $currentFeatures ) && $row['count'] > 0 ) {
+		WikimediaGraphite::sendNow(
+			'daily.betafeatures.global_user_counts.totals.' . $row['feature'],
+			$row['count']
+		);
+		}
 	}
 }
