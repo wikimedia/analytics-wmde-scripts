@@ -36,22 +36,29 @@ $dbs = array_filter( $dbs );
 $pdo = WikimediaDb::getPdo();
 
 $metrics = array();
-$tempTableName = 'staging.wmde_analytics_betafeature_users_temp';
+$todaysTableName = 'staging.wmde_analytics_betafeature_users_today';
 $yesterdayTableName = 'staging.wmde_analytics_betafeature_users_yesterday';
 
-// Create temporary table
-$sql = "CREATE TEMPORARY TABLE IF NOT EXISTS $tempTableName";
+// Create todays table if it doesn't exist
+$sql = "CREATE TABLE IF NOT EXISTS $todaysTableName";
 $sql .= "( user_name VARCHAR(255) NOT NULL, feature VARBINARY(255) NOT NULL, PRIMARY KEY (user_name, feature) )";
 $queryResult = $pdo->query( $sql );
 if ( $queryResult === false ) {
-	die( "Failed to create temp table $tempTableName" );
+	die( "Failed to create table $todaysTableName" );
 }
-// Create yesterday table
+// Create yesterday table if it doesn't exist
 $sql = "CREATE TABLE IF NOT EXISTS $yesterdayTableName";
 $sql .= "( user_name VARCHAR(255) NOT NULL, feature VARBINARY(255) NOT NULL, PRIMARY KEY (user_name, feature) )";
 $queryResult = $pdo->query( $sql );
 if ( $queryResult === false ) {
 	die( "Failed to create table $yesterdayTableName" );
+}
+
+// Clear todays table (if it for some reason has data in it)
+$sql = "TRUNCATE TABLE $todaysTableName";
+$queryResult = $pdo->query( $sql );
+if( $queryResult === false ) {
+	Output::timestampedMessage( "FAILED: $sql" );
 }
 
 // Loop through all wiki databases
@@ -74,7 +81,7 @@ foreach( $dbs as $dbname ) {
 
 	// Record individuals into the temp table
 	foreach( $currentFeatures as $feature ) {
-		$sql = "INSERT IGNORE INTO $tempTableName ( user_name, feature )";
+		$sql = "INSERT IGNORE INTO $todaysTableName ( user_name, feature )";
 		$sql .= " SELECT user_name, up_property FROM $dbname.user_properties";
 		$sql .= " JOIN $dbname.user ON up_user = user_id";
 		$sql .= " WHERE up_property = '$feature' AND up_value = '1'";
@@ -94,11 +101,11 @@ foreach( $metrics as $featureName => $value ) {
 
 // Select and send the global user counts (each global user is only counted once)
 $sql = "SELECT COUNT(*) AS count, feature";
-$sql .= " FROM $tempTableName";
+$sql .= " FROM $todaysTableName";
 $sql .= " GROUP BY feature";
 $queryResult = $pdo->query( $sql );
 if( $queryResult === false ) {
-	Output::timestampedMessage( "SELECT FROM temp table $tempTableName FAILED!!" );
+	Output::timestampedMessage( "SELECT FROM temp table $todaysTableName FAILED!!" );
 } else {
 	foreach( $queryResult as $row ) {
 		if ( in_array( $row['feature'], $currentFeatures ) && $row['count'] > 0 ) {
@@ -117,13 +124,13 @@ if ( $queryResult === false ) {
 } else if( count( $queryResult->fetchAll() ) > 0 ) {
 	// Work out what has changed between days
 	// Emulated INTERSECT: http://stackoverflow.com/a/950505/4746236
-	$sql = "SELECT 'enables' AS state, today.* FROM $tempTableName AS today";
+	$sql = "SELECT 'enables' AS state, today.* FROM $todaysTableName AS today";
 	$sql .= " WHERE ROW(today.user_name, today.feature) NOT IN";
 	$sql .= " ( SELECT * FROM $yesterdayTableName )";
 	$sql .= " UNION ALL";
 	$sql .= " SELECT 'disables' AS state, yesterday.* FROM $yesterdayTableName AS yesterday";
 	$sql .= " WHERE ROW(yesterday.user_name, yesterday.feature) NOT IN";
-	$sql .= " ( SELECT * FROM $tempTableName )";
+	$sql .= " ( SELECT * FROM $todaysTableName )";
 	$sql = "SELECT state, COUNT(*) AS count, feature FROM ( $sql ) AS a GROUP BY state, feature";
 	$queryResult = $pdo->query( $sql );
 	if ( $queryResult === false ) {
@@ -149,7 +156,14 @@ if( $queryResult === false ) {
 
 // Add todays data into the yesterday table
 $sql = "INSERT INTO $yesterdayTableName ( user_name, feature )";
-$sql .= " SELECT user_name, feature FROM $tempTableName";
+$sql .= " SELECT user_name, feature FROM $todaysTableName";
+$queryResult = $pdo->query( $sql );
+if( $queryResult === false ) {
+	Output::timestampedMessage( "FAILED: $sql" );
+}
+
+// Clear todays table
+$sql = "TRUNCATE TABLE $todaysTableName";
 $queryResult = $pdo->query( $sql );
 if( $queryResult === false ) {
 	Output::timestampedMessage( "FAILED: $sql" );
