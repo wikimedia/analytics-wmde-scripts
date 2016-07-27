@@ -26,8 +26,7 @@ $metrics->execute();
 class WikidataSocialMetric{
 
 	public function execute() {
-		$config = Config::getConfig();
-		$value = $this->getGooglePlusFollowers( $config['google'] );
+		$value = $this->getGooglePlusFollowers( Config::getValue('google') );
 		WikimediaGraphite::sendNow( 'daily.wikidata.social.googleplus.followers', $value );
 	}
 
