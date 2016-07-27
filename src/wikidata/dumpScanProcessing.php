@@ -8,8 +8,7 @@
 require_once( __DIR__ . '/../../lib/load.php' );
 Output::startScript( __FILE__ );
 
-$config = Config::getConfig();
-$dataDir = $config['dump-dir'];
+$dataDir = Config::getValue('dump-dir');
 //Make sure the output dir exists
 if ( !file_exists( $dataDir ) ) {
 	throw new Exception( "Data directory does not exist: " . $dataDir );

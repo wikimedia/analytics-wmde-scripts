@@ -9,8 +9,7 @@
 require_once( __DIR__ . '/../../lib/load.php' );
 Output::startScript( __FILE__ );
 
-$config = Config::getConfig();
-$logDirectory = $config['dump_log_dir'];
+$logDirectory = Config::getValue('dump_log_dir');
 
 // Types suffixed with a 1 represent the first part of a joined dump (only count the first)
 $weeklyXmlTypes = array(

@@ -13,7 +13,7 @@ class Config {
 	/**
 	 * @return array
 	 */
-	public static function getConfig() {
+	private static function getConfig() {
 		if ( self::$configArray === null ) {
 
 			$config = trim( file_get_contents( __DIR__ . '/../../config' ) );
@@ -31,6 +31,9 @@ class Config {
 
 	public static function getValue( $key ) {
 		$config = self::getConfig();
+		if( !array_key_exists( $key, $config ) ) {
+			throw new Exception( 'Config value does not exist: ' . $key );
+		}
 		return $config[$key];
 	}
 

@@ -27,8 +27,11 @@ $metrics->execute();
 class WikidataSocialMetric{
 
 	public function execute() {
-		$config = Config::getConfig();
-		$value = $this->getMailingListSubscribers( 'wikidata', $config['mm-user'], $config['mm-wikidata-pass'] );
+		$value = $this->getMailingListSubscribers(
+			'wikidata',
+			Config::getValue('mm-user'),
+			Config::getValue('mm-wikidata-pass')
+		);
 		WikimediaGraphite::sendNow( 'daily.wikidata.social.email.wikidata.subscribers', $value );
 	}
 
