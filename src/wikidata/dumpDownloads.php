@@ -9,8 +9,8 @@
 require_once( __DIR__ . '/../../lib/load.php' );
 Output::startScript( __FILE__ );
 
-// TODO get from puppet / config
-$logDirectory = '/a/log/webrequest/archive/dumps.wikimedia.org';
+$config = Config::getConfig();
+$logDirectory = $config['dump_log_dir'];
 
 // Types suffixed with a 1 represent the first part of a joined dump (only count the first)
 $weeklyXmlTypes = array(
