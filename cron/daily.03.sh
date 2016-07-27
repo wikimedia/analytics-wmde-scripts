@@ -37,6 +37,7 @@ eval "$1/src/wikidata/social/twitter.php"
 eval "$1/src/wikidata/phabricatorTasks.php"
 eval "$1/src/wikidata/showcaseItems.php"
 eval "$1/src/wikidata/specialEntityData.php"
+eval "$1/src/wikidata/dumpDownloads.php"
 eval "$1/src/catwatch/userprops.php"
 eval "$1/src/betafeatures/counts.php"
 
