@@ -44,7 +44,6 @@ date +"%F %T daily.03.sh Social scripts complete!"
 date +"%F %T daily.03.sh Misc scripts running!"
 eval "$1/src/wikidata/phabricatorTasks.php" &
 eval "$1/src/wikidata/showcaseItems.php" &
-eval "$1/src/wikidata/specialEntityData.php" &
 eval "$1/src/wikidata/dumpDownloads.php" &
 eval "$1/src/catwatch/userprops.php" &
 eval "$1/src/betafeatures/counts.php" &
