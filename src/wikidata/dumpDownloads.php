@@ -7,7 +7,7 @@
  */
 
 require_once( __DIR__ . '/../../lib/load.php' );
-Output::startScript( __FILE__ );
+$output = Output::forScript( 'wikidata-dumpDownloads' )->markStart();
 
 $logDirectory = Config::getValue('dump_log_dir');
 
@@ -98,3 +98,5 @@ foreach( $counters as $type => $value ) {
 	$metricName = 'daily.wikidata.dump_requests.' . $type;
 	WikimediaGraphite::send( $metricName, $value, $graphiteDate );
 }
+
+$output->markEnd();

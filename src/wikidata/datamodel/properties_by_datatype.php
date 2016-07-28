@@ -7,10 +7,10 @@
  */
 
 require_once( __DIR__ . '/../../../lib/load.php' );
-Output::startScript( __FILE__ );
-
+$output = Output::forScript( 'wikidata-datamodel-properties_by_datatype' )->markStart();
 $metrics = new WikidataPropertiesByDataType();
 $metrics->execute();
+$output->markEnd();
 
 class WikidataPropertiesByDataType{
 

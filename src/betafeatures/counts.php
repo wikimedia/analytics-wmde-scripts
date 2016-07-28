@@ -24,7 +24,7 @@ $currentFeatures = array(
 );
 
 require_once( __DIR__ . '/../../lib/load.php' );
-Output::startScript( __FILE__ );
+$output = Output::forScript( 'betafeature-counts' )->markStart();
 
 $dblist = WikimediaCurl::curlGet( 'https://noc.wikimedia.org/conf/all.dblist' );
 if( $dblist === false ) {
@@ -70,7 +70,7 @@ foreach( $dbs as $dbname ) {
 	$sql = "SELECT * FROM $dbname.betafeatures_user_counts";
 	$queryResult = $pdo->query( $sql );
 	if( $queryResult === false ) {
-		Output::timestampedMessage( "SELECT 1 failed for $dbname, Skipping!! " );
+		$output->outputMessage( "SELECT 1 failed for $dbname, Skipping!! " );
 	} else {
 		foreach( $queryResult as $row ) {
 			$feature = $row['feature'];
@@ -87,7 +87,7 @@ foreach( $dbs as $dbname ) {
 		$sql .= " WHERE up_property = '$feature' AND up_value = '1'";
 		$queryResult = $pdo->query( $sql );
 		if( $queryResult === false ) {
-			Output::timestampedMessage( "INSERT INTO FAILED for $dbname for feature $feature, Skipping!!" );
+			$output->outputMessage( "INSERT INTO FAILED for $dbname for feature $feature, Skipping!!" );
 		}
 	}
 }
@@ -105,7 +105,7 @@ $sql .= " FROM $todaysTableName";
 $sql .= " GROUP BY feature";
 $queryResult = $pdo->query( $sql );
 if( $queryResult === false ) {
-	Output::timestampedMessage( "SELECT FROM temp table $todaysTableName FAILED!!" );
+	$output->outputMessage( "SELECT FROM temp table $todaysTableName FAILED!!" );
 } else {
 	foreach( $queryResult as $row ) {
 		if ( in_array( $row['feature'], $currentFeatures ) && $row['count'] > 0 ) {

@@ -7,10 +7,10 @@
  */
 
 require_once( __DIR__ . '/../../../lib/load.php' );
-Output::startScript( __FILE__ );
-
+$output = Output::forScript( 'wikidata-site_stats-pages_by_namespace' )->markStart();
 $metrics = new WikidataPagesByNamespace();
 $metrics->execute();
+$output->markEnd();
 
 class WikidataPagesByNamespace{
 

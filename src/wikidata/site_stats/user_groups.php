@@ -7,7 +7,7 @@
  */
 
 require_once( __DIR__ . '/../../../lib/load.php' );
-Output::startScript( __FILE__ );
+$output = Output::forScript( 'wikidata-site_stats-user_groups' )->markStart();
 
 // Map of group name => metric name
 $groupMap = array(
@@ -18,20 +18,21 @@ $groupMap = array(
 );
 
 $metrics = new WikidataUserGroups();
-$metrics->execute( $groupMap );
+$metrics->execute( $groupMap, $output );
+$output->markEnd();
 
 class WikidataUserGroups{
 
-	public function execute( array $groupMap ) {
+	public function execute( array $groupMap, Output $output ) {
 		$pdo = WikimediaDb::getPdo();
 		foreach ( $groupMap as $group => $metricName ) {
-			Output::timestampedMessage( "Running query for $metricName group" );
+			$output->outputMessage( "Running query for $metricName group" );
 			$result = $pdo->query(
 				"SELECT count(*) AS count FROM wikidatawiki.user_groups WHERE ug_group = '$group' GROUP BY ug_group"
 			);
 
 			if( $result === false ) {
-				Output::timestampedMessage( "DB query for $metricName failed" );
+				$output->outputMessage( "DB query for $metricName failed" );
 				continue;
 			}
 			$rows = $result->fetchAll();

@@ -7,10 +7,10 @@
  */
 
 require_once( __DIR__ . '/../../../lib/load.php' );
-Output::startScript( __FILE__ );
-
+$output = Output::forScript( 'wikidata-site_stats-rolling_rc' )->markStart();
 $metrics = new WikidataRollingRc();
 $metrics->execute();
+$output->markEnd();
 
 class WikidataRollingRc{
 

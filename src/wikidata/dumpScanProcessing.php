@@ -6,7 +6,7 @@
  */
 
 require_once( __DIR__ . '/../../lib/load.php' );
-Output::startScript( __FILE__ );
+$output = Output::forScript( 'wikidata-dumpScanProcessing' )->markStart();
 
 $dataDir = Config::getValue('dump-dir');
 //Make sure the output dir exists
@@ -22,7 +22,7 @@ $dirs = array_reverse( $dirs );
 //Only get the last 10 dumps
 $dirs = array_slice( $dirs, 0, 10 );
 if( count( $dirs ) <= 1 ) {
-	Output::timestampedMessage( "Not many output dirs found!" );
+	$output->outputMessage( "Not many output dirs found!" );
 }
 
 //Get the outputs and send to graphite
@@ -33,7 +33,7 @@ foreach( $dirs as $dir ) {
 
 	$file = $dir . '/metrics.json';
 	if( !file_exists( $file ) ) {
-		Output::timestampedMessage( 'File not found: ' . $file );
+		$output->outputMessage( 'File not found: ' . $file );
 		continue;
 	}
 
@@ -44,3 +44,5 @@ foreach( $dirs as $dir ) {
 	}
 
 }
+
+$output->markEnd();

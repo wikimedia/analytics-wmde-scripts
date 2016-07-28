@@ -7,10 +7,10 @@
  */
 
 require_once( __DIR__ . '/../../../lib/load.php' );
-Output::startScript( __FILE__ );
-
+$output = Output::forScript( 'wikidata-site_stats-active_users' )->markStart();
 $metrics = new WikidataActiveUsers();
 $metrics->execute();
+$output->markEnd();
 
 class WikidataActiveUsers{
 

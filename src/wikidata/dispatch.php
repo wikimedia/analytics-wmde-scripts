@@ -8,7 +8,7 @@
  */
 
 require_once( __DIR__ . '/../../lib/load.php' );
-Output::startScript( __FILE__ );
+$output = Output::forScript( 'wikidata-dispatch' )->markStart();
 
 $url = 'https://www.wikidata.org/w/api.php?action=query&meta=siteinfo&format=json&siprop=statistics';
 $json = WikimediaCurl::curlGet( $url );
@@ -33,3 +33,5 @@ $stats['average.lag'] = $json['average']['lag'];
 foreach ( $stats as $name => $value ) {
 	WikimediaStatsd::sendGauge( "wikidata.dispatch.$name", $value );
 }
+
+$output->markEnd();

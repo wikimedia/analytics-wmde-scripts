@@ -7,11 +7,10 @@
  */
 
 require_once( __DIR__ . '/../../../lib/load.php' );
-Output::startScript( __FILE__ );
-
+$output = Output::forScript( 'wikidata-datamodel-statements_per_entity' )->markStart();
 $counter = new WikidataStatementCounter();
 $counter->execute();
-
+$output->markEnd();
 
 /**
  * It should be noted that per the ItemContent and PropertyContent classes in Wikibase
