@@ -6,8 +6,11 @@
 
 if [ -z "$1" ]
   then
-    echo "No argument supplied"
+    date +"%F %T weekly.sh No argument supplied!"
     exit 1
 fi
+date +"%F %T weekly.sh Started!"
 
 #noop
+
+date +"%F %T weekly.sh Ended!"

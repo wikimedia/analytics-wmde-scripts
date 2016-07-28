@@ -12,7 +12,7 @@
  */
 
 require_once( __DIR__ . '/../../lib/load.php' );
-Output::startScript( __FILE__ );
+$output = Output::forScript( 'wikidata-apiLogScanner' )->markStart();
 
 if ( array_key_exists( 1, $argv ) ) {
 	$scanner = new WikidataApiLogScanner( $argv[1] );
@@ -20,6 +20,7 @@ if ( array_key_exists( 1, $argv ) ) {
 	$scanner = new WikidataApiLogScanner();
 }
 $scanner->execute();
+$output->markEnd();
 
 class WikidataApiLogScanner {
 

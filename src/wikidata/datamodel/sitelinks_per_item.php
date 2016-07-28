@@ -7,10 +7,10 @@
  */
 
 require_once( __DIR__ . '/../../../lib/load.php' );
-Output::startScript( __FILE__ );
-
+$output = Output::forScript( 'wikidata-datamodel-sitelinks_per_item' )->markStart();
 $counter = new WikidataItemSitelinkCounter();
 $counter->execute();
+$output->markEnd();
 
 class WikidataItemSitelinkCounter{
 

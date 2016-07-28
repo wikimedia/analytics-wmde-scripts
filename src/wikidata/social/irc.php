@@ -12,11 +12,11 @@
  */
 
 require_once( __DIR__ . '/../../../lib/load.php' );
-Output::startScript( __FILE__ );
-
+$output = Output::forScript( 'wikidata-social-irc' )->markStart();
 libxml_use_internal_errors( true );
 $metrics = new WikidataSocialMetric();
 $metrics->execute();
+$output->markEnd();
 
 class WikidataSocialMetric{
 

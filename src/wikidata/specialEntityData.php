@@ -9,11 +9,11 @@
  */
 
 require_once( __DIR__ . '/../../lib/load.php' );
-Output::startScript( __FILE__ );
+$output = Output::forScript( 'wikidata-specialEntityData' )->markStart();
 
 if ( array_key_exists( 1, $argv ) ) {
 	$daysAgo = $argv[1];
-	Output::timestampedMessage( "Getting data from $daysAgo days ago" );
+	$output->outputMessage( "Getting data from $daysAgo days ago" );
 } else {
 	$daysAgo = 1;
 }
@@ -78,3 +78,5 @@ foreach( $metrics as $metricName => $value ) {
 }
 
 unlink( $outputFile );
+
+$output->markEnd();

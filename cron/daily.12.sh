@@ -6,9 +6,12 @@
 
 if [ -z "$1" ]
   then
-    echo "No argument supplied"
+    date +"%F %T daily.12.sh No argument supplied!"
     exit 1
 fi
+date +"%F %T daily.12.sh Started!"
 
 # Logrotate is at 6:25, + time for rsync (hourly?), 12 gives us roughly 6 hours
 eval "$1/src/wikidata/apiLogScanner.php"
+
+date +"%F %T daily.12.sh Ended!"

@@ -10,7 +10,7 @@
  */
 
 require_once( __DIR__ . '/../../lib/load.php' );
-Output::startScript( __FILE__ );
+$output = Output::forScript( 'wikidata-phabricatorTasks' )->markStart();
 
 libxml_use_internal_errors( true );
 $metrics = new WikidataPhabricator();
@@ -52,3 +52,5 @@ class WikidataPhabricator{
 	}
 
 }
+
+$output->markEnd();

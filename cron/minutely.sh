@@ -6,10 +6,15 @@
 
 if [ -z "$1" ]
   then
-    echo "No argument supplied"
+    date +"%F %T minutely.sh No argument supplied!"
     exit 1
 fi
+date +"%F %T minutely.sh Started!"
 
-eval "$1/src/wikidata/dispatch.php"
-eval "$1/src/wikidata/recentChanges.php"
-eval "$1/src/wikidata/sparql/minutely.php"
+eval "$1/src/wikidata/dispatch.php" &
+eval "$1/src/wikidata/recentChanges.php" &
+eval "$1/src/wikidata/sparql/minutely.php" &
+
+date +"%F %T minutely.sh Waiting!"
+wait
+date +"%F %T minutely.sh Ended!"

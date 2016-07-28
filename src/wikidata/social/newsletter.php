@@ -11,10 +11,10 @@
  */
 
 require_once( __DIR__ . '/../../../lib/load.php' );
-Output::startScript( __FILE__ );
-
+$output = Output::forScript( 'wikidata-social-newsletter' )->markStart();
 $metrics = new WikidataSocialMetric();
 $metrics->execute();
+$output->markEnd();
 
 class WikidataSocialMetric{
 

@@ -7,10 +7,10 @@
  */
 
 require_once( __DIR__ . '/../../../lib/load.php' );
-Output::startScript( __FILE__ );
-
+$output = Output::forScript( 'wikidata-site_stats-good_articles' )->markStart();
 $metrics = new WikidataGoodArticles();
 $metrics->execute();
+$output->markEnd();
 
 class WikidataGoodArticles{
 

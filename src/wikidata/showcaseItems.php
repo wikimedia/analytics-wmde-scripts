@@ -9,7 +9,7 @@
  */
 
 require_once( __DIR__ . '/../../lib/load.php' );
-Output::startScript( __FILE__ );
+$output = Output::forScript( 'wikidata-showcaseItems' )->markStart();
 
 $url = 'https://www.wikidata.org/w/api.php?action=query&prop=revisions&format=json&titles=Wikidata:Showcase_items&rvprop=content';
 $json = WikimediaCurl::curlGet( $url );
@@ -25,3 +25,5 @@ $pageContent = $pageArray['revisions'][0]['*'];
 $showcaseItems = substr_count( $pageContent, '{{ShowcaseItem|' );
 
 WikimediaGraphite::sendNow( 'daily.wikidata.showcaseItems', $showcaseItems );
+
+$output->markEnd();

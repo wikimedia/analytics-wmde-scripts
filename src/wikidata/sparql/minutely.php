@@ -12,11 +12,11 @@
  */
 
 require_once( __DIR__ . '/../../../lib/load.php' );
-Output::startScript( __FILE__ );
-
+$output = Output::forScript( 'wikidata-sparql-minutely' )->markStart();
 $metrics = new WikidataSparqlTriples();
 $metrics->execute( 'http://wdqs1001.eqiad.wmnet:8888/sparql' );
 $metrics->execute( 'http://wdqs1002.eqiad.wmnet:8888/sparql' );
+$output->markEnd();
 
 class WikidataSparqlTriples{
 

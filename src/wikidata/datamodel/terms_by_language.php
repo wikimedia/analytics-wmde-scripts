@@ -7,10 +7,10 @@
  */
 
 require_once( __DIR__ . '/../../../lib/load.php' );
-Output::startScript( __FILE__ );
-
+$output = Output::forScript( 'wikidata-datamodel-terms_by_language' )->markStart();
 $metrics = new WikidataTermsByLanguage();
 $metrics->execute();
+$output->markEnd();
 
 class WikidataTermsByLanguage{
 

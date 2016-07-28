@@ -8,10 +8,10 @@
  */
 
 require_once( __DIR__ . '/../../lib/load.php' );
-Output::startScript( __FILE__ );
-
+$output = Output::forScript( 'wikidata-recentChanges' )->markStart();
 $metrics = new WikidataRc();
 $metrics->execute();
+$output->markEnd();
 
 class WikidataRc {
 
