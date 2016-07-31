@@ -53,6 +53,7 @@ eval "$1/src/wikidata/showcaseItems.php" &
 eval "$1/src/wikidata/dumpDownloads.php" &
 eval "$1/src/catwatch/userprops.php" &
 eval "$1/src/betafeatures/counts.php" &
+eval "$1/src/echo/statusNotifications.php" &
 
 date +"%F %T daily.03.sh Waiting!"
 wait
