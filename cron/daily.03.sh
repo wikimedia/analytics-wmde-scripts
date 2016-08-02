@@ -9,25 +9,23 @@ if [ -z "$1" ]
     date +"%F %T daily.03.sh No argument supplied!"
     exit 1
 fi
+
 date +"%F %T daily.03.sh Started!"
 
-# Data model
-date +"%F %T daily.03.sh Wikidata datamodel scripts running!"
-eval "$1/src/wikidata/datamodel/properties_by_datatype.php"
-eval "$1/src/wikidata/datamodel/terms_by_language.php"
-eval "$1/src/wikidata/datamodel/sitelinks_per_site.php"
-eval "$1/src/wikidata/datamodel/sitelinks_per_item.php"
-eval "$1/src/wikidata/datamodel/statements_per_entity.php"
-eval "$1/src/wikidata/sparql/ranks.php"
-eval "$1/src/wikidata/sparql/instanceof.php"
-eval "$1/src/wikidata/wikidata-analysis/metrics.php"
-date +"%F %T daily.03.sh Wikidata datamodel scripts complete!"
+# Wikidata Data model
+eval "$1/src/wikidata/datamodel/terms_by_language.php" &
+eval "$1/src/wikidata/datamodel/sitelinks_per_item.php" &
+eval "$1/src/wikidata/datamodel/statements_per_entity.php" &
+eval "$1/src/wikidata/datamodel/sitelinks_per_site.php" &
+eval "$1/src/wikidata/datamodel/properties_by_datatype.php" &
+eval "$1/src/wikidata/sparql/ranks.php" &
+eval "$1/src/wikidata/sparql/instanceof.php" &
+eval "$1/src/wikidata/wikidata-analysis/metrics.php" &
 
-# Entity usage
-eval "$1/src/wikidata/entityUsage.php"
+# Wikidata client entity usage
+eval "$1/src/wikidata/entityUsage.php" &
 
-# Social
-date +"%F %T daily.03.sh Social scripts running!"
+# Wikidata Social
 eval "$1/src/wikidata/social/facebook.php" &
 eval "$1/src/wikidata/social/googleplus.php" &
 eval "$1/src/wikidata/social/identica.php" &
@@ -36,23 +34,8 @@ eval "$1/src/wikidata/social/mail.php" &
 eval "$1/src/wikidata/social/newsletter.php" &
 eval "$1/src/wikidata/social/techmail.php" &
 eval "$1/src/wikidata/social/twitter.php" &
-date +"%F %T daily.03.sh Social scripts waiting!"
-wait
-date +"%F %T daily.03.sh Social scripts complete!"
 
-# Misc
-date +"%F %T daily.03.sh Misc scripts running!"
-eval "$1/src/wikidata/phabricatorTasks.php" &
-eval "$1/src/wikidata/showcaseItems.php" &
-eval "$1/src/wikidata/dumpDownloads.php" &
-eval "$1/src/catwatch/userprops.php" &
-eval "$1/src/betafeatures/counts.php" &
-date +"%F %T daily.03.sh Misc scripts waiting!"
-wait
-date +"%F %T daily.03.sh Misc scripts complete!"
-
-# Site Stats
-date +"%F %T daily.03.sh Wikidata site_stats scripts running!"
+# Wikidata site stats
 eval "$1/src/wikidata/site_stats/good_articles.php" &
 eval "$1/src/wikidata/site_stats/total_edits.php" &
 eval "$1/src/wikidata/site_stats/total_pages.php" &
@@ -63,10 +46,15 @@ eval "$1/src/wikidata/site_stats/rolling_rc.php" &
 eval "$1/src/wikidata/site_stats/pages_by_namespace.php" &
 eval "$1/src/wikidata/site_stats/page_size.php" &
 eval "$1/src/wikidata/site_stats/user_languages.php" &
-date +"%F %T daily.03.sh Wikidata site_stats scripts waiting!"
-wait
-date +"%F %T daily.03.sh Wikidata site_stats scripts complete!"
 
+# Misc
+eval "$1/src/wikidata/phabricatorTasks.php" &
+eval "$1/src/wikidata/showcaseItems.php" &
+eval "$1/src/wikidata/dumpDownloads.php" &
+eval "$1/src/catwatch/userprops.php" &
+eval "$1/src/betafeatures/counts.php" &
+
+date +"%F %T daily.03.sh Waiting!"
 wait
 date +"%F %T daily.03.sh Ended!"
 
