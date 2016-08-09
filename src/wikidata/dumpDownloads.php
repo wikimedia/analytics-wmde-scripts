@@ -43,16 +43,24 @@ $regexSnips = array(
 		'wikidatawiki-[0-9]{8}-pages-meta-hist-incr.xml\.(gz|bz2)',
 );
 
-// We will get data for 3 days ago. To do this we need the logs from 3 and 2 days ago.
-$targetDate = date('d/M/Y', strtotime('-3 days', time()));// For format [01/Jul/2016:
-$graphiteDate = date('Y-m-d', strtotime('-3 days', time()));// Date formatted for graphite
-$twoDaysAgo = date('Ymd', strtotime('-2 days', time()));
-$threeDaysAgo = date('Ymd', strtotime('-3 days', time()));
+// Optionally take a date passed into the script
+if ( array_key_exists( 1, $argv ) ) {
+	$targetTime = strtotime( $argv[1] );
+} else {
+	$targetTime = strtotime( '-4 days', time() );
+}
+
+$targetDate = date( 'd/M/Y', $targetTime );// For format [01/Jul/2016:
+$graphiteDate = date( 'Y-m-d', $targetTime );// Date formatted for graphite
+$fileFormatDayAfter = date( 'Ymd', strtotime( '+1 days', $targetTime ) );
+$fileFormatTargetDate = date( 'Ymd', $targetTime );
 
 $logFiles = array(
-	$logDirectory . DIRECTORY_SEPARATOR . 'access.log-' . $twoDaysAgo . '.gz',
-	$logDirectory . DIRECTORY_SEPARATOR . 'access.log-' . $threeDaysAgo . '.gz',
+	$logDirectory . DIRECTORY_SEPARATOR . 'access.log-' . $fileFormatDayAfter . '.gz',
+	$logDirectory . DIRECTORY_SEPARATOR . 'access.log-' . $fileFormatTargetDate . '.gz',
 );
+
+$output->outputMessage( 'Targeting date: ' . $targetDate );
 
 $counters = array();
 foreach( $logFiles as $logFile ) {
