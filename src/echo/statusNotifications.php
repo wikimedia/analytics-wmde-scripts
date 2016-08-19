@@ -45,7 +45,7 @@ if ( $queryResult === false ) {
 $sql = "TRUNCATE TABLE $todaysTableName";
 $queryResult = $pdo->query( $sql );
 if( $queryResult === false ) {
-	Output::timestampedMessage( "FAILED: $sql" );
+	$output->outputMessage( "FAILED: $sql" );
 }
 
 // Loop through all wiki databases
@@ -88,7 +88,7 @@ if( $queryResult === false ) {
 // Compare todays data with yesterdays data (if present)
 $queryResult = $pdo->query( "SELECT * FROM $yesterdayTableName LIMIT 1" );
 if ( $queryResult === false ) {
-	Output::timestampedMessage( "FAILED: $sql" );
+	$output->outputMessage( "FAILED: $sql" );
 } else if( count( $queryResult->fetchAll() ) > 0 ) {
 	// Work out what has changed between days
 	// Emulated INTERSECT: http://stackoverflow.com/a/950505/4746236
@@ -102,7 +102,7 @@ if ( $queryResult === false ) {
 	$sql = "SELECT state, COUNT(*) AS count, property FROM ( $sql ) AS a GROUP BY state, property";
 	$queryResult = $pdo->query( $sql );
 	if ( $queryResult === false ) {
-		Output::timestampedMessage( "FAILED Intersection, Skipping!!" );
+		$output->outputMessage( "FAILED Intersection, Skipping!!" );
 	} else {
 		foreach( $queryResult as $row ) {
 			WikimediaGraphite::sendNow(
@@ -112,14 +112,14 @@ if ( $queryResult === false ) {
 		}
 	}
 } else {
-	Output::timestampedMessage( "No data contained in yesterdays table, Skipping!!" );
+	$output->outputMessage( "No data contained in yesterdays table, Skipping!!" );
 }
 
 // Clear yesterdays table
 $sql = "TRUNCATE TABLE $yesterdayTableName";
 $queryResult = $pdo->query( $sql );
 if( $queryResult === false ) {
-	Output::timestampedMessage( "FAILED: $sql" );
+	$output->outputMessage( "FAILED: $sql" );
 }
 
 // Add todays data into the yesterday table
@@ -127,12 +127,12 @@ $sql = "INSERT INTO $yesterdayTableName ( user_name, property )";
 $sql .= " SELECT user_name, property FROM $todaysTableName";
 $queryResult = $pdo->query( $sql );
 if( $queryResult === false ) {
-	Output::timestampedMessage( "FAILED: $sql" );
+	$output->outputMessage( "FAILED: $sql" );
 }
 
 // Clear todays table
 $sql = "TRUNCATE TABLE $todaysTableName";
 $queryResult = $pdo->query( $sql );
 if( $queryResult === false ) {
-	Output::timestampedMessage( "FAILED: $sql" );
+	$output->outputMessage( "FAILED: $sql" );
 }
