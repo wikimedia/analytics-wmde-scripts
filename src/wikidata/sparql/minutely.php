@@ -16,6 +16,8 @@ $output = Output::forScript( 'wikidata-sparql-minutely' )->markStart();
 $metrics = new WikidataSparqlTriples();
 $metrics->execute( 'http://wdqs1001.eqiad.wmnet:8888/sparql' );
 $metrics->execute( 'http://wdqs1002.eqiad.wmnet:8888/sparql' );
+$metrics->execute( 'http://wdqs2001.codfw.wmnet:8888/sparql' );
+$metrics->execute( 'http://wdqs2002.codfw.wmnet:8888/sparql' );
 $output->markEnd();
 
 class WikidataSparqlTriples{
