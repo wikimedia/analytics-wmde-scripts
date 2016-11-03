@@ -41,7 +41,7 @@ class WikidataApiLogScanner {
 	/**
 	 * @param string $targetDate must be parse-able by PHP
 	 */
-	public function __construct( $targetDate = 'yesterday' ) {
+	public function __construct( $targetDate = 'yesterday -1 day' ) {
 		$this->targetDate = new DateTime( $targetDate );
 		$dayAfter = clone $this->targetDate;
 		$dayAfter->modify( '+1 day' );
