@@ -18,9 +18,10 @@ $currentFeatures = array(
 	'popups',
 	'cx',
 	'read-more',
-	'cirrussearch-completionsuggester',
 	'ores-enabled',
 	'revisionslider',
+	'visualeditor-newwikitext',
+	'twocolconflict',
 );
 
 require_once( __DIR__ . '/../../lib/load.php' );
