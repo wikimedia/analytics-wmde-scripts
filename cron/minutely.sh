@@ -13,7 +13,6 @@ date +"%F %T minutely.sh Started!"
 
 eval "$1/src/wikidata/dispatch.php" &
 eval "$1/src/wikidata/recentChanges.php" &
-eval "$1/src/wikidata/sparql/minutely.php" &
 
 date +"%F %T minutely.sh Waiting!"
 wait
