@@ -4,7 +4,7 @@
  *
  * @author Addshore
  * Sends data about betafeatures usage to graphite
- * Used by: https://grafana.wikimedia.org/dashboard/db/mediawiki-betafeatures
+ * Used by: https://grafana.wikimedia.org/dashboard/db/betafeatures
  */
 
 /**
