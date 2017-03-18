@@ -22,6 +22,7 @@ $currentFeatures = array(
 	'revisionslider',
 	'visualeditor-newwikitext',
 	'twocolconflict',
+	'rcenhancedfilters',
 );
 
 require_once( __DIR__ . '/../../lib/load.php' );
