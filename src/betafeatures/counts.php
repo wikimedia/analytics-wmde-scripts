@@ -17,8 +17,6 @@ $currentFeatures = array(
 	'uls-compact-links',
 	'popups',
 	'cx',
-	'read-more',
-	'ores-enabled',
 	'visualeditor-newwikitext',
 	'twocolconflict',
 	'rcenhancedfilters',
