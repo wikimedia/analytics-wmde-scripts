@@ -19,7 +19,6 @@ $currentFeatures = array(
 	'cx',
 	'read-more',
 	'ores-enabled',
-	'revisionslider',
 	'visualeditor-newwikitext',
 	'twocolconflict',
 	'rcenhancedfilters',
