@@ -6,7 +6,8 @@
  *
  * This shows the number of likes the [Wikidata page](https://www.facebook.com/Wikidata) has on facebook.
  * This metric is generated using the mobile version of the facebook page (so that content exists there with javascript disabled).
- * The metric is then extracted using a regex.
+ * The metric is then extracted using a simple regex from one of the meta tags, this could be done better.
+ * <meta property="og:description" content="Wikidata, Berlin, Germany. 3,152 likes &#xb7; 52 talking about this. The free knowledge base that anyone can edit." />
  *
  * Used by: https://grafana.wikimedia.org/dashboard/db/wikidata-social-followers
  */
@@ -27,7 +28,7 @@ class WikidataSocialMetric{
 	private function getFacebookLikes() {
 		$url = 'http://m.facebook.com/wikidata';
 		$response = WikimediaCurl::retryingCurlGet( $url, true );
-		preg_match( '/([\d,]+) people like this/i', $response[1], $matches );
+		preg_match( '/ ([\d,]+) likes /i', $response[1], $matches );
 		return str_replace( ',', '', $matches[1] );
 	}
 
