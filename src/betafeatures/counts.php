@@ -20,6 +20,7 @@ $currentFeatures = array(
 	'visualeditor-newwikitext',
 	'twocolconflict',
 	'rcenhancedfilters',
+	'codemirror-syntax-highlight',
 );
 
 require_once( __DIR__ . '/../../lib/load.php' );
