@@ -52,6 +52,9 @@ class WikidataInstanceOf{
 		$query .= "?s wdt:P31/wdt:P279* wd:$itemId";
 		$query .= "}";
 		$result = $this->doSparqlQuery( $query );
+		Output::forScript( 'wikidata-sparql-instanceof' )->outputMessage(
+			'Result for: ' . $itemId . ' ' . json_encode( $result )
+		);
 		return $result['results']['bindings'][0]['scount']['value'];
 	}
 
