@@ -52,9 +52,6 @@ class WikidataInstanceOf{
 		$query .= "?s wdt:P31/wdt:P279* wd:$itemId";
 		$query .= "}";
 		$result = $this->doSparqlQuery( $query );
-		Output::forScript( 'wikidata-sparql-instanceof' )->outputMessage(
-			'Result for: ' . $itemId . ' ' . json_encode( $result )
-		);
 		return $result['results']['bindings'][0]['scount']['value'];
 	}
 
@@ -69,6 +66,10 @@ class WikidataInstanceOf{
 		if( $response === false ) {
 			throw new RuntimeException( "The SPARQL request failed!" );
 		}
+
+		Output::forScript( 'wikidata-sparql-instanceof' )->outputMessage(
+			__METHOD__ . ': ' . $query . ' ' . json_encode( $response )
+		);
 
 		return json_decode( $response[1], true );
 	}
