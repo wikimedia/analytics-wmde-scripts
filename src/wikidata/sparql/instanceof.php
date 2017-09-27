@@ -61,7 +61,7 @@ class WikidataInstanceOf{
 	 * @return array
 	 */
 	private function doSparqlQuery ( $query ) {
-		$response = WikimediaCurl::curlGet( "https://query.wikidata.org/bigdata/namespace/wdq/sparql?format=json&query=" . urlencode( $query ) );
+		$response = WikimediaCurl::curlGet( "http://wdqs1003.eqiad.wmnet:8888/bigdata/namespace/wdq/sparql?format=json&query=" . urlencode( $query ) );
 
 		if( $response === false ) {
 			throw new RuntimeException( "The SPARQL request failed!" );
