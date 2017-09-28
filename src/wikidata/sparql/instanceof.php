@@ -38,11 +38,16 @@ class WikidataInstanceOf{
 		$results = array();
 		foreach( $this->itemIds as $itemId ) {
 			$results[$itemId] = $this->getResult( $itemId );
+			$this->sleepToAvoidRateLimit();
 		}
 
 		foreach( $results as $key => $value ) {
 			WikimediaGraphite::sendNow( "daily.wikidata.datamodel.instanceof.$key", $value );
 		}
+	}
+
+	private function sleepToAvoidRateLimit () {
+		sleep( 2 );
 	}
 
 	private function getResult( $itemId ) {
