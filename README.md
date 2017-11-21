@@ -4,6 +4,11 @@ This repo contains a bunch of scripts collecting data for the WMDE development t
 
 This repo is cloned in the statistics::wmde role in the wmf puppet repo.
 
+## Deployment
+
+The master branch is a development branch.
+The production branch is automatically deployed and run on WMF analytics servers.
+
 ## Configuration
 
 Some of the social scripts require configuration settings to work.
