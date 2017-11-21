@@ -21,6 +21,7 @@ $currentFeatures = array(
 	'twocolconflict',
 	'rcenhancedfilters',
 	'codemirror-syntax-highlight',
+	'advancedsearch',
 );
 
 require_once( __DIR__ . '/../../lib/load.php' );
