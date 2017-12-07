@@ -49,6 +49,34 @@ class WikidataPhabricator{
 			$metricName = 'daily.wikidata.phabricator.board.columns.' . $name;
 			WikimediaGraphite::sendNow( $metricName, $value );
 		}
+
+		$this->countPriorities( $page );
+	}
+
+	/**
+	 * @param string $page HTML
+	 */
+	private function countPriorities( $page ) {
+		static $priorities = [
+			'pink' => 'unbreak',
+			'violet' => 'triage',
+			'red' => 'high',
+			'orange' => 'normal',
+			'yellow' => 'low',
+			'sky' => 'lowest',
+		];
+
+		preg_match_all(
+			'/\bclass=\\\\?"[^"]*\bphui-oi-bar-color-(' . implode( '|', array_keys( $priorities ) ) . ')\b/',
+			$page,
+			$matches
+		);
+		$counts = array_count_values( $matches[1] );
+
+		foreach ( $counts as $color => $count ) {
+			$metricName = 'daily.wikidata.phabricator.board.priorities.' . $priorities[ $color ];
+			WikimediaGraphite::sendNow( $metricName, $count );
+		}
 	}
 
 }
