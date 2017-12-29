@@ -38,7 +38,7 @@ class WikidataSocialMetric{
 		if( $nodes->length !== 1 ) {
 			return null;
 		}
-		return str_replace( ',', '', $nodes->item(0)->textContent );
+		return str_replace( ',', '', $nodes->item(0)->getAttribute('data-count') );
 	}
 
 }
