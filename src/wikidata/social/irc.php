@@ -30,7 +30,7 @@ class WikidataSocialMetric{
 		$response = WikimediaCurl::retryingCurlGet( 'http://wm-bot.wmflabs.org/~wm-bot/db/systemdata.htm', true );
 		$dom->loadHTML( $response[1] );
 		$xpath = new DomXPath($dom);
-		$nodes = $xpath->query( '//*[@id="H-wikidata"]/td[1]/span' );
+		$nodes = $xpath->query( '//*[@id="H-wikidata"]/td[1]/span[contains(@class, "user-count")]' );
 		if( $nodes->length !== 1 ) {
 			return null;
 		}
