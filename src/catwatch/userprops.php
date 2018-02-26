@@ -12,12 +12,7 @@
 require_once( __DIR__ . '/../../lib/load.php' );
 $output = Output::forScript( 'catwatch-userprops' )->markStart();
 
-$dblist = WikimediaCurl::curlGet( 'https://noc.wikimedia.org/conf/dblists/all.dblist' );
-if( $dblist === false ) {
-	throw new RuntimeException( 'Failed to get db list for CatWatch tracking!' );
-}
-$dbs = explode( "\n", $dblist[1] );
-$dbs = array_filter( $dbs );
+$dbs = WikimediaDbList::get( 'all' );
 
 $pdo = WikimediaDb::getPdo();
 
