@@ -11,7 +11,7 @@ class WikimediaDbList {
 			throw new RuntimeException( 'Failed to get db list ' . $list . '! (request failed)' );
 		}
 		// If the string has any html in it, we probably got an error page
-		if( strstr( $dblist, '<' ) ) {
+		if( strstr( $dblist[1], '<' ) ) {
 			throw new RuntimeException( 'Failed to get db list ' . $list . '! (html found)' );
 		}
 		$dbs = explode( "\n", $dblist[1] );
