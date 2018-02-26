@@ -22,6 +22,7 @@ $currentFeatures = array(
 	'rcenhancedfilters',
 	'codemirror-syntax-highlight',
 	'advancedsearch',
+	'visualeditor-visualdiffpage',
 );
 
 require_once( __DIR__ . '/../../lib/load.php' );
