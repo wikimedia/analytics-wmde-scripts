@@ -14,7 +14,7 @@ $userProperties = array(
 require_once( __DIR__ . '/../../lib/load.php' );
 $output = Output::forScript( 'echo-statusNotifications' )->markStart();
 
-$dblist = WikimediaCurl::curlGet( 'https://noc.wikimedia.org/conf/all.dblist' );
+$dblist = WikimediaCurl::curlGet( 'https://noc.wikimedia.org/conf/dblists/all.dblist' );
 if( $dblist === false ) {
 	throw new RuntimeException( 'Failed to get db list for echo status notification tracking!' );
 }
