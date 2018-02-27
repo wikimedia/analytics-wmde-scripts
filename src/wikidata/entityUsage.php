@@ -11,7 +11,7 @@
 require_once( __DIR__ . '/../../lib/load.php' );
 $output = Output::forScript( 'wikidata-entityUsage' )->markStart();
 
-$dblist = WikimediaCurl::curlGet( 'https://noc.wikimedia.org/conf/wikidataclient.dblist' );
+$dblist = WikimediaCurl::curlGet( 'https://noc.wikimedia.org/conf/dblists/wikidataclient.dblist' );
 if( $dblist === false ) {
 	throw new RuntimeException( 'Failed to get db list for EntityUsage tracking!' );
 }
