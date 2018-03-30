@@ -56,6 +56,7 @@ class WikidataRc {
 			'bot' => 0,
 			'anon' => 0,
 			'length' => 0,
+			'mobile' => 0,
 			'oauth' => array(),
 			'summary' => array(),
 		);
@@ -76,6 +77,9 @@ class WikidataRc {
 				if( strpos( $tag, 'OAuth CID: ' ) === 0 ) {
 					$oauth = substr( $tag, 11 );
 					@$counters['oauth'][$oauth]++;
+				}
+				if( $tag === 'mobile edit' ) {
+					$counters['mobile']++;
 				}
 			}
 
