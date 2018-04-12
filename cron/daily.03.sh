@@ -21,6 +21,7 @@ eval "$1/src/wikidata/datamodel/sitelinks_per_site.php" &
 eval "$1/src/wikidata/datamodel/properties_by_datatype.php" &
 eval "$1/src/wikidata/sparql/ranks.php" &
 eval "$1/src/wikidata/sparql/instanceof.php" &
+eval "$1/src/wikidata/sparql/constraintsByType.php" &
 eval "$1/src/wikidata/dumpScanProcessing.php" &
 
 # Wikidata client entity usage
