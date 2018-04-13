@@ -51,19 +51,25 @@ class WikidataRc {
 			}
 		}
 
+		// Things defined here will be automatically sent to graphite
+		// This can be at most 2 keys deep
 		$counters = array(
 			'total' => 0,
 			'bot' => 0,
 			'anon' => 0,
 			'length' => 0,
 			'mobile' => 0,
+			'maxForAUser' => 0,
 			'oauth' => array(),
 			'summary' => array(),
 		);
 
+		$userEdits = array();
+
 		foreach( $data as $rc ) {
 			$counters['total']++;
 			$counters['length'] += ( $rc['newlen'] - $rc['oldlen'] );
+			@$userEdits[$rc['user']]++;
 
 			if( array_key_exists( 'bot', $rc ) ) {
 				$counters['bot']++;
@@ -89,6 +95,14 @@ class WikidataRc {
 				@$counters['summary'][$summary]++;
 			} else {
 				@$counters['summary']['other']++;
+			}
+
+		}
+
+		// Based on edits by user calculate the highest user edit rate
+		foreach ( $userEdits as $user => $edits ) {
+			if ( $edits >= $counters['maxForAUser'] ) {
+				$counters['maxForAUser'] = $edits;
 			}
 		}
 
@@ -116,7 +130,7 @@ class WikidataRc {
 		$rcStart = $forDateTime->format( 'YmdHi' ) . '59';
 
 		$url = "https://www.wikidata.org/w/api.php?action=query&list=recentchanges&format=json";
-		$url .= "&rcprop=comment|userid|tags|sizes|flags&rclimit=500&rctype=new|edit";
+		$url .= "&rcprop=comment|user|userid|tags|sizes|flags&rclimit=500&rctype=new|edit";
 		$url .= "&rcstart=$rcStart&rcend=$rcEnd";
 		if( $rccontinue !== null ) {
 			$url .= '&rccontinue=' . $rccontinue;
