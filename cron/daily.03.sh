@@ -49,6 +49,7 @@ eval "$1/src/wikidata/site_stats/page_size.php" &
 eval "$1/src/wikidata/site_stats/user_languages.php" &
 
 # Misc
+eval "$1/src/wikibase/dockerStats.php" &
 eval "$1/src/wikidata/phabricatorTasks.php" &
 eval "$1/src/wikidata/showcaseItems.php" &
 eval "$1/src/wikidata/dumpDownloads.php" &
