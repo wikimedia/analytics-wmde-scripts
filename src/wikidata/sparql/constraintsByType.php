@@ -16,9 +16,12 @@ class WikidataConstraintsByType {
 	public function execute() {
 		$query = <<<EOF
 SELECT ?type (COUNT(DISTINCT ?constraint) AS ?count) WHERE {
-?property a wikibase:Property;
-p:P2302 ?constraint.
-?constraint ps:P2302 ?type. } GROUP BY ?type ?typeLabel
+  ?property a wikibase:Property;
+            p:P2302 ?constraint.
+  ?constraint ps:P2302 ?type.
+  MINUS { ?constraint wikibase:rank wikibase:DeprecatedRank. }
+}
+GROUP BY ?type
 EOF;
 
 		$response = WikimediaCurl::retryingCurlGet( "https://query.wikidata.org/sparql?format=json&query=" . urlencode( $query ) );
