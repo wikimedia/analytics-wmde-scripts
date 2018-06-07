@@ -23,6 +23,7 @@ $currentFeatures = array(
 	'codemirror-syntax-highlight',
 	'advancedsearch',
 	'visualeditor-visualdiffpage',
+	'fileexporter',
 );
 
 require_once( __DIR__ . '/../../lib/load.php' );
