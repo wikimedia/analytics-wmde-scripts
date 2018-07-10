@@ -36,7 +36,7 @@ class WikibaseDockerStats {
 
 	public function executeForImage( $org, $image ) {
 		$this->out->outputMessage( 'Running for: ' . $org . '/' . $image );
-		$rawResponse = WikimediaCurl::curlGet( $this->getUrl( $org, $image ), true );
+		$rawResponse = WikimediaCurl::curlGetExternal( $this->getUrl( $org, $image ) );
 		if( $rawResponse === false ) {
 			throw new RuntimeException( "Failed to get data from API" );
 		}

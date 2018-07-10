@@ -6,7 +6,7 @@
 class WikimediaDbList {
 
 	public static function get( $list = 'all' ) {
-		$dblist = WikimediaCurl::curlGet( 'https://noc.wikimedia.org/conf/dblists/' . $list . '.dblist' );
+		$dblist = WikimediaCurl::curlGetExternal( 'https://noc.wikimedia.org/conf/dblists/' . $list . '.dblist' );
 		if( $dblist === false ) {
 			throw new RuntimeException( 'Failed to get db list ' . $list . '! (request failed)' );
 		}

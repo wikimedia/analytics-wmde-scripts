@@ -38,7 +38,9 @@ class WikidataRc {
 		$data = array();
 		$rccontinue = null;
 		while( true ) {
-			$rawResponse = WikimediaCurl::curlGet( $this->getUrl( $this->apiDateTime, $rccontinue ) );
+			$rawResponse = WikimediaCurl::curlGetExternal(
+				$this->getUrl( $this->apiDateTime, $rccontinue )
+			);
 			if( $rawResponse === false ) {
 				throw new RuntimeException( "Failed to get recent changes from API" );
 			}

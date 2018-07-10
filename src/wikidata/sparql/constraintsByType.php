@@ -24,7 +24,7 @@ SELECT ?type (COUNT(DISTINCT ?constraint) AS ?count) WHERE {
 GROUP BY ?type
 EOF;
 
-		$response = WikimediaCurl::retryingCurlGet( "https://query.wikidata.org/sparql?format=json&query=" . urlencode( $query ) );
+		$response = WikimediaCurl::curlGetWithRetryExternal( "https://query.wikidata.org/sparql?format=json&query=" . urlencode( $query ) );
 
 		if( $response === false ) {
 			throw new RuntimeException( "The SPARQL request failed!" );

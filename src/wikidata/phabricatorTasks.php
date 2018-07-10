@@ -19,7 +19,7 @@ $metrics->execute();
 class WikidataPhabricator{
 
 	public function execute() {
-		$response = WikimediaCurl::retryingCurlGet( 'http://phabricator.wikimedia.org/tag/wikidata/', true );
+		$response = WikimediaCurl::curlGetWithRetryExternal( 'http://phabricator.wikimedia.org/tag/wikidata/' );
 		$page = $response[1];
 
 		$colNames = array();

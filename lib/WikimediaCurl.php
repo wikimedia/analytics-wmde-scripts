@@ -8,12 +8,31 @@
 class WikimediaCurl {
 
 	/**
+	 * This method should be used to request internal Wikimedia cluster resources
+	 * For example wdqs1003.eqiad.wmnet
+	 */
+	public static function curlGetInternal( $url ) {
+		return self::curlGet( $url, false );
+	}
+
+	/**
+	 * These methods should be used to request any public or external URLs
+	 * For example wikidata.org / query.wikidata.org / noc.wikimedia.org / twitter.com
+	 */
+	public static function curlGetExternal( $url ) {
+		return self::curlGet( $url, true );
+	}
+	public static function curlGetWithRetryExternal( $url ) {
+		return self::retryingCurlGet( $url, true );
+	}
+
+	/**
 	 * @param string $url
 	 * @param bool $useWebProxy
 	 *
 	 * @return array( array header, string body )|false
 	 */
-	public static function curlGet( $url, $useWebProxy = false ) {
+	protected static function curlGet( $url, $useWebProxy = false ) {
 		$ch = curl_init();
 		curl_setopt( $ch, CURLOPT_URL, $url );
 		if ( $useWebProxy ) {
@@ -48,7 +67,7 @@ class WikimediaCurl {
 	 *
 	 * @return array( array header, string body )|false
 	 */
-	public static function retryingCurlGet( $url, $useWebProxy = false ) {
+	protected static function retryingCurlGet( $url, $useWebProxy = false ) {
 		$retriesLeft = 7;
 		$nextWait = 10;
 		$result = false;

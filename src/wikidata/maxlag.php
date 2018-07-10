@@ -12,7 +12,7 @@ $output = Output::forScript( 'wikidata-maxlag' )->markStart();
 
 //produce maxlag error to get maxlag from error description
 $url = 'https://www.wikidata.org/w/api.php?action=query&titles=MediaWiki&format=json&maxlag=-1';
-$json = WikimediaCurl::curlGet( $url );
+$json = WikimediaCurl::curlGetExternal( $url );
 $json = json_decode( $json[1], true );
 
 if( $json['error']['code'] !== 'maxlag' ) {

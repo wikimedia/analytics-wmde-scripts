@@ -32,7 +32,7 @@ class WikidataSocialMetric{
 
 	private function getGooglePlusFollowers( $googlePlusKey ) {
 		$url = 'https://www.googleapis.com/plus/v1/people/105776413863749545202?key=' . $googlePlusKey;
-		$response = WikimediaCurl::retryingCurlGet( $url, true );
+		$response = WikimediaCurl::curlGetWithRetryExternal( $url );
 		return json_decode($response[1])->{'circledByCount'};
 	}
 

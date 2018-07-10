@@ -27,7 +27,7 @@ class WikidataSocialMetric{
 	private function getIdenticaFollowers() {
 		$url = 'https://identi.ca/wikidata';
 		$dom = new DomDocument();
-		$response = WikimediaCurl::retryingCurlGet( $url, true );
+		$response = WikimediaCurl::curlGetWithRetryExternal( $url );
 		$dom->loadHTML( $response[1] );
 		$xpath = new DomXPath($dom);
 		$nodes = $xpath->query( '//a[@href="/wikidata/followers"]/span[@class="label"]' );
