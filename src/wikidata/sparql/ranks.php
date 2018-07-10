@@ -23,7 +23,10 @@ class WikidataSparqlRanks{
 		$query .= "SELECT (count(distinct(?s)) AS ?deprecated) WHERE {?s wikibase:rank wikibase:DeprecatedRank}";
 		$query .= "} }";
 
-		$response = WikimediaCurl::curlGet( "https://query.wikidata.org/bigdata/namespace/wdq/sparql?format=json&query=" . urlencode( $query ) );
+		$response = WikimediaCurl::curlGetExternal(
+			"https://query.wikidata.org/bigdata/namespace/wdq/sparql?format=json&query=" .
+			urlencode( $query )
+		);
 
 		if( $response === false ) {
 			throw new RuntimeException( "The SPARQL request failed!" );

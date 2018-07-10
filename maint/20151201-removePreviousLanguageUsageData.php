@@ -15,7 +15,7 @@ require_once( __DIR__ . '/../lib/load.php' );
 
 // This URL holds the data with which to back fill
 $dataUrl = "https://graphite.wikimedia.org/render/?target=daily.wikidata.site_stats.language_usage.*&from=20151130&until=20151201&format=json";
-$json = WikimediaCurl::curlGet( $dataUrl );
+$json = WikimediaCurl::curlGetExternal( $dataUrl );
 $data = json_decode( $json[1], true );
 
 // Dates to be back filled

@@ -11,7 +11,7 @@ require_once( __DIR__ . '/../../lib/load.php' );
 $output = Output::forScript( 'wikidata-dispatch' )->markStart();
 
 $url = 'https://www.wikidata.org/w/api.php?action=query&meta=siteinfo&format=json&siprop=statistics';
-$json = WikimediaCurl::curlGet( $url );
+$json = WikimediaCurl::curlGetExternal( $url );
 
 if( $json === false ) {
 	throw new RuntimeException( "Failed to get dispatch lag from API" );

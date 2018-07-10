@@ -12,7 +12,7 @@ require_once( __DIR__ . '/../../lib/load.php' );
 $output = Output::forScript( 'wikidata-showcaseItems' )->markStart();
 
 $url = 'https://www.wikidata.org/w/api.php?action=query&prop=revisions&format=json&titles=Wikidata:Showcase_items&rvprop=content';
-$json = WikimediaCurl::curlGet( $url );
+$json = WikimediaCurl::curlGetExternal( $url );
 
 if( $json === false ) {
 	throw new RuntimeException( "Failed to get showcase items from API" );

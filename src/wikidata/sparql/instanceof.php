@@ -70,7 +70,9 @@ class WikidataInstanceOf{
 		 * Access to wdqs1003 from the analytics stat* machines is allowed by firewall rules.
 		 * @see https://phabricator.wikimedia.org/T198623#4396997
 		 */
-		$response = WikimediaCurl::curlGet( "http://wdqs1003.eqiad.wmnet:8888/bigdata/namespace/wdq/sparql?format=json&query=" . urlencode( $query ) );
+		$response = WikimediaCurl::curlGetInternal(
+			"http://wdqs1003.eqiad.wmnet:8888/bigdata/namespace/wdq/sparql?format=json&query=" . urlencode( $query )
+		);
 
 		if( $response === false ) {
 			throw new RuntimeException( "The SPARQL request failed!" );
