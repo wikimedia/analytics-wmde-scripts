@@ -16,7 +16,11 @@ class Config {
 	private static function getConfig() {
 		if ( self::$configArray === null ) {
 
-			$config = trim( file_get_contents( __DIR__ . '/../../config' ) );
+			$fileContents = file_get_contents( __DIR__ . '/../../config' );
+			if ( $fileContents === false ) {
+				throw new Exception( 'Config file could not be read' );
+			}
+			$config = trim( $fileContents );
 			$configLines = explode( "\n", $config );
 			$configArray = array();
 			foreach( $configLines as $configLine ) {
