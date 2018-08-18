@@ -21,6 +21,7 @@ class WikidataPhabricator{
 	public function execute() {
 		$response = WikimediaCurl::curlGetWithRetryExternal( 'http://phabricator.wikimedia.org/tag/wikidata/' );
 		$page = $response[1];
+		$page = htmlspecialchars_decode( $page );
 
 		$colNames = array();
 		$colCounts = array();
