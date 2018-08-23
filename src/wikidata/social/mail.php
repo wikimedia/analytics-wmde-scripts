@@ -41,12 +41,13 @@ class WikidataSocialMetric{
 			'roster-pw' => $mailmanpass,
 			'language' => 'en',
 		);
-		$ch = curl_init( 'https://lists.wikimedia.org/mailman/roster/' . $listname );
+		$ch = WikimediaCurl::curlInit(
+			'https://lists.wikimedia.org/mailman/roster/' . $listname,
+			true
+		);
 		curl_setopt( $ch, CURLOPT_POST, 1);
 		curl_setopt( $ch, CURLOPT_POSTFIELDS, $vars);
-		curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, 1);
 		curl_setopt( $ch, CURLOPT_HEADER, 0);
-		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1);
 
 		$response = curl_exec( $ch );
 
