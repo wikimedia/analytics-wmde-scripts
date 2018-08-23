@@ -27,21 +27,38 @@ class WikimediaCurl {
 	}
 
 	/**
+	 * @param $url string
+	 * @param $useWebProxy bool
+	 * @return resource a cURL handle
+	 * @throws Exception if the config cant be loaded for some reason
+	 */
+	public static function curlInit( $url, $useWebProxy ) {
+		$ch = curl_init();
+		if ( $ch === false ) {
+			throw new Exception( 'curl_init error' );
+		}
+
+		curl_setopt( $ch, CURLOPT_URL, $url );
+		if ( $useWebProxy ) {
+			curl_setopt( $ch, CURLOPT_PROXY, Config::getValue( 'web_proxy' ) );
+		}
+
+		curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, 1 );
+		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
+		curl_setopt( $ch, CURLOPT_HEADER, 1 );
+		curl_setopt( $ch, CURLOPT_USERAGENT, "WMDE Wikidata metrics gathering" );
+
+		return $ch;
+	}
+
+	/**
 	 * @param string $url
 	 * @param bool $useWebProxy
 	 *
 	 * @return array( array header, string body )|false
 	 */
 	protected static function curlGet( $url, $useWebProxy = false ) {
-		$ch = curl_init();
-		curl_setopt( $ch, CURLOPT_URL, $url );
-		if ( $useWebProxy ) {
-			curl_setopt( $ch, CURLOPT_PROXY, Config::getValue( 'web_proxy' ) );
-		}
-		curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, 1 );
-		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
-		curl_setopt( $ch, CURLOPT_HEADER, 1 );
-		curl_setopt( $ch, CURLOPT_USERAGENT, "WMDE Wikidata metrics gathering" );
+		$ch = self::curlInit( $url, $useWebProxy );
 
 		$response = curl_exec( $ch );
 		if( $response === false ) {
