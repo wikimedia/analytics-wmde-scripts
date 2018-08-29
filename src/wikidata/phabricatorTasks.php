@@ -74,9 +74,15 @@ class WikidataPhabricator{
 		);
 		$counts = array_count_values( $matches[1] );
 
-		foreach ( $counts as $color => $count ) {
-			$metricName = 'daily.wikidata.phabricator.board.priorities.' . $priorities[ $color ];
-			WikimediaGraphite::sendNow( $metricName, $count );
+		foreach ( $priorities as $color => $name ) {
+			$metricName = 'daily.wikidata.phabricator.board.priorities.' . $name;
+			if ( array_key_exists( $color, $counts ) ) {
+				$value = $counts[$color];
+			} else {
+				// If there are no tasks matches, still submit a value
+				$value = 0;
+			}
+			WikimediaGraphite::sendNow( $metricName, $value );
 		}
 	}
 
