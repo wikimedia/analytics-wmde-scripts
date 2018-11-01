@@ -59,6 +59,7 @@ class WikidataRc {
 			'total' => 0,
 			'bot' => 0,
 			'anon' => 0,
+			'new' => 0,
 			'length' => 0,
 			'mobile' => 0,
 			'maxForAUser' => 0,
@@ -79,6 +80,10 @@ class WikidataRc {
 
 			if( array_key_exists( 'anon', $rc ) ) {
 				$counters['anon']++;
+			}
+
+			if( array_key_exists( 'new', $rc ) ) {
+				$counters['new']++;
 			}
 
 			foreach( $rc['tags'] as $tag ) {
