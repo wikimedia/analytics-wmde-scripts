@@ -24,6 +24,9 @@ $currentFeatures = array(
 	'advancedsearch',
 	'visualeditor-visualdiffpage',
 	'fileexporter',
+	'constraint-suggestions',
+	'templatewizard-betafeature',
+	'php7',
 );
 
 require_once( __DIR__ . '/../../lib/load.php' );
