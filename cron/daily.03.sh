@@ -48,6 +48,7 @@ eval "$1/src/wikidata/site_stats/rolling_rc.php" &
 eval "$1/src/wikidata/site_stats/pages_by_namespace.php" &
 eval "$1/src/wikidata/site_stats/page_size.php" &
 eval "$1/src/wikidata/site_stats/user_languages.php" &
+eval "$1/src/wikidata/site_stats/lexemes.php" &
 
 # Misc
 eval "$1/src/wikibase/dockerStats.php" &
