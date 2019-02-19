@@ -15,7 +15,7 @@ $output->markEnd();
 class WikidataGoodArticles{
 
 	public function execute() {
-		$pdo = WikimediaDb::getPdo();
+		$pdo = WikimediaDb::getPdoNewHosts( 'wikidatawiki', new WikimediaDbSectionMapper() );
 		$result = $pdo->query( "select ss_good_articles from wikidatawiki.site_stats" );
 
 		if( $result === false ) {
