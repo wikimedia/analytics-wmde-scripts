@@ -13,7 +13,7 @@ $output = Output::forScript( 'revslider-userprops' )->markStart();
 
 $dbs = WikimediaDbList::get( 'all' );
 
-$pdo = WikimediaDb::getPdo();
+$sectionMappaer = new WikimediaDbSectionMapper();
 
 $metrics = array();
 
@@ -21,6 +21,8 @@ foreach( $dbs as $dbname ) {
 	if( $dbname === 'labswiki' || $dbname === 'labtestwiki' ) {
 		continue;
 	}
+
+	$pdo = WikimediaDb::getPdoNewHosts( $dbname, $sectionMappaer );
 
 	$sql = "SELECT COUNT(*) AS disables";
 	$sql .= " FROM $dbname.user_properties";
