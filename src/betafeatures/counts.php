@@ -35,6 +35,7 @@ $output = Output::forScript( 'betafeature-counts' )->markStart();
 $dbs = WikimediaDbList::get( 'all' );
 
 $pdo = WikimediaDb::getPdo();
+$stagingPdo = WikimediaDb::getPdoStaging();
 
 $metrics = array();
 $todaysTableName = 'staging.wmde_analytics_betafeature_users_today';
@@ -43,21 +44,21 @@ $yesterdayTableName = 'staging.wmde_analytics_betafeature_users_yesterday';
 // Create todays table if it doesn't exist
 $sql = "CREATE TABLE IF NOT EXISTS $todaysTableName";
 $sql .= "( user_name VARCHAR(255) NOT NULL, feature VARBINARY(255) NOT NULL, PRIMARY KEY (user_name, feature) )";
-$queryResult = $pdo->query( $sql );
+$queryResult = $stagingPdo->query( $sql );
 if ( $queryResult === false ) {
 	die( "Failed to create table $todaysTableName" );
 }
 // Create yesterday table if it doesn't exist
 $sql = "CREATE TABLE IF NOT EXISTS $yesterdayTableName";
 $sql .= "( user_name VARCHAR(255) NOT NULL, feature VARBINARY(255) NOT NULL, PRIMARY KEY (user_name, feature) )";
-$queryResult = $pdo->query( $sql );
+$queryResult = $stagingPdo->query( $sql );
 if ( $queryResult === false ) {
 	die( "Failed to create table $yesterdayTableName" );
 }
 
 // Clear todays table (if it for some reason has data in it)
 $sql = "TRUNCATE TABLE $todaysTableName";
-$queryResult = $pdo->query( $sql );
+$queryResult = $stagingPdo->query( $sql );
 if( $queryResult === false ) {
 	$output->outputMessage( "FAILED: $sql" );
 }
@@ -82,12 +83,25 @@ foreach( $dbs as $dbname ) {
 
 	// Record individuals into the temp table
 	foreach( $currentFeatures as $feature ) {
-		$sql = "INSERT IGNORE INTO $todaysTableName ( user_name, feature )";
-		$sql .= " SELECT user_name, up_property FROM $dbname.user_properties";
+		$sql = "SELECT user_name, up_property FROM $dbname.user_properties";
 		$sql .= " JOIN $dbname.user ON up_user = user_id";
 		$sql .= " WHERE up_property = '$feature' AND up_value = '1'";
 		$queryResult = $pdo->query( $sql );
 		if( $queryResult === false ) {
+			$output->outputMessage( "SELECT user_name, up_property failed for $dbname, Skipping!! " );
+			continue;
+		}
+
+		$values = [];
+		foreach ( $queryResult as $row ) {
+			$values[] = [ $row['user_name'], $row['up_property'] ];
+		}
+		$sql = WikimediaDb::buildInsertSql( $todaysTableName, 'user_name, feature', $values );
+		if ( $sql === null ) {
+			continue;
+		}
+		$queryResult = $stagingPdo->query( $sql );
+		if ( $queryResult === false ) {
 			$output->outputMessage( "INSERT INTO FAILED for $dbname for feature $feature, Skipping!!" );
 		}
 	}
@@ -104,7 +118,7 @@ foreach( $metrics as $featureName => $value ) {
 $sql = "SELECT COUNT(*) AS count, feature";
 $sql .= " FROM $todaysTableName";
 $sql .= " GROUP BY feature";
-$queryResult = $pdo->query( $sql );
+$queryResult = $stagingPdo->query( $sql );
 if( $queryResult === false ) {
 	$output->outputMessage( "SELECT FROM temp table $todaysTableName FAILED!!" );
 } else {
@@ -133,7 +147,7 @@ if ( $queryResult === false ) {
 	$sql .= " WHERE ROW(yesterday.user_name, yesterday.feature) NOT IN";
 	$sql .= " ( SELECT * FROM $todaysTableName )";
 	$sql = "SELECT state, COUNT(*) AS count, feature FROM ( $sql ) AS a GROUP BY state, feature";
-	$queryResult = $pdo->query( $sql );
+	$queryResult = $stagingPdo->query( $sql );
 	if ( $queryResult === false ) {
 		$output->outputMessage( "FAILED Intersection, Skipping!!" );
 	} else {
@@ -150,7 +164,7 @@ if ( $queryResult === false ) {
 
 // Clear yesterdays table
 $sql = "TRUNCATE TABLE $yesterdayTableName";
-$queryResult = $pdo->query( $sql );
+$queryResult = $stagingPdo->query( $sql );
 if( $queryResult === false ) {
 	$output->outputMessage( "FAILED: $sql" );
 }
@@ -158,14 +172,14 @@ if( $queryResult === false ) {
 // Add todays data into the yesterday table
 $sql = "INSERT INTO $yesterdayTableName ( user_name, feature )";
 $sql .= " SELECT user_name, feature FROM $todaysTableName";
-$queryResult = $pdo->query( $sql );
+$queryResult = $stagingPdo->query( $sql );
 if( $queryResult === false ) {
 	$output->outputMessage( "FAILED: $sql" );
 }
 
 // Clear todays table
 $sql = "TRUNCATE TABLE $todaysTableName";
-$queryResult = $pdo->query( $sql );
+$queryResult = $stagingPdo->query( $sql );
 if( $queryResult === false ) {
 	$output->outputMessage( "FAILED: $sql" );
 }

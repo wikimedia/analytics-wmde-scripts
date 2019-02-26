@@ -18,9 +18,13 @@ class WikimediaDbSectionMapper {
 
 		if ( !array_key_exists( $db, $this->dbMap ) ) {
 			// Default section
-			return 's3';
+			$section = 's3';
+		} else {
+			$section = $this->dbMap[$db];
 		}
-		return $this->dbMap[$db];
+
+		$port = $this->getPortFromSection( $section );
+		return [ 'section' => $section, 'port' => $port ];
 	}
 
 	private function loadDbMap() {
@@ -34,6 +38,10 @@ class WikimediaDbSectionMapper {
 		preg_match_all( "/(?<=sectionsByDB' \=>) \[(.+?)\]/s", $eqiadDbData[1], $map );
 		eval( '$map = ' . $map[0][0] . ';' );
 		$this->dbMap = $map;
+	}
+
+	private function getPortFromSection( $section ) {
+		return '331' . substr( $section, -1 );
 	}
 
 }
