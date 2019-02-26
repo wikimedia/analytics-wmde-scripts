@@ -22,10 +22,13 @@ class WikimediaDb {
 		// This config file is controlled by the statistics::wmde module
 		$sqlConf = parse_ini_file( Config::getValue( 'db_file' ), false, INI_SCANNER_RAW );
 
-		$section = $mapper->getSection( $wiki );
+		$hostData = $mapper->getSection( $wiki );
+		$section = $hostData['section'];
+		$port = $hostData['port'];
 
 		$pdo = new PDO(
-			"mysql:host=" . $section . Config::getValue( 'db_hosts_suffix' ),
+			"mysql:host=" . $section . Config::getValue( 'db_hosts_suffix' ) .
+			";port=" . (string)$port,
 			$sqlConf['user'],
 			$sqlConf['password']
 		);
