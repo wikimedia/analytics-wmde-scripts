@@ -38,7 +38,7 @@ EOF;
 
 	}
 
-	private function handleBinding( $binding ) {
+	private function handleBinding( array $binding ) {
 		if( !array_key_exists( 'count', $binding ) || !array_key_exists( 'type', $binding ) ) {
 			return;
 		}
