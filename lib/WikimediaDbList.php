@@ -5,6 +5,11 @@
  */
 class WikimediaDbList {
 
+	/**
+	 * @param string $list
+	 *
+	 * @return string[]
+	 */
 	public static function get( $list = 'all' ) {
 		$dblist = WikimediaCurl::curlGetExternal( 'https://noc.wikimedia.org/conf/dblists/' . $list . '.dblist' );
 		if( $dblist === false ) {
