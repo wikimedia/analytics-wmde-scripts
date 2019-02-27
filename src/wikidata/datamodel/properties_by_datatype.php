@@ -15,7 +15,7 @@ $output->markEnd();
 class WikidataPropertiesByDataType{
 
 	public function execute() {
-		$pdo = WikimediaDb::getPdo();
+		$pdo = WikimediaDb::getPdoNewHosts( WikimediaDb::WIKIDATA_DB, new WikimediaDbSectionMapper());
 		$queryResult = $pdo->query( file_get_contents(
 			__DIR__ . '/sql/select_properties_by_datatype.sql'
 		) );

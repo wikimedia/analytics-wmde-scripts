@@ -24,7 +24,7 @@ $output->markEnd();
 class WikidataUserGroups{
 
 	public function execute( array $groupMap, Output $output ) {
-		$pdo = WikimediaDb::getPdo();
+		$pdo = WikimediaDb::getPdoNewHosts( WikimediaDb::WIKIDATA_DB, new WikimediaDbSectionMapper());
 		foreach ( $groupMap as $group => $metricName ) {
 			$output->outputMessage( "Running query for $metricName group" );
 			$result = $pdo->query(

@@ -15,7 +15,7 @@ $output->markEnd();
 class WikidataRollingRc{
 
 	public function execute() {
-		$pdo = WikimediaDb::getPdo();
+		$pdo = WikimediaDb::getPdoNewHosts( WikimediaDb::WIKIDATA_DB, new WikimediaDbSectionMapper());
 		$queryResult = $pdo->query( file_get_contents( __DIR__ . '/sql/rolling_rc.sql' ) );
 
 		if( $queryResult === false ) {

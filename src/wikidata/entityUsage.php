@@ -20,9 +20,10 @@ if( $dblist === false ) {
 $dbs = explode( "\n", $dblist[1] );
 $dbs = array_filter( $dbs );
 
-$pdo = WikimediaDb::getPdo();
+$sectionMapper = new WikimediaDbSectionMapper();
 
 foreach( $dbs as $dbname ) {
+	$pdo = WikimediaDb::getPdoNewHosts( $dbname, $sectionMapper );
 	// Count each type of entity usage
 	$sql = "SELECT eu_aspect as aspect, count(*) as count FROM $dbname.wbc_entity_usage GROUP BY eu_aspect";
 	$queryResult = $pdo->query( $sql );
