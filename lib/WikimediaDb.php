@@ -23,7 +23,13 @@ class WikimediaDb {
 		return $pdo;
 	}
 
-	public static function getPdoNewHosts( $wiki, $mapper ) {
+	/**
+	 * @param string $wiki
+	 * @param WikimediaDbSectionMapper $mapper
+	 *
+	 * @return PDO
+	 */
+	public static function getPdoNewHosts( $wiki, WikimediaDbSectionMapper $mapper ) {
 		// This config file is controlled by the statistics::wmde module
 		$sqlConf = parse_ini_file( Config::getValue( 'db_file' ), false, INI_SCANNER_RAW );
 
@@ -56,7 +62,14 @@ class WikimediaDb {
 		return $pdo;
 	}
 
-	public static function buildInsertSql( $table, $columns, $values ) {
+	/**
+	 * @param string $table
+	 * @param string $columns
+	 * @param array[] $values
+	 *
+	 * @return string|null
+	 */
+	public static function buildInsertSql( $table, $columns, array $values ) {
 		if ( $values ==  [] ) {
 			return null;
 		}

@@ -27,7 +27,7 @@ class WikibaseDockerStats {
 		$this->out = $out;
 	}
 
-	public function execute( $imageList ) {
+	public function execute( array $imageList ) {
 		foreach( $imageList as $imageData ) {
 			list( $orgName, $imageName ) = $imageData;
 			$this->executeForImage( $orgName, $imageName );
