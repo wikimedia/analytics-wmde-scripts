@@ -34,7 +34,7 @@ $output = Output::forScript( 'betafeature-counts' )->markStart();
 
 $dbs = WikimediaDbList::get( 'all' );
 
-$pdo = WikimediaDb::getPdo();
+$sectionMapper = new WikimediaDbSectionMapper();
 $stagingPdo = WikimediaDb::getPdoStaging();
 
 $metrics = array();
@@ -68,6 +68,7 @@ foreach( $dbs as $dbname ) {
 	if( $dbname === 'labswiki' || $dbname === 'labtestwiki' ) {
 		continue;
 	}
+	$pdo = WikimediaDb::getPdoNewHosts( $dbname, $sectionMapper );
 	// Aggregate the overall betafeatures_user_counts
 	$sql = "SELECT * FROM $dbname.betafeatures_user_counts";
 	$queryResult = $pdo->query( $sql );
@@ -133,7 +134,7 @@ if( $queryResult === false ) {
 }
 
 // Compare todays data with yesterdays data (if present)
-$queryResult = $pdo->query( "SELECT * FROM $yesterdayTableName LIMIT 1" );
+$queryResult = $stagingPdo->query( "SELECT * FROM $yesterdayTableName LIMIT 1" );
 if ( $queryResult === false ) {
 	$output->outputMessage( "FAILED: $sql" );
 } else if( count( $queryResult->fetchAll() ) > 0 ) {

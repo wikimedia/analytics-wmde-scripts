@@ -15,7 +15,7 @@ $output->markEnd();
 class WikidataPageSizes{
 
 	public function execute() {
-		$pdo = WikimediaDb::getPdo();
+		$pdo = WikimediaDb::getPdoNewHosts( WikimediaDb::WIKIDATA_DB, new WikimediaDbSectionMapper());
 		$queryResult = $pdo->query( file_get_contents( __DIR__ . '/sql/select_page_size.sql' ) );
 
 		if( $queryResult === false ) {

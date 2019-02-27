@@ -16,7 +16,7 @@ $output = Output::forScript( 'echo-statusNotifications' )->markStart();
 
 $dbs = WikimediaDbList::get( 'all' );
 
-$pdo = WikimediaDb::getPdo();
+$sectionMapper = new WikimediaDbSectionMapper();
 $stagingPdo = WikimediaDb::getPdoStaging();
 
 $todaysTableName = 'staging.wmde_analytics_echoStatusNotif_users_today';
@@ -49,6 +49,7 @@ foreach( $dbs as $dbname ) {
 	if( $dbname === 'labswiki' || $dbname === 'labtestwiki' ) {
 		continue;
 	}
+	$pdo = WikimediaDb::getPdoNewHosts( $dbname, $sectionMapper );
 
 	// Record individuals into the temp table
 	foreach( $userProperties as $metricName => $userProperty ) {

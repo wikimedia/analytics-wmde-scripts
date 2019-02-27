@@ -15,7 +15,7 @@ $output->markEnd();
 class WikidataTotalEdits{
 
 	public function execute() {
-		$pdo = WikimediaDb::getPdo();
+		$pdo = WikimediaDb::getPdoNewHosts( WikimediaDb::WIKIDATA_DB, new WikimediaDbSectionMapper());
 		$result = $pdo->query( "select ss_total_edits from wikidatawiki.site_stats" );
 
 		if( $result === false ) {

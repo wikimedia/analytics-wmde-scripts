@@ -5,6 +5,8 @@
  */
 class WikimediaDb {
 
+	const WIKIDATA_DB = 'wikidatawiki';
+
 	/**
 	 * @return PDO
 	 */

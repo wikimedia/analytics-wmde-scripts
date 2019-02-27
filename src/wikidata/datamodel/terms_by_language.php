@@ -15,7 +15,7 @@ $output->markEnd();
 class WikidataTermsByLanguage{
 
 	public function execute() {
-		$pdo = WikimediaDb::getPdo();
+		$pdo = WikimediaDb::getPdoNewHosts( WikimediaDb::WIKIDATA_DB, new WikimediaDbSectionMapper());
 		$queryResult = $pdo->query( file_get_contents(
 			__DIR__ . '/sql/select_terms_by_language.sql'
 		) );
