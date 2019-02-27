@@ -6,12 +6,12 @@
 class Config {
 
 	/**
-	 * @var array|null
+	 * @var string[]|null
 	 */
 	private static $configArray = null;
 
 	/**
-	 * @return array
+	 * @return string[]
 	 */
 	private static function getConfig() {
 		if ( self::$configArray === null ) {
@@ -33,6 +33,11 @@ class Config {
 		return self::$configArray;
 	}
 
+	/**
+	 * @param string $key
+	 *
+	 * @return string
+	 */
 	public static function getValue( $key ) {
 		$config = self::getConfig();
 		if( !array_key_exists( $key, $config ) ) {

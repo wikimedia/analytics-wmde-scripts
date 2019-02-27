@@ -10,6 +10,9 @@ class WikimediaStatsd {
 		exec( "echo \"$metricName:$value|g\" | nc -w 1 -u $host $port" );
 	}
 
+	/**
+	 * @return string[]
+	 */
 	private static function getHostAndPort() {
 		$host = Config::getValue( 'statsd_host' );
 		$port = '8125';
