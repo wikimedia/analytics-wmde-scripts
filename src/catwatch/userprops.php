@@ -14,7 +14,7 @@ $output = Output::forScript( 'catwatch-userprops' )->markStart();
 
 $dbs = WikimediaDbList::get( 'all' );
 
-$sectionMappaer = new WikimediaDbSectionMapper();
+$sectionMapper = new WikimediaDbSectionMapper();
 
 $metrics = array();
 
@@ -23,7 +23,7 @@ foreach( $dbs as $dbname ) {
 		continue;
 	}
 
-	$pdo = WikimediaDb::getPdoNewHosts( $dbname, $sectionMappaer );
+	$pdo = WikimediaDb::getPdoNewHosts( $dbname, $sectionMapper );
 
 	$thisWikiHasSomeUse = false;
 	// Count each type of entity usage
