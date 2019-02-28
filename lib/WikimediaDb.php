@@ -5,6 +5,9 @@
  */
 class WikimediaDb {
 
+	/**
+	 * @return PDO
+	 */
 	public static function getPdo() {
 		// This config file is controlled by the statistics::wmde module
 		$sqlConf = parse_ini_file( Config::getValue( 'db_file' ), false, INI_SCANNER_RAW );
@@ -36,6 +39,9 @@ class WikimediaDb {
 		return $pdo;
 	}
 
+	/**
+	 * @return PDO
+	 */
 	public static function getPdoStaging() {
 		$sqlConf = parse_ini_file( Config::getValue( 'db_file' ), false, INI_SCANNER_RAW );
 		$pdo = new PDO(

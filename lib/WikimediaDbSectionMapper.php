@@ -5,12 +5,23 @@
  */
 class WikimediaDbSectionMapper {
 
+	/**
+	 * @var string[]|null
+	 */
 	private $dbMap;
 
+	/**
+	 * @param string[]|null $dbMap
+	 */
 	public function __construct( array $dbMap = null ) {
 		$this->dbMap = $dbMap;
 	}
 
+	/**
+	 * @param string $db
+	 *
+	 * @return string[]
+	 */
 	public function getSection( $db = 'wikidatawiki' ) {
 		if ( $this->dbMap === null ) {
 			$this->loadDbMap();
@@ -40,6 +51,11 @@ class WikimediaDbSectionMapper {
 		$this->dbMap = $map;
 	}
 
+	/**
+	 * @param string $section
+	 *
+	 * @return string
+	 */
 	private function getPortFromSection( $section ) {
 		return '331' . substr( $section, -1 );
 	}

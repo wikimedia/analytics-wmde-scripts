@@ -15,6 +15,9 @@ class WikimediaGraphite {
 		exec( "echo \"$metricName $value `date +%s`\" | nc -q0 $host $port" );
 	}
 
+	/**
+	 * @return string[]
+	 */
 	private static function getHostAndPort() {
 		$host = Config::getValue( 'graphite_host' );
 		$port = '2003';

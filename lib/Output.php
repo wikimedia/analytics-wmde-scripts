@@ -11,6 +11,11 @@ class Output {
 		$this->scriptName = $scriptName;
 	}
 
+	/**
+	 * @param string $scriptName
+	 *
+	 * @return self
+	 */
 	public static function forScript( $scriptName ) {
 		return new self( $scriptName );
 	}
