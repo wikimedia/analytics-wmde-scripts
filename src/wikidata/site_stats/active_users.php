@@ -15,24 +15,29 @@ $output->markEnd();
 class WikidataActiveUsers{
 
 	public function execute() {
-		$pdo = WikimediaDb::getPdo();
+		$pdo = WikimediaDb::getPdoNewHosts( WikimediaDb::WIKIDATA_DB, new WikimediaDbSectionMapper() );
 
-		if( $pdo->query( file_get_contents( __DIR__ . '/sql/tmptbl_active_user_changes.sql' ) ) === false ) {
+		$queryResult = $pdo->query( file_get_contents( __DIR__ . '/sql/active_user_changes.sql' ) );
+		if( $queryResult === false ) {
 			throw new RuntimeException( "Failed to run file active_user_changes sql" );
 		}
 
-		$results = array();
-		$results[1] = $pdo->query( "SELECT COUNT(*) AS users FROM staging.active_user_changes WHERE changes >= 1" );
-		$results[5] = $pdo->query( "SELECT COUNT(*) AS users FROM staging.active_user_changes WHERE changes >= 5" );
-		$results[100] = $pdo->query( "SELECT COUNT(*) AS users FROM staging.active_user_changes WHERE changes >= 100" );
-
-		foreach( $results as $changeCount => $result ) {
-			/** @var PDOStatement $result */
-			if( $result === false ) {
-				throw new RuntimeException( "Something went wrong with the db query for changeCount: $changeCount" );
+		$results = [ 1 => 0, 5 => 0, 100 => 0 ];
+		foreach ( $queryResult as $row ) {
+			$changes = (integer)$row['changes'];
+			if ( $changes > 100 ) {
+				$results[100] += 1;
+				$results[5] += 1;
+				$results[1] += 1;
+			} elseif ( $changes > 5 ) {
+				$results[5] += 1;
+				$results[1] += 1;
+			} elseif ( $changes > 1 ) {
+				$results[1] += 1;
 			}
-			$rows = $result->fetchAll();
-			$users = $rows[0]['users'];
+		}
+
+		foreach( $results as $changeCount => $users ) {
 			WikimediaGraphite::sendNow( "daily.wikidata.site_stats.active_users.$changeCount", $users );
 		}
 	}
