@@ -101,9 +101,17 @@ foreach( $dbs as $dbname ) {
 		if ( $sql === null ) {
 			continue;
 		}
+
 		$queryResult = $stagingPdo->query( $sql );
 		if ( $queryResult === false ) {
-			$output->outputMessage( "INSERT INTO FAILED for $dbname for feature $feature, Skipping!!" );
+			$output->outputMessage( "INSERT INTO FAILED for $dbname for feature $feature, Retrying!!" );
+
+			// Rebuild the PDO as the connection might timeout
+			$stagingPdo = WikimediaDb::getPdoStaging();
+			$queryResult = $stagingPdo->query( $sql );
+			if ( $queryResult === false ) {
+				$output->outputMessage( "INSERT INTO FAILED for $dbname for feature $feature, Skipping!!" );
+			}
 		}
 	}
 }
