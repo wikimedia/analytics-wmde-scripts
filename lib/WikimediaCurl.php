@@ -10,6 +10,10 @@ class WikimediaCurl {
 	/**
 	 * This method should be used to request internal Wikimedia cluster resources
 	 * For example wdqs1003.eqiad.wmnet
+	 *
+	 * @param string $url
+	 *
+	 * @return array|false [ string[] $headers, string $body ]
 	 */
 	public static function curlGetInternal( $url ) {
 		return self::curlGet( $url, false );
@@ -18,6 +22,10 @@ class WikimediaCurl {
 	/**
 	 * These methods should be used to request any public or external URLs
 	 * For example wikidata.org / query.wikidata.org / noc.wikimedia.org / twitter.com
+	 *
+	 * @param string $url
+	 *
+	 * @return array|false [ string[] $headers, string $body ]
 	 */
 	public static function curlGetExternal( $url ) {
 		return self::curlGet( $url, true );
@@ -28,8 +36,8 @@ class WikimediaCurl {
 	}
 
 	/**
-	 * @param $url string
-	 * @param $useWebProxy bool
+	 * @param string $url
+	 * @param bool $useWebProxy
 	 * @return resource a cURL handle
 	 * @throws Exception if the config cant be loaded for some reason
 	 */
@@ -122,7 +130,7 @@ class WikimediaCurl {
 			if ( $i === 0 ) {
 				$headers['http_code'] = $line;
 			} else {
-				@list( $key, $value ) = explode( ': ', $line );
+				@list( $key, $value ) = explode( ': ', $line, 2 );
 				if ( !empty( $key ) ) {
 					$headers[$key] = $value;
 				}

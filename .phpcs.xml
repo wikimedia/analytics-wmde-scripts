@@ -7,10 +7,7 @@
 		<exclude name="MediaWiki.ControlStructures.AssignmentInControlStructures" />
 		<exclude name="MediaWiki.Files.ClassMatchesFilename" />
 		<exclude name="MediaWiki.Usage.ForbiddenFunctions.exec" />
-		<exclude name="MediaWiki.WhiteSpace.SpaceBeforeSingleLineComment" />
-
-		<!-- FIXME -->
-		<exclude name="MediaWiki.Commenting.FunctionComment" />
+		<exclude name="MediaWiki.WhiteSpace.SpaceBeforeSingleLineComment.NewLineComment" />
 	</rule>
 
 	<rule ref="Generic.Files.LineLength">

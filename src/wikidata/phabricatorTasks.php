@@ -35,15 +35,15 @@ class WikidataPhabricator {
 			$colNames[] = $innerHeaderParts[0];
 		}
 
-		$dataParts = explode( '"columnMaps":', $page );
-		$dataParts = explode( '"orderMaps":', $dataParts[1] );
+		$dataParts = explode( '"columnMaps":', $page, 2 );
+		$dataParts = explode( '"orderMaps":', $dataParts[1], 2 );
 		$columnMaps = trim( $dataParts[0], ' ,' );
 		$columnMaps = json_decode( $columnMaps, true );
 		foreach ( $columnMaps as $values ) {
 			$colCounts[] = count( $values );
 		}
 
-		//Note: This makes the assumption that the cols are in the same order in the data fields as on the workboard
+		// Note: This makes the assumption that the cols are in the same order in the data fields as on the workboard
 		foreach ( $colNames as $key => $name ) {
 			$name = str_replace( ' ', '_', $name );
 			$value = $colCounts[$key];

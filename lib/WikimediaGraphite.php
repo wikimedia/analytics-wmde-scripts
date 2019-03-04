@@ -22,7 +22,7 @@ class WikimediaGraphite {
 		$host = Config::getValue( 'graphite_host' );
 		$port = '2003';
 		if ( strstr( $host, ':' ) ) {
-			return explode( ':', $host );
+			return explode( ':', $host, 2 );
 		}
 		return [ $host, $port ];
 	}
