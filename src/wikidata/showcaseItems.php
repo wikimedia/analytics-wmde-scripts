@@ -8,14 +8,14 @@
  * Used by: https://grafana.wikimedia.org/dashboard/db/wikidata-site-stats
  */
 
-require_once( __DIR__ . '/../../lib/load.php' );
+require_once __DIR__ . '/../../lib/load.php';
 $output = Output::forScript( 'wikidata-showcaseItems' )->markStart();
 
 $url = 'https://www.wikidata.org/w/api.php?action=query&prop=revisions&format=json&titles=Wikidata:Showcase_items&rvprop=content';
 $json = WikimediaCurl::curlGetExternal( $url );
 
-if( $json === false ) {
-	throw new RuntimeException( "Failed to get showcase items from API" );
+if ( $json === false ) {
+	throw new RuntimeException( 'Failed to get showcase items from API' );
 }
 
 $json = json_decode( $json[1], true );

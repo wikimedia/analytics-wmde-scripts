@@ -22,8 +22,8 @@ class WikimediaDb {
 		$port = $hostData['port'];
 
 		$pdo = new PDO(
-			"mysql:host=" . $section . Config::getValue( 'db_hosts_suffix' ) .
-			";port=" . (string)$port,
+			'mysql:host=' . $section . Config::getValue( 'db_hosts_suffix' ) .
+			';port=' . (string)$port,
 			$sqlConf['user'],
 			$sqlConf['password']
 		);
@@ -37,7 +37,7 @@ class WikimediaDb {
 	public static function getPdoStaging() {
 		$sqlConf = parse_ini_file( Config::getValue( 'db_file' ), false, INI_SCANNER_RAW );
 		$pdo = new PDO(
-			"mysql:host=" . Config::getValue( 'db_staging_host' ) .
+			'mysql:host=' . Config::getValue( 'db_staging_host' ) .
 			';port=' . Config::getValue( 'db_staging_port' ),
 			$sqlConf['user'],
 			$sqlConf['password']
@@ -54,7 +54,7 @@ class WikimediaDb {
 	 * @return string|null
 	 */
 	public static function buildInsertSql( $table, $columns, array $values ) {
-		if ( $values ==  [] ) {
+		if ( $values == [] ) {
 			return null;
 		}
 

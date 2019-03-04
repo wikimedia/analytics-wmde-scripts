@@ -41,7 +41,7 @@ class WikimediaDbSectionMapper {
 	private function loadDbMap() {
 		$eqiadDbData = WikimediaCurl::curlGetExternal( 'https://noc.wikimedia.org/conf/db-eqiad.php.txt' );
 
-		if( $eqiadDbData === false ) {
+		if ( $eqiadDbData === false ) {
 			throw new RuntimeException( 'Failed to get db data! (request failed)' );
 		}
 

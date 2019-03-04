@@ -9,14 +9,14 @@
  * Used by: https://grafana.wikimedia.org/dashboard/db/wikidata-tasks
  */
 
-require_once( __DIR__ . '/../../lib/load.php' );
+require_once __DIR__ . '/../../lib/load.php';
 $output = Output::forScript( 'wikidata-phabricatorTasks' )->markStart();
 
 libxml_use_internal_errors( true );
 $metrics = new WikidataPhabricator();
 $metrics->execute();
 
-class WikidataPhabricator{
+class WikidataPhabricator {
 
 	public function execute() {
 		$response = WikimediaCurl::curlGetWithRetryExternal( 'http://phabricator.wikimedia.org/tag/wikidata/' );
@@ -27,8 +27,8 @@ class WikidataPhabricator{
 		$colCounts = [];
 
 		$headerParts = explode( '<span class="phui-header-header">', $page );
-		foreach( $headerParts as $headerPartKey => $headerPart ){
-			if( $headerPartKey == 0 ) {
+		foreach ( $headerParts as $headerPartKey => $headerPart ) {
+			if ( $headerPartKey == 0 ) {
 				continue;
 			}
 			$innerHeaderParts = explode( '</span>', $headerPart, 2 );
@@ -37,14 +37,14 @@ class WikidataPhabricator{
 
 		$dataParts = explode( '"columnMaps":', $page );
 		$dataParts = explode( '"orderMaps":', $dataParts[1] );
-		$columnMaps = trim( $dataParts[0], " ," );
+		$columnMaps = trim( $dataParts[0], ' ,' );
 		$columnMaps = json_decode( $columnMaps, true );
-		foreach( $columnMaps as $values ) {
+		foreach ( $columnMaps as $values ) {
 			$colCounts[] = count( $values );
 		}
 
 		//Note: This makes the assumption that the cols are in the same order in the data fields as on the workboard
-		foreach( $colNames as $key => $name ) {
+		foreach ( $colNames as $key => $name ) {
 			$name = str_replace( ' ', '_', $name );
 			$value = $colCounts[$key];
 			$metricName = 'daily.wikidata.phabricator.board.columns.' . $name;

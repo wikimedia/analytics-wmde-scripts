@@ -18,19 +18,19 @@
  * Used by: https://grafana.wikimedia.org/dashboard/db/wikidata-social-followers
  */
 
-require_once( __DIR__ . '/../../../lib/load.php' );
+require_once __DIR__ . '/../../../lib/load.php';
 $output = Output::forScript( 'wikidata-social-techmail' )->markStart();
 $metrics = new WikidataSocialMetric();
 $metrics->execute();
 $output->markEnd();
 
-class WikidataSocialMetric{
+class WikidataSocialMetric {
 
 	public function execute() {
 		$value = $this->getMailingListSubscribers(
 			'wikidata-tech',
-			Config::getValue('mm-user'),
-			Config::getValue('mm-wikidatatech-pass')
+			Config::getValue( 'mm-user' ),
+			Config::getValue( 'mm-wikidatatech-pass' )
 		);
 		WikimediaGraphite::sendNow(
 			'daily.wikidata.social.email.wikidata-tech.subscribers',
@@ -48,13 +48,13 @@ class WikidataSocialMetric{
 			'https://lists.wikimedia.org/mailman/roster/' . $listname,
 			true
 		);
-		curl_setopt( $ch, CURLOPT_POST, 1);
-		curl_setopt( $ch, CURLOPT_POSTFIELDS, $vars);
-		curl_setopt( $ch, CURLOPT_HEADER, 0);
+		curl_setopt( $ch, CURLOPT_POST, 1 );
+		curl_setopt( $ch, CURLOPT_POSTFIELDS, $vars );
+		curl_setopt( $ch, CURLOPT_HEADER, 0 );
 
 		$response = curl_exec( $ch );
 
-		if( preg_match( '/\<TITLE\>Error\<\/TITLE\>/i', $response ) ) {
+		if ( preg_match( '/\<TITLE\>Error\<\/TITLE\>/i', $response ) ) {
 			return null;
 		}
 

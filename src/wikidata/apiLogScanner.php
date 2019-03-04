@@ -11,7 +11,7 @@
  * Used by: https://grafana.wikimedia.org/dashboard/db/wikidata-api
  */
 
-require_once( __DIR__ . '/../../lib/load.php' );
+require_once __DIR__ . '/../../lib/load.php';
 $output = Output::forScript( 'wikidata-apiLogScanner' )->markStart();
 
 if ( array_key_exists( 1, $argv ) ) {
@@ -64,7 +64,7 @@ class WikidataApiLogScanner {
 			}
 
 			while ( ( $line = fgets( $handle ) ) !== false ) {
-				if(
+				if (
 					// Log line should start with out target date
 					strpos( $line, $targetDate ) !== 0 ||
 					// And contain wikidatawiki
@@ -74,18 +74,18 @@ class WikidataApiLogScanner {
 				}
 
 				// Extract the action (if set)
-				if( $actionStart = ( strpos( $line, ' action=' ) + 8 ) ) {
+				if ( $actionStart = ( strpos( $line, ' action=' ) + 8 ) ) {
 					$action = strtolower( substr( $line, $actionStart, strpos( $line, ' ', $actionStart ) - $actionStart ) );
 
 					// Only count wikibase modules
-					if( preg_match( '/^wb\w+$/', $action ) ) {
+					if ( preg_match( '/^wb\w+$/', $action ) ) {
 						@$counters['actions'][$action]++;
 					}
 
 				}
 
 				// Extract the format (if set)
-				if( $formatStart = ( strpos( $line, ' format=' ) + 8 ) ) {
+				if ( $formatStart = ( strpos( $line, ' format=' ) + 8 ) ) {
 					$format = strtolower( substr( $line, $formatStart, strpos( $line, ' ', $formatStart ) - $formatStart ) );
 					@$counters['formats'][$format]++;
 				}
@@ -95,9 +95,9 @@ class WikidataApiLogScanner {
 		}
 
 		// Send everything to graphite!
-		foreach( $counters as $name => $counter ) {
-			foreach( $counter as $key => $value ) {
-				if(
+		foreach ( $counters as $name => $counter ) {
+			foreach ( $counter as $key => $value ) {
+				if (
 					( $name == 'formats' && !in_array( $key, $this->formatWhitelist ) ) ||
 					strpos( $key, '_' ) !== false
 				) {

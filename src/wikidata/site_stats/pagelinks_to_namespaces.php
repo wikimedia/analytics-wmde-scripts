@@ -7,14 +7,14 @@
  * Used by: no board yet
  */
 
-require_once( __DIR__ . '/../../lib/load.php' );
+require_once __DIR__ . '/../../lib/load.php';
 $output = Output::forScript( 'wikidata-site_stats-pagelinks_to_namespaces' )->markStart();
 $metrics = new WikidataPagelinksToNamespaces();
 $metrics->execute( $output );
 $output->markEnd();
 
-class WikidataPagelinksToNamespaces
-{
+class WikidataPagelinksToNamespaces {
+
 	public function execute( Output $output ) {
 		$pagelinksToNamespace = [
 			0 => 0, # (Item)
@@ -27,8 +27,8 @@ class WikidataPagelinksToNamespaces
 		$pdoStatement = $pdo->prepare( file_get_contents( __DIR__ . '/sql/pagelinks_to_namespaces.sql' ) );
 		$queryResult = $pdoStatement->execute( array_keys( $pagelinksToNamespace ) );
 
-		if( $queryResult === false ) {
-			$output->outputMessage('DB query failed:' );
+		if ( $queryResult === false ) {
+			$output->outputMessage( 'DB query failed:' );
 			$output->outputMessage( var_export( $pdoStatement->errorInfo(), true ) );
 			$output->outputMessage( 'Skipping!' );
 			return;

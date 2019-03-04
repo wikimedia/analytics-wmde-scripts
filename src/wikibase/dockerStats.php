@@ -6,7 +6,7 @@
  * Track stats related to the wikibase docker images
  */
 
-require_once( __DIR__ . '/../../lib/load.php' );
+require_once __DIR__ . '/../../lib/load.php';
 $output = Output::forScript( 'wikibase-dockerStats' )->markStart();
 $metrics = new WikibaseDockerStats( $output );
 $metrics->execute(
@@ -28,7 +28,7 @@ class WikibaseDockerStats {
 	}
 
 	public function execute( array $imageList ) {
-		foreach( $imageList as $imageData ) {
+		foreach ( $imageList as $imageData ) {
 			list( $orgName, $imageName ) = $imageData;
 			$this->executeForImage( $orgName, $imageName );
 		}
@@ -37,8 +37,8 @@ class WikibaseDockerStats {
 	public function executeForImage( $org, $image ) {
 		$this->out->outputMessage( 'Running for: ' . $org . '/' . $image );
 		$rawResponse = WikimediaCurl::curlGetExternal( $this->getUrl( $org, $image ) );
-		if( $rawResponse === false ) {
-			throw new RuntimeException( "Failed to get data from API" );
+		if ( $rawResponse === false ) {
+			throw new RuntimeException( 'Failed to get data from API' );
 		}
 		$response = json_decode( $rawResponse[1], true );
 		$pullCount = $response['pull_count'];
@@ -54,7 +54,7 @@ class WikibaseDockerStats {
 	 * @return string
 	 */
 	private function getUrl( $repo, $image ) {
-		return "https://hub.docker.com/v2/repositories/" . $repo . '/' . $image;
+		return 'https://hub.docker.com/v2/repositories/' . $repo . '/' . $image;
 	}
 
 }

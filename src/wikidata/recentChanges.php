@@ -7,7 +7,7 @@
  * Used by: https://grafana.wikimedia.org/dashboard/db/wikidata-edits
  */
 
-require_once( __DIR__ . '/../../lib/load.php' );
+require_once __DIR__ . '/../../lib/load.php';
 $output = Output::forScript( 'wikidata-recentChanges' )->markStart();
 $metrics = new WikidataRc();
 $metrics->execute();
@@ -25,7 +25,7 @@ class WikidataRc {
 		$defaultTimezone = date_default_timezone_get();
 
 		// Mediawiki API / Wikidata expects it to be UTC
-		date_default_timezone_set( "UTC" );
+		date_default_timezone_set( 'UTC' );
 		$this->apiDateTime = new DateTime( 'now - 1 minute' );
 
 		date_default_timezone_set( $defaultTimezone );
@@ -37,16 +37,16 @@ class WikidataRc {
 
 		$data = [];
 		$rccontinue = null;
-		while( true ) {
+		while ( true ) {
 			$rawResponse = WikimediaCurl::curlGetExternal(
 				$this->getUrl( $this->apiDateTime, $rccontinue )
 			);
-			if( $rawResponse === false ) {
-				throw new RuntimeException( "Failed to get recent changes from API" );
+			if ( $rawResponse === false ) {
+				throw new RuntimeException( 'Failed to get recent changes from API' );
 			}
 			$response = json_decode( $rawResponse[1], true );
 			$data = array_merge( $data, $response['query']['recentchanges'] );
-			if( array_key_exists( 'continue', $response ) && array_key_exists( 'rccontinue', $response['continue'] ) ) {
+			if ( array_key_exists( 'continue', $response ) && array_key_exists( 'rccontinue', $response['continue'] ) ) {
 				$rccontinue = $response['continue']['rccontinue'];
 			} else {
 				break;
@@ -69,34 +69,34 @@ class WikidataRc {
 
 		$userEdits = [];
 
-		foreach( $data as $rc ) {
+		foreach ( $data as $rc ) {
 			$counters['total']++;
 			$counters['length'] += ( $rc['newlen'] - $rc['oldlen'] );
 			@$userEdits[$rc['user']]++;
 
-			if( array_key_exists( 'bot', $rc ) ) {
+			if ( array_key_exists( 'bot', $rc ) ) {
 				$counters['bot']++;
 			}
 
-			if( array_key_exists( 'anon', $rc ) ) {
+			if ( array_key_exists( 'anon', $rc ) ) {
 				$counters['anon']++;
 			}
 
-			if( array_key_exists( 'new', $rc ) ) {
+			if ( array_key_exists( 'new', $rc ) ) {
 				$counters['new']++;
 			}
 
-			foreach( $rc['tags'] as $tag ) {
-				if( strpos( $tag, 'OAuth CID: ' ) === 0 ) {
+			foreach ( $rc['tags'] as $tag ) {
+				if ( strpos( $tag, 'OAuth CID: ' ) === 0 ) {
 					$oauth = substr( $tag, 11 );
 					@$counters['oauth'][$oauth]++;
 				}
-				if( $tag === 'mobile edit' ) {
+				if ( $tag === 'mobile edit' ) {
 					$counters['mobile']++;
 				}
 			}
 
-			if( strpos( $rc['comment'], '/* wb' ) === 0 ) {
+			if ( strpos( $rc['comment'], '/* wb' ) === 0 ) {
 				$end = min( strpos( $rc['comment'] . ':', ':' ), strpos( $rc['comment'] . '-', '-' ) );
 				$summary = substr( $rc['comment'], 3, $end - 3 );
 				@$counters['summary'][$summary]++;
@@ -114,16 +114,15 @@ class WikidataRc {
 		}
 
 		// Send everything to graphite!
-		foreach( $counters as $name => $counter ) {
-			if( is_array( $counter ) ) {
-				foreach( $counter as $key => $value ) {
+		foreach ( $counters as $name => $counter ) {
+			if ( is_array( $counter ) ) {
+				foreach ( $counter as $key => $value ) {
 					$this->sendMetric( "wikidata.rc.edits.$name.$key", $value, $this->graphiteDateTime );
 				}
 			} else {
 				$this->sendMetric( "wikidata.rc.edits.$name", $counter, $this->graphiteDateTime );
 			}
 		}
-
 	}
 
 	/**
@@ -136,10 +135,10 @@ class WikidataRc {
 		$rcEnd = $forDateTime->format( 'YmdHi' ) . '00';
 		$rcStart = $forDateTime->format( 'YmdHi' ) . '59';
 
-		$url = "https://www.wikidata.org/w/api.php?action=query&list=recentchanges&format=json";
-		$url .= "&rcprop=comment|user|userid|tags|sizes|flags&rclimit=500&rctype=new|edit";
+		$url = 'https://www.wikidata.org/w/api.php?action=query&list=recentchanges&format=json';
+		$url .= '&rcprop=comment|user|userid|tags|sizes|flags&rclimit=500&rctype=new|edit';
 		$url .= "&rcstart=$rcStart&rcend=$rcEnd";
-		if( $rccontinue !== null ) {
+		if ( $rccontinue !== null ) {
 			$url .= '&rccontinue=' . $rccontinue;
 		}
 

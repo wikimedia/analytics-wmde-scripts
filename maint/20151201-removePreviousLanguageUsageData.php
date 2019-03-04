@@ -11,10 +11,10 @@
  * and back fill the dates where we already have data.
  */
 
-require_once( __DIR__ . '/../lib/load.php' );
+require_once __DIR__ . '/../lib/load.php';
 
 // This URL holds the data with which to back fill
-$dataUrl = "https://graphite.wikimedia.org/render/?target=daily.wikidata.site_stats.language_usage.*&from=20151130&until=20151201&format=json";
+$dataUrl = 'https://graphite.wikimedia.org/render/?target=daily.wikidata.site_stats.language_usage.*&from=20151130&until=20151201&format=json';
 $json = WikimediaCurl::curlGetExternal( $dataUrl );
 $data = json_decode( $json[1], true );
 
@@ -30,8 +30,8 @@ $dates = [
 ];
 
 // Fill the data for all langs and dates
-foreach( $dates as $date ) {
-	foreach( $data as $metric ) {
+foreach ( $dates as $date ) {
+	foreach ( $data as $metric ) {
 		sendMetric( $metric['target'], $metric['datapoints'][0][0], $date );
 	}
 }

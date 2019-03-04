@@ -6,25 +6,25 @@
  * Used by: https://grafana.wikimedia.org/dashboard/db/wikidata-site-stats
  */
 
-require_once( __DIR__ . '/../../../lib/load.php' );
+require_once __DIR__ . '/../../../lib/load.php';
 $output = Output::forScript( 'wikidata-site_stats-active_users' )->markStart();
 $metrics = new WikidataActiveUsers();
 $metrics->execute();
 $output->markEnd();
 
-class WikidataActiveUsers{
+class WikidataActiveUsers {
 
 	public function execute() {
 		$pdo = WikimediaDb::getPdoNewHosts( WikimediaDb::WIKIDATA_DB, new WikimediaDbSectionMapper() );
 
 		$queryResult = $pdo->query( file_get_contents( __DIR__ . '/sql/active_user_changes.sql' ) );
-		if( $queryResult === false ) {
-			throw new RuntimeException( "Failed to run file active_user_changes sql" );
+		if ( $queryResult === false ) {
+			throw new RuntimeException( 'Failed to run file active_user_changes sql' );
 		}
 
 		$results = [ 1 => 0, 5 => 0, 100 => 0 ];
 		foreach ( $queryResult as $row ) {
-			$changes = (integer)$row['changes'];
+			$changes = (int)$row['changes'];
 			if ( $changes >= 100 ) {
 				$results[100] += 1;
 				$results[5] += 1;
@@ -37,7 +37,7 @@ class WikidataActiveUsers{
 			}
 		}
 
-		foreach( $results as $changeCount => $users ) {
+		foreach ( $results as $changeCount => $users ) {
 			WikimediaGraphite::sendNow( "daily.wikidata.site_stats.active_users.$changeCount", $users );
 		}
 	}
