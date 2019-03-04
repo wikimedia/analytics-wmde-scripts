@@ -19,7 +19,7 @@ $json = WikimediaCurl::curlGetExternal( $dataUrl );
 $data = json_decode( $json[1], true );
 
 // Dates to be back filled
-$dates = array(
+$dates = [
 	'2015-11-24',
 	'2015-11-25',
 	'2015-11-26',
@@ -27,7 +27,7 @@ $dates = array(
 	'2015-11-28',
 	'2015-11-29',
 	'2015-11-30',
-);
+];
 
 // Fill the data for all langs and dates
 foreach( $dates as $date ) {

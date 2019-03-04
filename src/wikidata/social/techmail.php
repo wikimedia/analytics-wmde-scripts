@@ -39,11 +39,11 @@ class WikidataSocialMetric{
 	}
 
 	private function getMailingListSubscribers( $listname, $mailmanuser, $mailmanpass ) {
-		$vars = array(
+		$vars = [
 			'roster-email' => $mailmanuser,
 			'roster-pw' => $mailmanpass,
 			'language' => 'en',
-		);
+		];
 		$ch = WikimediaCurl::curlInit(
 			'https://lists.wikimedia.org/mailman/roster/' . $listname,
 			true
@@ -58,7 +58,7 @@ class WikidataSocialMetric{
 			return null;
 		}
 
-		$data = array();
+		$data = [];
 		preg_match( '/(\d+)\s+Non-digested/i', $response, $matches );
 		$data['nondigest'] = array_pop( $matches );
 		preg_match( '/(\d+)\s+Digested/i', $response, $matches );

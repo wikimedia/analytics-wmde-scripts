@@ -22,7 +22,7 @@ class Config {
 			}
 			$config = trim( $fileContents );
 			$configLines = explode( "\n", $config );
-			$configArray = array();
+			$configArray = [];
 			foreach( $configLines as $configLine ) {
 				$lineSplit = explode( ' ', trim( $configLine ), 2 );
 				$configArray[$lineSplit[0]] = $lineSplit[1];

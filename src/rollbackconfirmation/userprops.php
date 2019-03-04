@@ -13,7 +13,7 @@ $dbs = WikimediaDbList::get( 'all' );
 
 $sectionMapper = new WikimediaDbSectionMapper();
 
-$metrics = array();
+$metrics = [];
 
 foreach( $dbs as $dbname ) {
 	if( $dbname === 'labswiki' || $dbname === 'labtestwiki' ) {

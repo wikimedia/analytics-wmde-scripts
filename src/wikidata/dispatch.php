@@ -20,7 +20,7 @@ if( $json === false ) {
 $json = json_decode( $json[1], true );
 $json = $json['query']['statistics']['dispatch'];
 
-$stats = array();
+$stats = [];
 $stats['freshest.pending'] = $json['freshest']['pending'];
 $stats['freshest.lag'] = $json['freshest']['lag'];
 $stats['median.pending'] = $json['median']['pending'];

@@ -27,7 +27,7 @@ class WikidataApiLogScanner {
 	private $dayAfter;
 	private $targetDate;
 
-	private $formatWhitelist = array(
+	private $formatWhitelist = [
 		'dbg', 'dbgfm',
 		'json', 'jsonfm',
 		'php', 'phpfm',
@@ -36,7 +36,7 @@ class WikidataApiLogScanner {
 		'xmlk', 'xmlfm',
 		'yaml', 'yamlfm',
 		'none',
-	);
+	];
 
 	/**
 	 * @param string $targetDate must be parse-able by PHP
@@ -51,10 +51,10 @@ class WikidataApiLogScanner {
 	public function execute() {
 		$this->dieIfFilesDoNotExist();
 
-		$counters = array(
-			'formats' => array(),
-			'actions' => array(),
-		);
+		$counters = [
+			'formats' => [],
+			'actions' => [],
+		];
 
 		$targetDate = $this->targetDate->format( 'Y-m-d' );
 		foreach ( $this->getFilesNames() as $fileName ) {
@@ -121,10 +121,10 @@ class WikidataApiLogScanner {
 
 	private function getFilesNames() {
 		$logDir = Config::getValue( 'api_log_dir' );
-		return array(
+		return [
 			$logDir . '/api.log-' . $this->targetDate->format( 'Ymd' ) . '.gz',
 			$logDir . '/api.log-' . $this->dayAfter->format( 'Ymd' ) . '.gz',
-		);
+		];
 	}
 
 	private function sendMetric( $name, $value ) {

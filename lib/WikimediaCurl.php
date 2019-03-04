@@ -55,7 +55,7 @@ class WikimediaCurl {
 	 * @param string $url
 	 * @param bool $useWebProxy
 	 *
-	 * @return array( array header, string body )|false
+	 * @return array|false [ string[] $headers, string $body ]
 	 */
 	protected static function curlGet( $url, $useWebProxy = false ) {
 		$ch = self::curlInit( $url, $useWebProxy );
@@ -71,7 +71,7 @@ class WikimediaCurl {
 
 		curl_close( $ch );
 
-		return array( $headers, $body );
+		return [ $headers, $body ];
 	}
 
 	/**
@@ -82,7 +82,7 @@ class WikimediaCurl {
 	 * @param string $url
 	 * @param bool $useWebProxy
 	 *
-	 * @return array( array header, string body )|false
+	 * @return array|false [ string[] $headers, string $body ]
 	 */
 	protected static function retryingCurlGet( $url, $useWebProxy = false ) {
 		$retriesLeft = 7;
@@ -116,7 +116,7 @@ class WikimediaCurl {
 	 * @return array
 	 */
 	private function parseHeaders( $headerText ) {
-		$headers = array();
+		$headers = [];
 		foreach ( explode( "\r\n", $headerText ) as $i => $line ) {
 			if ( $i === 0 ) {
 				$headers['http_code'] = $line;

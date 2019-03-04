@@ -10,12 +10,12 @@ require_once( __DIR__ . '/../../../lib/load.php' );
 $output = Output::forScript( 'wikidata-site_stats-user_groups' )->markStart();
 
 // Map of group name => metric name
-$groupMap = array(
+$groupMap = [
 	'sysop' => 'admins',
 	'bureaucrat' => 'bureaucrats',
 	'bot' => 'bots',
 	'propertycreator' => 'propertycreators',
-);
+];
 
 $metrics = new WikidataUserGroups();
 $metrics->execute( $groupMap, $output );

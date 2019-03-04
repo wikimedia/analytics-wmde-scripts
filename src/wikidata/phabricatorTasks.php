@@ -23,8 +23,8 @@ class WikidataPhabricator{
 		$page = $response[1];
 		$page = htmlspecialchars_decode( $page );
 
-		$colNames = array();
-		$colCounts = array();
+		$colNames = [];
+		$colCounts = [];
 
 		$headerParts = explode( '<span class="phui-header-header">', $page );
 		foreach( $headerParts as $headerPartKey => $headerPart ){
