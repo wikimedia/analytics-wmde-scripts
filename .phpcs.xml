@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<ruleset>
+	<rule ref="./vendor/mediawiki/mediawiki-codesniffer/MediaWiki">
+		<exclude name="Generic.Classes.DuplicateClassName" />
+		<exclude name="Generic.PHP.NoSilencedErrors" />
+		<exclude name="MediaWiki.Commenting.FunctionComment.MissingDocumentationPublic" />
+		<exclude name="MediaWiki.ControlStructures.AssignmentInControlStructures" />
+		<exclude name="MediaWiki.Files.ClassMatchesFilename" />
+		<exclude name="MediaWiki.Usage.ForbiddenFunctions.exec" />
+		<exclude name="MediaWiki.WhiteSpace.SpaceBeforeSingleLineComment" />
+
+		<!-- FIXME -->
+		<exclude name="Generic.Arrays.DisallowLongArraySyntax" />
+		<exclude name="MediaWiki.Commenting.FunctionComment" />
+		<exclude name="MediaWiki.ExtraCharacters.ParenthesesAroundKeyword" />
+		<exclude name="MediaWiki.WhiteSpace.OpeningKeywordParenthesis" />
+		<exclude name="MediaWiki.WhiteSpace.SpaceAfterControlStructure" />
+		<exclude name="MediaWiki.WhiteSpace.SpaceBeforeClassBrace" />
+		<exclude name="MediaWiki.WhiteSpace.SpaceyParenthesis" />
+		<exclude name="PSR12.Keywords.ShortFormTypeKeywords" />
+		<exclude name="PSR2.ControlStructures.ElseIfDeclaration" />
+		<exclude name="PSR2.Files.EndFileNewline" />
+		<exclude name="PSR2.Methods.FunctionClosingBrace" />
+		<exclude name="Squiz.Strings.DoubleQuoteUsage" />
+		<exclude name="Squiz.WhiteSpace.FunctionSpacing" />
+		<exclude name="Squiz.WhiteSpace.OperatorSpacing" />
+	</rule>
+
+	<rule ref="Generic.Files.LineLength">
+		<properties>
+			<property name="lineLimit" value="162" />
+		</properties>
+	</rule>
+	<rule ref="MediaWiki.NamingConventions.PrefixedGlobalFunctions">
+		<properties>
+			<property name="ignoreList" type="array" value="sendMetric" />
+		</properties>
+	</rule>
+	<rule ref="Squiz.Strings.DoubleQuoteUsage">
+		<exclude name="Squiz.Strings.DoubleQuoteUsage.ContainsVar" />
+	</rule>
+	<rule ref="Squiz.WhiteSpace.FunctionSpacing">
+		<properties>
+			<property name="spacing" value="1" />
+		</properties>
+	</rule>
+
+	<file>.</file>
+	<arg name="extensions" value="php" />
+	<arg name="encoding" value="UTF-8" />
+</ruleset>
