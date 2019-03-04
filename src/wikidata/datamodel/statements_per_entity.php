@@ -6,7 +6,7 @@
  * Used by: https://grafana.wikimedia.org/dashboard/db/wikidata-datamodel
  */
 
-require_once( __DIR__ . '/../../../lib/load.php' );
+require_once __DIR__ . '/../../../lib/load.php';
 $output = Output::forScript( 'wikidata-datamodel-statements_per_entity' )->markStart();
 $counter = new WikidataStatementCounter();
 $counter->execute();
@@ -19,16 +19,16 @@ $output->markEnd();
  *
  * @author Addshore
  */
-class WikidataStatementCounter{
+class WikidataStatementCounter {
 
 	public function execute() {
-		$pdo = WikimediaDb::getPdoNewHosts( WikimediaDb::WIKIDATA_DB, new WikimediaDbSectionMapper());
+		$pdo = WikimediaDb::getPdoNewHosts( WikimediaDb::WIKIDATA_DB, new WikimediaDbSectionMapper() );
 		$queryResult = $pdo->query( file_get_contents(
 			__DIR__ . '/sql/select_statements_per_entity.sql'
 		) );
 
-		if( $queryResult === false ) {
-			throw new RuntimeException( "Something went wrong with the db query" );
+		if ( $queryResult === false ) {
+			throw new RuntimeException( 'Something went wrong with the db query' );
 		}
 
 		$rows = $queryResult->fetchAll();
@@ -45,10 +45,10 @@ class WikidataStatementCounter{
 			'item' => 0,
 			'property' => 0,
 		];
-		foreach( $rows as $row ) {
-			if( $row['namespace'] == '0' ) {
+		foreach ( $rows as $row ) {
+			if ( $row['namespace'] == '0' ) {
 				$entityType = 'item';
-			} elseif( $row['namespace'] == '120' ) {
+			} elseif ( $row['namespace'] == '120' ) {
 				$entityType = 'property';
 			} else {
 				throw new LogicException( 'Couldn\'t identify namespace: ' . $row['namespace'] );
@@ -62,12 +62,12 @@ class WikidataStatementCounter{
 				$row['count']
 			);
 
-			if( $maxes[$entityType] < $row['statements'] ) {
+			if ( $maxes[$entityType] < $row['statements'] ) {
 				$maxes[$entityType] = $row['statements'];
 			}
 		}
 
-		foreach( $totals as $entityType => $value ) {
+		foreach ( $totals as $entityType => $value ) {
 			WikimediaGraphite::sendNow(
 				"daily.wikidata.datamodel.$entityType.statements.total",
 				$value
@@ -78,7 +78,7 @@ class WikidataStatementCounter{
 			);
 		}
 
-		foreach( $maxes as $entityType => $value ) {
+		foreach ( $maxes as $entityType => $value ) {
 			WikimediaGraphite::sendNow(
 				"daily.wikidata.datamodel.$entityType.statements.max",
 				$value
@@ -88,7 +88,6 @@ class WikidataStatementCounter{
 				$entitiesWithStatements[$entityType]
 			);
 		}
-
 	}
 
 }

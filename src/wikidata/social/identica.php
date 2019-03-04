@@ -10,14 +10,14 @@
  * Used by: https://grafana.wikimedia.org/dashboard/db/wikidata-social-followers
  */
 
-require_once( __DIR__ . '/../../../lib/load.php' );
+require_once __DIR__ . '/../../../lib/load.php';
 $output = Output::forScript( 'wikidata-social-identica' )->markStart();
 libxml_use_internal_errors( true );
 $metrics = new WikidataSocialMetric();
 $metrics->execute();
 $output->markEnd();
 
-class WikidataSocialMetric{
+class WikidataSocialMetric {
 
 	public function execute() {
 		$value = $this->getIdenticaFollowers();
@@ -29,12 +29,12 @@ class WikidataSocialMetric{
 		$dom = new DomDocument();
 		$response = WikimediaCurl::curlGetWithRetryExternal( $url );
 		$dom->loadHTML( $response[1] );
-		$xpath = new DomXPath($dom);
+		$xpath = new DomXPath( $dom );
 		$nodes = $xpath->query( '//a[@href="/wikidata/followers"]/span[@class="label"]' );
-		if( $nodes->length !== 1 ) {
+		if ( $nodes->length !== 1 ) {
 			return null;
 		}
-		return $nodes->item(0)->textContent;
+		return $nodes->item( 0 )->textContent;
 	}
 
 }

@@ -6,10 +6,10 @@
  * https://phabricator.wikimedia.org/T119070
  */
 
-require_once( __DIR__ . '/../../lib/load.php' );
+require_once __DIR__ . '/../../lib/load.php';
 $output = Output::forScript( 'wikidata-dumpDownloads' )->markStart();
 
-$logDirectory = Config::getValue('dump_log_dir');
+$logDirectory = Config::getValue( 'dump_log_dir' );
 
 // Types suffixed with a 1 represent the first part of a joined dump (only count the first)
 $weeklyXmlTypes = [
@@ -63,14 +63,14 @@ $logFiles = [
 $output->outputMessage( 'Targeting date: ' . $targetDate );
 
 $counters = [];
-foreach( $logFiles as $logFile ) {
+foreach ( $logFiles as $logFile ) {
 	$handle = fopen( 'compress.zlib://' . $logFile, 'r' );
 	if ( $handle === false ) {
 		throw new RuntimeException( 'Failed to open file: ' . $logFile );
 	}
 
 	while ( ( $line = fgets( $handle ) ) !== false ) {
-		if(
+		if (
 			// Log line should contain out target date
 			strpos( $line, "[$targetDate:" ) === false ||
 			// And contain wikidatawiki in the request URI
@@ -80,7 +80,7 @@ foreach( $logFiles as $logFile ) {
 		}
 
 		$statusCode = 0;
-		if( strpos( $line, ' 200 ' ) ) {
+		if ( strpos( $line, ' 200 ' ) ) {
 			$statusCode = 200;
 		} elseif ( strpos( $line, ' 206 ' ) ) {
 			$statusCode = 206;
@@ -89,7 +89,7 @@ foreach( $logFiles as $logFile ) {
 			continue;
 		}
 
-		foreach( $regexSnips as $type => $regexSnip ) {
+		foreach ( $regexSnips as $type => $regexSnip ) {
 			if ( preg_match( "/$regexSnip/i", $line ) ) {
 				@$counters["$type.$statusCode"]++;
 				// Once we have matched 1 type of dump do to the next line.
@@ -102,7 +102,7 @@ foreach( $logFiles as $logFile ) {
 }
 
 // Send everything to graphite!
-foreach( $counters as $type => $value ) {
+foreach ( $counters as $type => $value ) {
 	$metricName = 'daily.wikidata.dump_requests.' . $type;
 	WikimediaGraphite::send( $metricName, $value, $graphiteDate );
 }

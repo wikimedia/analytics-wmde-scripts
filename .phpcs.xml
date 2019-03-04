@@ -11,18 +11,6 @@
 
 		<!-- FIXME -->
 		<exclude name="MediaWiki.Commenting.FunctionComment" />
-		<exclude name="MediaWiki.ExtraCharacters.ParenthesesAroundKeyword" />
-		<exclude name="MediaWiki.WhiteSpace.OpeningKeywordParenthesis" />
-		<exclude name="MediaWiki.WhiteSpace.SpaceAfterControlStructure" />
-		<exclude name="MediaWiki.WhiteSpace.SpaceBeforeClassBrace" />
-		<exclude name="MediaWiki.WhiteSpace.SpaceyParenthesis" />
-		<exclude name="PSR12.Keywords.ShortFormTypeKeywords" />
-		<exclude name="PSR2.ControlStructures.ElseIfDeclaration" />
-		<exclude name="PSR2.Files.EndFileNewline" />
-		<exclude name="PSR2.Methods.FunctionClosingBrace" />
-		<exclude name="Squiz.Strings.DoubleQuoteUsage" />
-		<exclude name="Squiz.WhiteSpace.FunctionSpacing" />
-		<exclude name="Squiz.WhiteSpace.OperatorSpacing" />
 	</rule>
 
 	<rule ref="Generic.Files.LineLength">

@@ -7,14 +7,14 @@
  * Used by: https://grafana.wikimedia.org/dashboard/db/wikidata-dispatch
  */
 
-require_once( __DIR__ . '/../../lib/load.php' );
+require_once __DIR__ . '/../../lib/load.php';
 $output = Output::forScript( 'wikidata-dispatch' )->markStart();
 
 $url = 'https://www.wikidata.org/w/api.php?action=query&meta=siteinfo&format=json&siprop=statistics';
 $json = WikimediaCurl::curlGetExternal( $url );
 
-if( $json === false ) {
-	throw new RuntimeException( "Failed to get dispatch lag from API" );
+if ( $json === false ) {
+	throw new RuntimeException( 'Failed to get dispatch lag from API' );
 }
 
 $json = json_decode( $json[1], true );

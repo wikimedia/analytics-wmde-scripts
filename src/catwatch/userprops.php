@@ -9,7 +9,7 @@
  * Used by: https://grafana.wikimedia.org/dashboard/db/mediawiki-catwatch-feature
  */
 
-require_once( __DIR__ . '/../../lib/load.php' );
+require_once __DIR__ . '/../../lib/load.php';
 $output = Output::forScript( 'catwatch-userprops' )->markStart();
 
 $dbs = WikimediaDbList::get( 'all' );
@@ -18,8 +18,8 @@ $sectionMapper = new WikimediaDbSectionMapper();
 
 $metrics = [];
 
-foreach( $dbs as $dbname ) {
-	if( $dbname === 'labswiki' || $dbname === 'labtestwiki' ) {
+foreach ( $dbs as $dbname ) {
+	if ( $dbname === 'labswiki' || $dbname === 'labtestwiki' ) {
 		continue;
 	}
 
@@ -27,32 +27,32 @@ foreach( $dbs as $dbname ) {
 
 	$thisWikiHasSomeUse = false;
 	// Count each type of entity usage
-	$sql = "SELECT up_property AS settingAtZero, COUNT(up_user) AS users";
+	$sql = 'SELECT up_property AS settingAtZero, COUNT(up_user) AS users';
 	$sql .= " FROM $dbname.user_properties";
 	$sql .= " WHERE up_property IN ( 'hidecategorization', 'watchlisthidecategorization' )";
-	$sql .= " AND up_value = 0";
-	$sql .= " GROUP BY up_property";
+	$sql .= ' AND up_value = 0';
+	$sql .= ' GROUP BY up_property';
 	$queryResult = $pdo->query( $sql );
 
-	if( $queryResult === false ) {
+	if ( $queryResult === false ) {
 		$output->outputMessage( "CatWatch DB query failed for $dbname, Skipping!!" );
 	} else {
 
-		foreach( $queryResult as $row ) {
-			if( $row['settingAtZero'] == 'hidecategorization' ) {
-				if( $row['users'] > 0 ) {
+		foreach ( $queryResult as $row ) {
+			if ( $row['settingAtZero'] == 'hidecategorization' ) {
+				if ( $row['users'] > 0 ) {
 					$thisWikiHasSomeUse = true;
 					@$metrics['daily.catwatch.userprops.recentchanges.count'] += $row['users'];
 				}
-			} elseif( $row['settingAtZero'] == 'watchlisthidecategorization' ) {
-				if( $row['users'] > 0 ) {
+			} elseif ( $row['settingAtZero'] == 'watchlisthidecategorization' ) {
+				if ( $row['users'] > 0 ) {
 					$thisWikiHasSomeUse = true;
 					@$metrics['daily.catwatch.userprops.watchlist.count'] += $row['users'];
 				}
 			}
 		}
 
-		if( $thisWikiHasSomeUse ) {
+		if ( $thisWikiHasSomeUse ) {
 			@$metrics['daily.catwatch.wikis.used'] += 1;
 		} else {
 			@$metrics['daily.catwatch.wikis.notused'] += 1;
@@ -61,6 +61,6 @@ foreach( $dbs as $dbname ) {
 	}
 }
 
-foreach( $metrics as $metricName => $value ) {
+foreach ( $metrics as $metricName => $value ) {
 	WikimediaGraphite::sendNow( $metricName, $value );
 }

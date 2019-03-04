@@ -8,13 +8,13 @@
  *
  */
 
-require_once( __DIR__ . '/../../lib/load.php' );
+require_once __DIR__ . '/../../lib/load.php';
 $output = Output::forScript( 'wikidata-entityUsage' )->markStart();
 
 $dblist = WikimediaCurl::curlGetExternal(
 	'https://noc.wikimedia.org/conf/dblists/wikidataclient.dblist'
 );
-if( $dblist === false ) {
+if ( $dblist === false ) {
 	throw new RuntimeException( 'Failed to get db list for EntityUsage tracking!' );
 }
 $dbs = explode( "\n", $dblist[1] );
@@ -22,15 +22,15 @@ $dbs = array_filter( $dbs );
 
 $sectionMapper = new WikimediaDbSectionMapper();
 
-foreach( $dbs as $dbname ) {
+foreach ( $dbs as $dbname ) {
 	$pdo = WikimediaDb::getPdoNewHosts( $dbname, $sectionMapper );
 	// Count each type of entity usage
 	$sql = "SELECT eu_aspect as aspect, count(*) as count FROM $dbname.wbc_entity_usage GROUP BY eu_aspect";
 	$queryResult = $pdo->query( $sql );
-	if( $queryResult === false ) {
+	if ( $queryResult === false ) {
 		$output->outputMessage( "EntityUsage DB query failed for $dbname, Skipping!!" );
 	} else {
-		foreach( $queryResult as $row ) {
+		foreach ( $queryResult as $row ) {
 			$value = $row['count'];
 			$metricName = 'daily.wikidata.entity_usage.' . $dbname . '.' . str_replace( '.', '_', $row['aspect'] );
 			WikimediaGraphite::sendNow( $metricName, $value );
@@ -40,7 +40,7 @@ foreach( $dbs as $dbname ) {
 	// Count usage (excluding sitelinks) on distinct pages
 	$sql = "SELECT COUNT(DISTINCT eu_page_id) AS pages FROM $dbname.wbc_entity_usage WHERE eu_aspect != 'S'";
 	$queryResult = $pdo->query( $sql );
-	if( $queryResult === false ) {
+	if ( $queryResult === false ) {
 		$output->outputMessage( "EntityUsage page DB query failed for $dbname, Skipping!!" );
 	} else {
 		$queryResult = $queryResult->fetchAll();

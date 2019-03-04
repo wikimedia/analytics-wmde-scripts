@@ -6,7 +6,7 @@
  * Used by: https://grafana.wikimedia.org/dashboard/db/wikidata-site-stats
  */
 
-require_once( __DIR__ . '/../../../lib/load.php' );
+require_once __DIR__ . '/../../../lib/load.php';
 $output = Output::forScript( 'wikidata-site_stats-user_groups' )->markStart();
 
 // Map of group name => metric name
@@ -21,17 +21,17 @@ $metrics = new WikidataUserGroups();
 $metrics->execute( $groupMap, $output );
 $output->markEnd();
 
-class WikidataUserGroups{
+class WikidataUserGroups {
 
 	public function execute( array $groupMap, Output $output ) {
-		$pdo = WikimediaDb::getPdoNewHosts( WikimediaDb::WIKIDATA_DB, new WikimediaDbSectionMapper());
+		$pdo = WikimediaDb::getPdoNewHosts( WikimediaDb::WIKIDATA_DB, new WikimediaDbSectionMapper() );
 		foreach ( $groupMap as $group => $metricName ) {
 			$output->outputMessage( "Running query for $metricName group" );
 			$result = $pdo->query(
 				"SELECT count(*) AS count FROM wikidatawiki.user_groups WHERE ug_group = '$group' GROUP BY ug_group"
 			);
 
-			if( $result === false ) {
+			if ( $result === false ) {
 				$output->outputMessage( "DB query for $metricName failed" );
 				continue;
 			}

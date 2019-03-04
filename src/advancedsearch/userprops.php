@@ -8,7 +8,7 @@
  * Used by: https://grafana.wikimedia.org/dashboard/db/mediawiki-advancedsearch
  */
 
-require_once( __DIR__ . '/../../lib/load.php' );
+require_once __DIR__ . '/../../lib/load.php';
 $output = Output::forScript( 'advancedsearch-userprops' )->markStart();
 
 $dbs = WikimediaDbList::get( 'all' );
@@ -17,20 +17,20 @@ $sectionMapper = new WikimediaDbSectionMapper();
 
 $metrics = [];
 
-foreach( $dbs as $dbname ) {
-	if( $dbname === 'labswiki' || $dbname === 'labtestwiki' ) {
+foreach ( $dbs as $dbname ) {
+	if ( $dbname === 'labswiki' || $dbname === 'labtestwiki' ) {
 		continue;
 	}
 
 	$pdo = WikimediaDb::getPdoNewHosts( $dbname, $sectionMapper );
 
-	$sql = "SELECT COUNT(*) AS disables";
+	$sql = 'SELECT COUNT(*) AS disables';
 	$sql .= " FROM $dbname.user_properties";
 	$sql .= " WHERE up_property = 'advancedsearch-disable'";
-	$sql .= " AND up_value = 1";
+	$sql .= ' AND up_value = 1';
 	$queryResult = $pdo->query( $sql );
 
-	if( $queryResult === false ) {
+	if ( $queryResult === false ) {
 		$output->outputMessage( "AdvancedSearch DB query failed for $dbname, Skipping!!" );
 	} else {
 		$row = $queryResult->fetch();
@@ -38,6 +38,6 @@ foreach( $dbs as $dbname ) {
 	}
 }
 
-foreach( $metrics as $metricName => $value ) {
+foreach ( $metrics as $metricName => $value ) {
 	WikimediaGraphite::sendNow( $metricName, $value );
 }

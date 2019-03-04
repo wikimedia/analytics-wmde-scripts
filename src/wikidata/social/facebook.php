@@ -12,13 +12,13 @@
  * Used by: https://grafana.wikimedia.org/dashboard/db/wikidata-social-followers
  */
 
-require_once( __DIR__ . '/../../../lib/load.php' );
+require_once __DIR__ . '/../../../lib/load.php';
 $output = Output::forScript( 'wikidata-social-facebook' )->markStart();
 $metrics = new WikidataSocialMetric();
 $metrics->execute();
 $output->markEnd();
 
-class WikidataSocialMetric{
+class WikidataSocialMetric {
 
 	public function execute() {
 		$value = $this->getFacebookLikes();

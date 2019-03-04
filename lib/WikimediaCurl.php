@@ -22,6 +22,7 @@ class WikimediaCurl {
 	public static function curlGetExternal( $url ) {
 		return self::curlGet( $url, true );
 	}
+
 	public static function curlGetWithRetryExternal( $url ) {
 		return self::retryingCurlGet( $url, true );
 	}
@@ -46,7 +47,7 @@ class WikimediaCurl {
 		curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, 1 );
 		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
 		curl_setopt( $ch, CURLOPT_HEADER, 1 );
-		curl_setopt( $ch, CURLOPT_USERAGENT, "WMDE Wikidata metrics gathering" );
+		curl_setopt( $ch, CURLOPT_USERAGENT, 'WMDE Wikidata metrics gathering' );
 
 		return $ch;
 	}
@@ -61,7 +62,7 @@ class WikimediaCurl {
 		$ch = self::curlInit( $url, $useWebProxy );
 
 		$response = curl_exec( $ch );
-		if( $response === false ) {
+		if ( $response === false ) {
 			return false;
 		}
 
@@ -89,15 +90,15 @@ class WikimediaCurl {
 		$nextWait = 10;
 		$result = false;
 
-		while( $retriesLeft > 0 ) {
+		while ( $retriesLeft > 0 ) {
 			$result = self::curlGet( $url, $useWebProxy );
-			if( $result !== false && !empty( $result[1] ) ) {
+			if ( $result !== false && !empty( $result[1] ) ) {
 				return $result;
 			}
 
-			if( $result === false ) {
+			if ( $result === false ) {
 				trigger_error( "CURL request failed - sleeping for $nextWait seconds: $url", E_USER_WARNING );
-			} elseif( empty( $result[1] ) ) {
+			} elseif ( empty( $result[1] ) ) {
 				trigger_error( "CURL body returned empty - sleeping for $nextWait seconds: $url", E_USER_WARNING );
 			} else {
 				throw new LogicException( "Retrying request for unknown reason: $url" );
@@ -121,7 +122,7 @@ class WikimediaCurl {
 			if ( $i === 0 ) {
 				$headers['http_code'] = $line;
 			} else {
-				@list ( $key, $value ) = explode( ': ', $line );
+				@list( $key, $value ) = explode( ': ', $line );
 				if ( !empty( $key ) ) {
 					$headers[$key] = $value;
 				}

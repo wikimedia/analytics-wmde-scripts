@@ -23,7 +23,7 @@ class Config {
 			$config = trim( $fileContents );
 			$configLines = explode( "\n", $config );
 			$configArray = [];
-			foreach( $configLines as $configLine ) {
+			foreach ( $configLines as $configLine ) {
 				$lineSplit = explode( ' ', trim( $configLine ), 2 );
 				$configArray[$lineSplit[0]] = $lineSplit[1];
 			}
@@ -40,7 +40,7 @@ class Config {
 	 */
 	public static function getValue( $key ) {
 		$config = self::getConfig();
-		if( !array_key_exists( $key, $config ) ) {
+		if ( !array_key_exists( $key, $config ) ) {
 			throw new Exception( 'Config value does not exist: ' . $key );
 		}
 		return $config[$key];

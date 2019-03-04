@@ -8,13 +8,13 @@
  * Used by: https://grafana.wikimedia.org/dashboard/db/wikidata-datamodel-statements
  */
 
-require_once( __DIR__ . '/../../../lib/load.php' );
+require_once __DIR__ . '/../../../lib/load.php';
 $output = Output::forScript( 'wikidata-sparql-instanceof' )->markStart();
 $metrics = new WikidataInstanceOf();
 $metrics->execute();
 $output->markEnd();
 
-class WikidataInstanceOf{
+class WikidataInstanceOf {
 
 	private $itemIds = [
 		'Q11266439', // template
@@ -36,26 +36,26 @@ class WikidataInstanceOf{
 
 	public function execute() {
 		$results = [];
-		foreach( $this->itemIds as $itemId ) {
+		foreach ( $this->itemIds as $itemId ) {
 			$results[$itemId] = $this->getResult( $itemId );
 			$this->sleepToAvoidRateLimit();
 		}
 
-		foreach( $results as $key => $value ) {
+		foreach ( $results as $key => $value ) {
 			WikimediaGraphite::sendNow( "daily.wikidata.datamodel.instanceof.$key", $value );
 		}
 	}
 
-	private function sleepToAvoidRateLimit () {
+	private function sleepToAvoidRateLimit() {
 		sleep( 2 );
 	}
 
 	private function getResult( $itemId ) {
-		$query = "PREFIX wd: <http://www.wikidata.org/entity/>";
-		$query .= "PREFIX wdt: <http://www.wikidata.org/prop/direct/>";
-		$query .= "SELECT (count(distinct(?s)) AS ?scount) WHERE {";
+		$query = 'PREFIX wd: <http://www.wikidata.org/entity/>';
+		$query .= 'PREFIX wdt: <http://www.wikidata.org/prop/direct/>';
+		$query .= 'SELECT (count(distinct(?s)) AS ?scount) WHERE {';
 		$query .= "?s wdt:P31/wdt:P279* wd:$itemId";
-		$query .= "}";
+		$query .= '}';
 		$result = $this->doSparqlQuery( $query );
 		return $result['results']['bindings'][0]['scount']['value'];
 	}
@@ -65,17 +65,17 @@ class WikidataInstanceOf{
 	 *
 	 * @return array
 	 */
-	private function doSparqlQuery ( $query ) {
+	private function doSparqlQuery( $query ) {
 		/**
 		 * Access to wdqs1003 from the analytics stat* machines is allowed by firewall rules.
 		 * @see https://phabricator.wikimedia.org/T198623#4396997
 		 */
 		$response = WikimediaCurl::curlGetInternal(
-			"http://wdqs1003.eqiad.wmnet:8888/bigdata/namespace/wdq/sparql?format=json&query=" . urlencode( $query )
+			'http://wdqs1003.eqiad.wmnet:8888/bigdata/namespace/wdq/sparql?format=json&query=' . urlencode( $query )
 		);
 
-		if( $response === false ) {
-			throw new RuntimeException( "The SPARQL request failed!" );
+		if ( $response === false ) {
+			throw new RuntimeException( 'The SPARQL request failed!' );
 		}
 
 		Output::forScript( 'wikidata-sparql-instanceof' )->outputMessage(

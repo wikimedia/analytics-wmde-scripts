@@ -7,7 +7,7 @@
  * Used by: no board yet
  */
 
-require_once( __DIR__ . '/../../../lib/load.php' );
+require_once __DIR__ . '/../../../lib/load.php';
 $output = Output::forScript( 'wikidata-site_stats-recent_changes_by_namespace' )->markStart();
 $metrics = new WikidataRecentChangesByNamespace();
 $metrics->execute( $output );
@@ -39,7 +39,7 @@ class WikidataRecentChangesByNamespace {
 			array_keys( $editsByNamespace )
 		) );
 
-		if( $queryResult === false ) {
+		if ( $queryResult === false ) {
 			$output->outputMessage( 'DB query failed:' );
 			$output->outputMessage( var_export( $pdoStatement->errorInfo(), true ) );
 			$output->outputMessage( 'Skipping!' );

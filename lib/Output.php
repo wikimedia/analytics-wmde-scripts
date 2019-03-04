@@ -36,7 +36,7 @@ class Output {
 	}
 
 	public function outputMessage( $msg ) {
-		echo date( "Y-m-d H:i:s" ) . ' ' . $this->scriptName . ' ' . $msg . "\n";
+		echo date( 'Y-m-d H:i:s' ) . ' ' . $this->scriptName . ' ' . $msg . "\n";
 		return $this;
 	}
 
