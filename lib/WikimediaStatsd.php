@@ -17,7 +17,7 @@ class WikimediaStatsd {
 		$host = Config::getValue( 'statsd_host' );
 		$port = '8125';
 		if ( strstr( $host, ':' ) ) {
-			return explode( ':', $host );
+			return explode( ':', $host, 2 );
 		}
 		return [ $host, $port ];
 	}
