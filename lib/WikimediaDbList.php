@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @author Adddshore
+ * @author Addshore
  */
 class WikimediaDbList {
 
