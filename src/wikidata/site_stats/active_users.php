@@ -25,14 +25,14 @@ class WikidataActiveUsers{
 		$results = [ 1 => 0, 5 => 0, 100 => 0 ];
 		foreach ( $queryResult as $row ) {
 			$changes = (integer)$row['changes'];
-			if ( $changes > 100 ) {
+			if ( $changes >= 100 ) {
 				$results[100] += 1;
 				$results[5] += 1;
 				$results[1] += 1;
-			} elseif ( $changes > 5 ) {
+			} elseif ( $changes >= 5 ) {
 				$results[5] += 1;
 				$results[1] += 1;
-			} elseif ( $changes > 1 ) {
+			} elseif ( $changes >= 1 ) {
 				$results[1] += 1;
 			}
 		}
