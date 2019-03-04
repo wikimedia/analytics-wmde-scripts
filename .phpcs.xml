@@ -10,7 +10,6 @@
 		<exclude name="MediaWiki.WhiteSpace.SpaceBeforeSingleLineComment" />
 
 		<!-- FIXME -->
-		<exclude name="Generic.Arrays.DisallowLongArraySyntax" />
 		<exclude name="MediaWiki.Commenting.FunctionComment" />
 		<exclude name="MediaWiki.ExtraCharacters.ParenthesesAroundKeyword" />
 		<exclude name="MediaWiki.WhiteSpace.OpeningKeywordParenthesis" />

@@ -26,7 +26,7 @@ class WikidataPagesByNamespace{
 
 		$rows = $queryResult->fetchAll();
 
-		$namespaceTotals = array( 0 => 0, 1 => 0, 120 => 0, 146 => 0, 640 => 0 );
+		$namespaceTotals = [ 0 => 0, 1 => 0, 120 => 0, 146 => 0, 640 => 0 ];
 		foreach( $rows as $row ) {
 			$namespace = $row['namespace'];
 			$type = $row['redirect'] == 1 ? 'redirects' : 'nonredirects';

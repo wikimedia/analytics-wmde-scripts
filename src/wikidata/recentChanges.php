@@ -35,7 +35,7 @@ class WikidataRc {
 	public function execute() {
 		$this->initDateTimes();
 
-		$data = array();
+		$data = [];
 		$rccontinue = null;
 		while( true ) {
 			$rawResponse = WikimediaCurl::curlGetExternal(
@@ -55,7 +55,7 @@ class WikidataRc {
 
 		// Things defined here will be automatically sent to graphite
 		// This can be at most 2 keys deep
-		$counters = array(
+		$counters = [
 			'total' => 0,
 			'bot' => 0,
 			'anon' => 0,
@@ -63,11 +63,11 @@ class WikidataRc {
 			'length' => 0,
 			'mobile' => 0,
 			'maxForAUser' => 0,
-			'oauth' => array(),
-			'summary' => array(),
-		);
+			'oauth' => [],
+			'summary' => [],
+		];
 
-		$userEdits = array();
+		$userEdits = [];
 
 		foreach( $data as $rc ) {
 			$counters['total']++;

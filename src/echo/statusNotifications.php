@@ -6,10 +6,10 @@
  * Sends data about echo mention status notification usage to graphite
  */
 
-$userProperties = array(
+$userProperties = [
 	'failure' =>  'echo-subscriptions-web-mention-failure',
 	'success' => 'echo-subscriptions-web-mention-success',
-);
+];
 
 require_once( __DIR__ . '/../../lib/load.php' );
 $output = Output::forScript( 'echo-statusNotifications' )->markStart();

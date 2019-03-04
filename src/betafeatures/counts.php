@@ -11,7 +11,7 @@
  * To update this list see wgBetaFeaturesWhitelist in
  * https://noc.wikimedia.org/conf/InitialiseSettings.php.txt
  */
-$currentFeatures = array(
+$currentFeatures = [
 	'visualeditor-enable',
 	'beta-feature-flow-user-talk-page',
 	'uls-compact-links',
@@ -28,7 +28,7 @@ $currentFeatures = array(
 	'constraint-suggestions',
 	'templatewizard-betafeature',
 	'php7',
-);
+];
 
 require_once( __DIR__ . '/../../lib/load.php' );
 $output = Output::forScript( 'betafeature-counts' )->markStart();
@@ -38,7 +38,7 @@ $dbs = WikimediaDbList::get( 'all' );
 $sectionMapper = new WikimediaDbSectionMapper();
 $stagingPdo = WikimediaDb::getPdoStaging();
 
-$metrics = array();
+$metrics = [];
 $todaysTableName = 'staging.wmde_analytics_betafeature_users_today';
 $yesterdayTableName = 'staging.wmde_analytics_betafeature_users_yesterday';
 

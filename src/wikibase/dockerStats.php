@@ -10,12 +10,12 @@ require_once( __DIR__ . '/../../lib/load.php' );
 $output = Output::forScript( 'wikibase-dockerStats' )->markStart();
 $metrics = new WikibaseDockerStats( $output );
 $metrics->execute(
-	array(
-		array( 'wikibase', 'wikibase' ),
-		array( 'wikibase', 'wdqs' ),
-		array( 'wikibase', 'wdqs-frontend' ),
-		array( 'wikibase', 'wdqs-proxy' ),
-	)
+	[
+		[ 'wikibase', 'wikibase' ],
+		[ 'wikibase', 'wdqs' ],
+		[ 'wikibase', 'wdqs-frontend' ],
+		[ 'wikibase', 'wdqs-proxy' ],
+	]
 );
 $output->markEnd();
 

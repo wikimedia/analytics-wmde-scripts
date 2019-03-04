@@ -24,7 +24,7 @@ class WikimediaGraphite {
 		if ( strstr( $host, ':' ) ) {
 			return explode( ':', $host );
 		}
-		return array( $host, $port );
+		return [ $host, $port ];
 	}
 
 }

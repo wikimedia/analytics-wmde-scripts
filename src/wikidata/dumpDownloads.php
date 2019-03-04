@@ -12,14 +12,14 @@ $output = Output::forScript( 'wikidata-dumpDownloads' )->markStart();
 $logDirectory = Config::getValue('dump_log_dir');
 
 // Types suffixed with a 1 represent the first part of a joined dump (only count the first)
-$weeklyXmlTypes = array(
+$weeklyXmlTypes = [
 	'pages-articles-multistream',
 	'pages-meta-history',
 	'pages-meta-current',
 	'pages-articles',
-);
+];
 
-$regexSnips = array(
+$regexSnips = [
 	// latest-all.json.EXT
 	// wikidata-20160101-all.json.EXT
 	'full.json' =>
@@ -41,7 +41,7 @@ $regexSnips = array(
 	// wikidatawiki-20160626-pages-meta-hist-incr.xml.EXT
 	'incr.xml' =>
 		'wikidatawiki-[0-9]{8}-pages-meta-hist-incr.xml\.(gz|bz2)',
-);
+];
 
 // Optionally take a date passed into the script
 if ( array_key_exists( 1, $argv ) ) {
@@ -55,14 +55,14 @@ $graphiteDate = date( 'Y-m-d', $targetTime );// Date formatted for graphite
 $fileFormatDayAfter = date( 'Ymd', strtotime( '+1 days', $targetTime ) );
 $fileFormatTargetDate = date( 'Ymd', $targetTime );
 
-$logFiles = array(
+$logFiles = [
 	$logDirectory . DIRECTORY_SEPARATOR . 'access.log-' . $fileFormatDayAfter . '.gz',
 	$logDirectory . DIRECTORY_SEPARATOR . 'access.log-' . $fileFormatTargetDate . '.gz',
-);
+];
 
 $output->outputMessage( 'Targeting date: ' . $targetDate );
 
-$counters = array();
+$counters = [];
 foreach( $logFiles as $logFile ) {
 	$handle = fopen( 'compress.zlib://' . $logFile, 'r' );
 	if ( $handle === false ) {

@@ -16,7 +16,7 @@ $output->markEnd();
 
 class WikidataInstanceOf{
 
-	private $itemIds = array(
+	private $itemIds = [
 		'Q11266439', // template
 		'Q4167836', // category
 		'Q15184295', // module
@@ -32,10 +32,10 @@ class WikidataInstanceOf{
 		'Q83620', // thoroughfare
 		'Q6999', // astronomical object
 		'Q16686448', // other artificial object
-	);
+	];
 
 	public function execute() {
-		$results = array();
+		$results = [];
 		foreach( $this->itemIds as $itemId ) {
 			$results[$itemId] = $this->getResult( $itemId );
 			$this->sleepToAvoidRateLimit();

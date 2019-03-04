@@ -33,18 +33,18 @@ class WikidataStatementCounter{
 
 		$rows = $queryResult->fetchAll();
 
-		$totals = array(
+		$totals = [
 			'item' => 0,
 			'property' => 0,
-		);
-		$maxes = array(
+		];
+		$maxes = [
 			'item' => 0,
 			'property' => 0,
-		);
-		$entitiesWithStatements = array(
+		];
+		$entitiesWithStatements = [
 			'item' => 0,
 			'property' => 0,
-		);
+		];
 		foreach( $rows as $row ) {
 			if( $row['namespace'] == '0' ) {
 				$entityType = 'item';
