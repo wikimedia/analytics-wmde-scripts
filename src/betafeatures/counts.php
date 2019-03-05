@@ -16,6 +16,7 @@ $currentFeatures = array(
 	'beta-feature-flow-user-talk-page',
 	'uls-compact-links',
 	'popups',
+	'popupsreferencepreviews',
 	'cx',
 	'visualeditor-newwikitext',
 	'twocolconflict',
