@@ -60,6 +60,7 @@ eval "$1/src/betafeatures/counts.php" &
 eval "$1/src/catwatch/userprops.php" &
 eval "$1/src/echo/statusNotifications.php" &
 eval "$1/src/revslider/userprops.php" &
+eval "$1/src/rollbackconfirmation/userprops.php" &
 
 date +"%F %T daily.03.sh Waiting!"
 wait
