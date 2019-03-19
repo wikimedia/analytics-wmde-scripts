@@ -3,6 +3,7 @@
 #
 # This script should be run through cron at 12 hours every day.
 # The first parameter should be the directory this repo is checked out into.
+# Scripts that are run here need to be executable (+x) in git.
 
 if [ -z "$1" ]
   then
