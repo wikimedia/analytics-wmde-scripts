@@ -34,8 +34,7 @@ foreach( $dbs as $dbname ) {
 			$row = $queryResult->fetch();
 			@$metrics['daily.rollbackconf.userprops.disables.count'] += $row['disables'];
 		}
-	}
-	else {
+	} else {
 		$sql = "SELECT COUNT(*) AS enables";
 		$sql .= " FROM $dbname.user_properties";
 		$sql .= " WHERE up_property = 'showrollbackconfirmation'";
