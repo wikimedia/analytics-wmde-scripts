@@ -30,7 +30,6 @@ eval "$1/src/wikidata/entityUsage.php" &
 
 # Wikidata Social
 eval "$1/src/wikidata/social/facebook.php" &
-eval "$1/src/wikidata/social/googleplus.php" &
 eval "$1/src/wikidata/social/identica.php" &
 eval "$1/src/wikidata/social/irc.php" &
 eval "$1/src/wikidata/social/mail.php" &
