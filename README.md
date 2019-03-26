@@ -18,7 +18,6 @@ The config keys and values are delimited with spaces.
 
 The file should look something like the below:
 
-    google someHashKeyThing1
     mm-wikidata-pass password1
     mm-wikidatatech-pass password2
     mm-user foo@bar.baz
