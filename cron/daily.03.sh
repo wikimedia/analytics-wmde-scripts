@@ -49,6 +49,7 @@ eval "$1/src/wikidata/site_stats/pages_by_namespace.php" &
 eval "$1/src/wikidata/site_stats/page_size.php" &
 eval "$1/src/wikidata/site_stats/user_languages.php" &
 eval "$1/src/wikidata/site_stats/lexemes.php" &
+eval "$1/src/wikidata/site_stats/recent_changes_by_namespace.php" &
 
 # Misc
 eval "$1/src/wikibase/dockerStats.php" &
