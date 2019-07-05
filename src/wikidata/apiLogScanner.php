@@ -3,7 +3,7 @@
 
 /**
  * @author Addshore
- * Extracts data from api log files including the formats used, actions used and sends the data to graphite.
+ * Extracts data from api log files including the formats used and sends the data to graphite.
  *
  * @note Logrotate is at 6:25, + time for rsync (hourly?), 12 gives us roughly 6 hours
  * @note this is built for stat1002
@@ -52,8 +52,7 @@ class WikidataApiLogScanner {
 		$this->dieIfFilesDoNotExist();
 
 		$counters = [
-			'formats' => [],
-			'actions' => [],
+			'formats' => []
 		];
 
 		$targetDate = $this->targetDate->format( 'Y-m-d' );
@@ -66,22 +65,11 @@ class WikidataApiLogScanner {
 			while ( ( $line = fgets( $handle ) ) !== false ) {
 				if (
 					// Log line should start with out target date
-					strpos( $line, $targetDate ) !== 0 ||
+					strncmp( $line, $targetDate, 10 ) !== 0 ||
 					// And contain wikidatawiki
 					strpos( $line, ' wikidatawiki ' ) === false
 				) {
 					continue;
-				}
-
-				// Extract the action (if set)
-				if ( $actionStart = ( strpos( $line, ' action=' ) + 8 ) ) {
-					$action = strtolower( substr( $line, $actionStart, strpos( $line, ' ', $actionStart ) - $actionStart ) );
-
-					// Only count wikibase modules
-					if ( preg_match( '/^wb\w+$/', $action ) ) {
-						@$counters['actions'][$action]++;
-					}
-
 				}
 
 				// Extract the format (if set)
