@@ -22,6 +22,7 @@ The file should look something like the below:
     mm-wikidatatech-pass password2
     mm-user foo@bar.baz
     dump-dir /tmp/dumps
+    wdqs_host http://wdqs1005.eqiad.wmnet:8888
 
 ## Graphite
 
