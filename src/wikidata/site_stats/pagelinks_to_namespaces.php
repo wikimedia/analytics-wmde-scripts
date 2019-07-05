@@ -7,7 +7,7 @@
  * Used by: no board yet
  */
 
-require_once __DIR__ . '/../../lib/load.php';
+require_once __DIR__ . '/../../../lib/load.php';
 $output = Output::forScript( 'wikidata-site_stats-pagelinks_to_namespaces' )->markStart();
 $metrics = new WikidataPagelinksToNamespaces();
 $metrics->execute( $output );
