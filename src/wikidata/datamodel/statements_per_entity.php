@@ -34,16 +34,16 @@ class WikidataStatementCounter {
 		$rows = $queryResult->fetchAll();
 
 		$totals = [
-			'item' => 0,
-			'property' => 0,
+			'item' => [ 'statements' => 0, 'wb-identifiers' => 0 ],
+			'property' => [ 'statements' => 0, 'wb-identifiers' => 0 ],
 		];
 		$maxes = [
-			'item' => 0,
-			'property' => 0,
+			'item' => [ 'statements' => 0, 'wb-identifiers' => 0 ],
+			'property' => [ 'statements' => 0, 'wb-identifiers' => 0 ],
 		];
 		$entitiesWithStatements = [
-			'item' => 0,
-			'property' => 0,
+			'item' => [ 'statements' => 0, 'wb-identifiers' => 0 ],
+			'property' => [ 'statements' => 0, 'wb-identifiers' => 0 ],
 		];
 		foreach ( $rows as $row ) {
 			if ( $row['namespace'] == '0' ) {
@@ -54,39 +54,52 @@ class WikidataStatementCounter {
 				throw new LogicException( 'Couldn\'t identify namespace: ' . $row['namespace'] );
 			}
 
-			$totals[$entityType] += ( $row['statements'] * $row['count'] );
-			$entitiesWithStatements[$entityType] += $row['count'];
+			if ( $row['pp_propname'] == 'wb-claims' ) {
+				$type = 'statements';
+			} else {
+				$type = $row['pp_propname'];
+			}
+
+			$totals[$entityType][$type] += ( $row['statements'] * $row['count'] );
+			$entitiesWithStatements[$entityType][$type] += $row['count'];
 
 			WikimediaGraphite::sendNow(
-				"daily.wikidata.datamodel.$entityType.statements.count." . $row['statements'],
+				"daily.wikidata.datamodel.$entityType.$type.count." . $row['statements'],
 				$row['count']
 			);
 
-			if ( $maxes[$entityType] < $row['statements'] ) {
-				$maxes[$entityType] = $row['statements'];
+			if ( $maxes[$entityType][$type] < $row['statements'] ) {
+				$maxes[$entityType][$type] = $row['statements'];
 			}
 		}
 
-		foreach ( $totals as $entityType => $value ) {
-			WikimediaGraphite::sendNow(
-				"daily.wikidata.datamodel.$entityType.statements.total",
-				$value
-			);
-			WikimediaGraphite::sendNow(
-				"daily.wikidata.datamodel.$entityType.statements.avg",
-				$value / $entitiesWithStatements[$entityType]
-			);
+		foreach ( $totals as $entityType => $data ) {
+			foreach ( $data as $type => $value ) {
+				WikimediaGraphite::sendNow(
+					"daily.wikidata.datamodel.$entityType.$type.total",
+					$value
+				);
+				if ( $entitiesWithStatements[$entityType][$type] !== 0 ) {
+					WikimediaGraphite::sendNow(
+						"daily.wikidata.datamodel.$entityType.$type.avg",
+						$value / $entitiesWithStatements[$entityType][$type]
+					);
+				}
+			}
 		}
 
-		foreach ( $maxes as $entityType => $value ) {
-			WikimediaGraphite::sendNow(
-				"daily.wikidata.datamodel.$entityType.statements.max",
-				$value
-			);
-			WikimediaGraphite::sendNow(
-				"daily.wikidata.datamodel.$entityType.hasStatements",
-				$entitiesWithStatements[$entityType]
-			);
+		foreach ( $maxes as $entityType => $data ) {
+			foreach ( $data as $type => $value ) {
+				WikimediaGraphite::sendNow(
+					"daily.wikidata.datamodel.$entityType.$type.max",
+					$value
+				);
+				WikimediaGraphite::sendNow(
+					"daily.wikidata.datamodel.$entityType.hasStatements",
+					$entitiesWithStatements[$entityType][$type]
+				);
+			}
+
 		}
 	}
 
