@@ -1,5 +1,6 @@
 .idea/
 config
 *.txt
+*.iml
 /composer.lock
 /vendor/
