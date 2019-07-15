@@ -10,7 +10,9 @@
 
 require_once __DIR__ . '/../../../lib/load.php';
 $output = Output::forScript( 'wikidata-sparql-instanceof' )->markStart();
-$metrics = new WikidataInstanceOf();
+$metrics = new WikidataInstanceOf(
+	Config::getValue( 'wdqs_host' )
+);
 $metrics->execute();
 $output->markEnd();
 
@@ -33,6 +35,16 @@ class WikidataInstanceOf {
 		'Q6999', // astronomical object
 		'Q16686448', // other artificial object
 	];
+
+	/** @var string $wdqsHost */
+	private $wdqsHost;
+
+	/**
+	 * @param string $wdqsHost
+	 */
+	public function __construct( $wdqsHost ) {
+		$this->wdqsHost = $wdqsHost;
+	}
 
 	public function execute() {
 		$results = [];
@@ -71,7 +83,7 @@ class WikidataInstanceOf {
 		 * @see https://phabricator.wikimedia.org/T198623#4396997
 		 */
 		$response = WikimediaCurl::curlGetInternal(
-			'http://wdqs1003.eqiad.wmnet:8888/bigdata/namespace/wdq/sparql?format=json&query=' . urlencode( $query )
+			"{$this->wdqsHost}/bigdata/namespace/wdq/sparql?format=json&query=" . urlencode( $query )
 		);
 
 		if ( $response === false ) {
