@@ -12,6 +12,10 @@ if [ -z "$1" ]
 fi
 date +"%F %T weekly.sh Started!"
 
-#noop
+# dbtables
+eval "$1/src/dbtables/slots.php" &
+
+date +"%F %T weekly.sh Waiting!"
+wait
 
 date +"%F %T weekly.sh Ended!"
