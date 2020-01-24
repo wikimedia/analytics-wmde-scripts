@@ -19,19 +19,19 @@ $metrics->execute();
 class WikidataPhabricator {
 
 	public function execute() {
-		$response = WikimediaCurl::curlGetWithRetryExternal( 'http://phabricator.wikimedia.org/tag/wikidata/' );
+		$response = WikimediaCurl::curlGetWithRetryExternal( 'https://phabricator.wikimedia.org/tag/wikidata/' );
 		$page = $response[1];
 		$page = htmlspecialchars_decode( $page );
 
 		$colNames = [];
 		$colCounts = [];
 
-		$headerParts = explode( '<span class="phui-header-header">', $page );
+		$headerParts = explode( '<div class="phui-header-header">', $page );
 		foreach ( $headerParts as $headerPartKey => $headerPart ) {
 			if ( $headerPartKey == 0 ) {
 				continue;
 			}
-			$innerHeaderParts = explode( '</span>', $headerPart, 2 );
+			$innerHeaderParts = explode( '</div>', $headerPart, 2 );
 			$colNames[] = $innerHeaderParts[0];
 		}
 
