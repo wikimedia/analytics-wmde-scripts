@@ -25,30 +25,15 @@ class WikidataPhabricator {
 
 		$colNames = [];
 		$colCounts = [];
-
-		$headerParts = explode( '<div class="phui-header-header">', $page );
-		foreach ( $headerParts as $headerPartKey => $headerPart ) {
-			if ( $headerPartKey == 0 ) {
-				continue;
-			}
-			$innerHeaderParts = explode( '</div>', $headerPart, 2 );
-			$colNames[] = $innerHeaderParts[0];
-		}
-
-		$dataParts = explode( '"columnMaps":', $page, 2 );
-		$dataParts = explode( '"orderMaps":', $dataParts[1], 2 );
-		$columnMaps = trim( $dataParts[0], ' ,' );
-		$columnMaps = json_decode( $columnMaps, true );
-		foreach ( $columnMaps as $values ) {
-			$colCounts[] = count( $values );
-		}
-
-		// Note: This makes the assumption that the cols are in the same order in the data fields as on the workboard
-		foreach ( $colNames as $key => $name ) {
+		$data = explode( '<data data-javelin-init-kind="behaviors" data-javelin-init-data="', $page );
+		$data = explode( '"></data>', $data[2] )[0];
+		$data = json_decode( $data, true );
+		foreach ( $data['project-boards'][0]['columnTemplates'] as $column ) {
+			$name = $column['effects'][0]['content'];
 			$name = str_replace( ' ', '_', $name );
-			$value = $colCounts[$key];
 			$metricName = 'daily.wikidata.phabricator.board.columns.' . $name;
-			WikimediaGraphite::sendNow( $metricName, $value );
+			$cards = count( $column['cardPHIDs'] );
+			WikimediaGraphite::sendNow( $metricName, $cards );
 		}
 
 		$this->countPriorities( $page );
