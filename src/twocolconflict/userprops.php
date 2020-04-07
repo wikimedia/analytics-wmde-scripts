@@ -3,8 +3,8 @@
 /**
  *
  * @author Christoph Jauera
- * Sends data about the number of users that have the TwoColConflict feature disabled across
- * all wikis as a whole to graphite.
+ * Sends data about the number of unique users that have the TwoColConflict feature disabled
+ * at at least one wiki to graphite.
  * Used by: https://grafana.wikimedia.org/dashboard/db/mediawiki-twocolconflict
  */
 
@@ -15,7 +15,7 @@ $dbs = WikimediaDbList::get( 'all' );
 
 $sectionMapper = new WikimediaDbSectionMapper();
 
-$metrics = [];
+$values = [];
 
 foreach ( $dbs as $dbname ) {
 	if ( $dbname === 'labswiki' || $dbname === 'labtestwiki' ) {
@@ -24,7 +24,7 @@ foreach ( $dbs as $dbname ) {
 
 	$pdo = WikimediaDb::getPdoNewHosts( $dbname, $sectionMapper );
 
-	$sql = 'SELECT COUNT(*) AS disables';
+	$sql = 'SELECT user_name';
 	$sql .= " FROM $dbname.user_properties";
 	$sql .= " WHERE up_property = 'twocolconflict-enabled'";
 	$sql .= ' AND up_value = 0';
@@ -33,11 +33,10 @@ foreach ( $dbs as $dbname ) {
 	if ( $queryResult === false ) {
 		$output->outputMessage( "TwoColConflict DB query failed for $dbname, Skipping!!" );
 	} else {
-		$row = $queryResult->fetch();
-		@$metrics['daily.twocolconflict.userprops.disables.count'] += $row['disables'];
+		foreach ( $queryResult as $row ) {
+			$values[ $row['user_name'] ] = 1;
+		}
 	}
 }
 
-foreach ( $metrics as $metricName => $value ) {
-	WikimediaGraphite::sendNow( $metricName, $value );
-}
+WikimediaGraphite::sendNow( 'daily.twocolconflict.userprops.disables.count', count( $values ) );
