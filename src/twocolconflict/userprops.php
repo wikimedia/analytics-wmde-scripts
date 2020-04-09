@@ -26,6 +26,7 @@ foreach ( $dbs as $dbname ) {
 
 	$sql = 'SELECT user_name';
 	$sql .= " FROM $dbname.user_properties";
+	$sql .= " JOIN $dbname.user ON up_user = user_id";
 	$sql .= " WHERE up_property = 'twocolconflict-enabled'";
 	$sql .= ' AND up_value = 0';
 	$queryResult = $pdo->query( $sql );
