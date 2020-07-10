@@ -24,11 +24,14 @@ foreach ( $dbs as $dbname ) {
 
 	$pdo = WikimediaDb::getPdoNewHosts( $dbname, $sectionMapper );
 
-	$sql = 'SELECT user_name';
-	$sql .= " FROM $dbname.user_properties";
-	$sql .= " JOIN $dbname.user ON up_user = user_id";
-	$sql .= " WHERE up_property = 'twocolconflict-enabled'";
-	$sql .= ' AND up_value = 0';
+	$sql = "
+		SELECT user_name
+		FROM $dbname.user_properties
+		JOIN $dbname.user ON up_user = user_id
+		WHERE
+			(up_property = 'twocolconflict-enabled' OR up_property = 'twocolconflict')
+			AND up_value = 0
+	";
 	$queryResult = $pdo->query( $sql );
 
 	if ( $queryResult === false ) {
@@ -40,4 +43,4 @@ foreach ( $dbs as $dbname ) {
 	}
 }
 
-WikimediaGraphite::sendNow( 'daily.twocolconflict.userprops.disables.count', count( $values ) );
+WikimediaGraphite::sendNow( 'daily.twocolconflict.userprops.all_disables.count', count( $values ) );
