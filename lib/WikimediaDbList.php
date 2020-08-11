@@ -20,7 +20,12 @@ class WikimediaDbList {
 			throw new RuntimeException( 'Failed to get db list ' . $list . '! (html found)' );
 		}
 		$dbs = explode( "\n", $dblist[1] );
-		$dbs = array_filter( $dbs );
+		$dbs = array_filter(
+			$dbs,
+			function ( $name ) {
+				return $name && $name[0] !== '#';
+			}
+		);
 		return $dbs;
 	}
 
