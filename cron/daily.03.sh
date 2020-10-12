@@ -14,8 +14,6 @@ fi
 date +"%F %T daily.03.sh Started!"
 
 # Wikidata Data model
-# Disabled per T154601
-# eval "$1/src/wikidata/datamodel/terms_by_language.php" &
 eval "$1/src/wikidata/datamodel/sitelinks_per_item.php" &
 eval "$1/src/wikidata/datamodel/statements_per_entity.php" &
 eval "$1/src/wikidata/datamodel/sitelinks_per_site.php" &
