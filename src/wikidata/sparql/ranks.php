@@ -18,9 +18,9 @@ class WikidataSparqlRanks {
 	public function execute() {
 		$query = 'PREFIX wikibase: <http://wikiba.se/ontology#>';
 		$query .= 'SELECT * WHERE { {';
-		$query .= 'SELECT (count(distinct(?s)) AS ?preferred) WHERE {?s wikibase:rank wikibase:PreferredRank}';
+		$query .= 'SELECT (COUNT(*) AS ?preferred) WHERE {?s wikibase:rank wikibase:PreferredRank}';
 		$query .= '} UNION {';
-		$query .= 'SELECT (count(distinct(?s)) AS ?deprecated) WHERE {?s wikibase:rank wikibase:DeprecatedRank}';
+		$query .= 'SELECT (COUNT(*) AS ?deprecated) WHERE {?s wikibase:rank wikibase:DeprecatedRank}';
 		$query .= '} }';
 
 		$response = WikimediaCurl::curlGetExternal(
