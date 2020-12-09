@@ -16,23 +16,16 @@ $output->markEnd();
 class WikidataSparqlRanks {
 
 	public function execute() {
-		$query = 'PREFIX wikibase: <http://wikiba.se/ontology#>';
-		$query .= 'SELECT * WHERE { {';
-		$query .= 'SELECT (COUNT(*) AS ?preferred) WHERE {?s wikibase:rank wikibase:PreferredRank}';
-		$query .= '} UNION {';
-		$query .= 'SELECT (COUNT(*) AS ?deprecated) WHERE {?s wikibase:rank wikibase:DeprecatedRank}';
-		$query .= '} }';
+		$query = <<<'SPARQL'
+PREFIX wikibase: <http://wikiba.se/ontology#>
+SELECT * WHERE { {
+  SELECT (COUNT(*) AS ?preferred) WHERE {?s wikibase:rank wikibase:PreferredRank}
+} UNION {
+  SELECT (COUNT(*) AS ?deprecated) WHERE {?s wikibase:rank wikibase:DeprecatedRank}
+} }
+SPARQL;
 
-		$response = WikimediaCurl::curlGetExternal(
-			'https://query.wikidata.org/bigdata/namespace/wdq/sparql?format=json&query=' .
-			urlencode( $query )
-		);
-
-		if ( $response === false ) {
-			throw new RuntimeException( 'The SPARQL request failed!' );
-		}
-
-		$data = json_decode( $response[1], true );
+		$data = WikimediaSparql::query( $query );
 
 		foreach ( $data['results']['bindings'] as $binding ) {
 

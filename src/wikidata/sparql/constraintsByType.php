@@ -24,13 +24,7 @@ SELECT ?type (COUNT(DISTINCT ?constraint) AS ?count) WHERE {
 GROUP BY ?type
 EOF;
 
-		$response = WikimediaCurl::curlGetWithRetryExternal( 'https://query.wikidata.org/sparql?format=json&query=' . urlencode( $query ) );
-
-		if ( $response === false ) {
-			throw new RuntimeException( 'The SPARQL request failed!' );
-		}
-
-		$data = json_decode( $response[1], true );
+		$data = WikimediaSparql::query( $query );
 
 		foreach ( $data['results']['bindings'] as $binding ) {
 			$this->handleBinding( $binding );
@@ -42,7 +36,7 @@ EOF;
 			return;
 		}
 		$constraintCount = $binding['count']['value'];
-		$constraint = str_replace( 'http://www.wikidata.org/entity/', '', $binding['type']['value'] );
+		$constraint = WikimediaSparql::entityIriToId( $binding['type']['value'] );
 		WikimediaGraphite::sendNow( 'daily.wikidata.constraints.byType.' . $constraint, (int)$constraintCount );
 	}
 
