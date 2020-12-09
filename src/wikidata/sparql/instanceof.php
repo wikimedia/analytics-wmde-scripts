@@ -10,9 +10,7 @@
 
 require_once __DIR__ . '/../../../lib/load.php';
 $output = Output::forScript( 'wikidata-sparql-instanceof' )->markStart();
-$metrics = new WikidataInstanceOf(
-	Config::getValue( 'wdqs_host' )
-);
+$metrics = new WikidataInstanceOf();
 $metrics->execute();
 $output->markEnd();
 
@@ -36,21 +34,11 @@ class WikidataInstanceOf {
 		'Q16686448', // other artificial object
 	];
 
-	/** @var string */
-	private $wdqsHost;
-
-	/**
-	 * @param string $wdqsHost
-	 */
-	public function __construct( $wdqsHost ) {
-		$this->wdqsHost = $wdqsHost;
-	}
-
 	public function execute() {
 		$results = [];
 		foreach ( $this->itemIds as $itemId ) {
 			$results[$itemId] = $this->getResult( $itemId );
-			$this->sleepToAvoidRateLimit();
+			WikimediaSparql::sleepToAvoidRateLimit();
 		}
 
 		foreach ( $results as $key => $value ) {
@@ -58,43 +46,21 @@ class WikidataInstanceOf {
 		}
 	}
 
-	private function sleepToAvoidRateLimit() {
-		sleep( 2 );
-	}
-
 	private function getResult( $itemId ) {
-		$query = 'PREFIX wd: <http://www.wikidata.org/entity/>';
-		$query .= 'PREFIX wdt: <http://www.wikidata.org/prop/direct/>';
-		$query .= 'SELECT (count(distinct(?s)) AS ?scount) WHERE {';
-		$query .= "?s wdt:P31/wdt:P279* wd:$itemId";
-		$query .= '}';
-		$result = $this->doSparqlQuery( $query );
-		return $result['results']['bindings'][0]['scount']['value'];
-	}
+		$query = <<<SPARQL
+PREFIX wd: <http://www.wikidata.org/entity/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+SELECT (count(distinct(?s)) AS ?scount) WHERE {
+  ?s wdt:P31/wdt:P279* wd:$itemId.
+}
+SPARQL;
 
-	/**
-	 * @param string $query
-	 *
-	 * @return array
-	 */
-	private function doSparqlQuery( $query ) {
-		/**
-		 * Access to wdqs1003 from the analytics stat* machines is allowed by firewall rules.
-		 * @see https://phabricator.wikimedia.org/T198623#4396997
-		 */
-		$response = WikimediaCurl::curlGetInternal(
-			"{$this->wdqsHost}/bigdata/namespace/wdq/sparql?format=json&query=" . urlencode( $query )
-		);
-
-		if ( $response === false ) {
-			throw new RuntimeException( 'The SPARQL request failed!' );
-		}
-
+		$result = WikimediaSparql::query( $query );
 		Output::forScript( 'wikidata-sparql-instanceof' )->outputMessage(
-			__METHOD__ . ': ' . $query . ' ' . json_encode( $response )
+			__METHOD__ . ': ' . $query . ' ' . json_encode( $result )
 		);
 
-		return json_decode( $response[1], true );
+		return $result['results']['bindings'][0]['scount']['value'];
 	}
 
 }
