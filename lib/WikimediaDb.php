@@ -5,7 +5,7 @@
  */
 class WikimediaDb {
 
-	const WIKIDATA_DB = 'wikidatawiki';
+	public const WIKIDATA_DB = 'wikidatawiki';
 
 	/**
 	 * @param string $wiki

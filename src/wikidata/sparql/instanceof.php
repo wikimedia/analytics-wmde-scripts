@@ -36,7 +36,7 @@ class WikidataInstanceOf {
 		'Q16686448', // other artificial object
 	];
 
-	/** @var string $wdqsHost */
+	/** @var string */
 	private $wdqsHost;
 
 	/**
