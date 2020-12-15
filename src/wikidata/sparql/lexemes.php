@@ -46,6 +46,7 @@ SELECT ?languageItem (COUNT(*) AS ?count) WHERE {
 GROUP BY ?languageItem
 ORDER BY DESC(?count)
 SPARQL;
+		$date = date( DATE_ATOM );
 		$results = WikimediaSparql::query( $query );
 		$sentResults = 0;
 		$otherCount = 0;
@@ -53,7 +54,7 @@ SPARQL;
 			if ( ++$sentResults <= self::MAX_DETAILED_RESULTS ) { // send detailed metrics for top language items
 				$languageItem = WikimediaSparql::entityIriToId( $result['languageItem']['value'] );
 				$count = $result['count']['value'];
-				WikimediaGraphite::sendNow( "daily.wikidata.datamodel.lexeme.languageItem.$languageItem.lexemes", $count );
+				WikimediaGraphite::send( "daily.wikidata.datamodel.lexeme.languageItem.$languageItem.lexemes", $count, $date );
 			} else {
 				$otherCount += (int)$result['count']['value'];
 			}
@@ -61,7 +62,7 @@ SPARQL;
 		if ( $sentResults > self::MAX_DETAILED_RESULTS ) {
 			// send an aggregate count for the remaining language items,
 			// so that sum(daily.wikidata.datamodel.lexemes.languageItem.*.lexemes) is accurate
-			WikimediaGraphite::sendNow( 'daily.wikidata.datamodel.lexeme.languageItem.other.lexemes', $otherCount );
+			WikimediaGraphite::send( 'daily.wikidata.datamodel.lexeme.languageItem.other.lexemes', $otherCount, $date );
 		}
 	}
 
@@ -74,6 +75,7 @@ SELECT ?languageItem (COUNT(?sense) AS ?count) WHERE {
 GROUP BY ?languageItem
 ORDER BY DESC(?count)
 SPARQL;
+		$date = date( DATE_ATOM );
 		$results = WikimediaSparql::query( $query );
 		$sentResults = 0;
 		$otherCount = 0;
@@ -81,7 +83,7 @@ SPARQL;
 			if ( ++$sentResults <= self::MAX_DETAILED_RESULTS ) { // send detailed metrics for top language items
 				$languageItem = WikimediaSparql::entityIriToId( $result['languageItem']['value'] );
 				$count = $result['count']['value'];
-				WikimediaGraphite::sendNow( "daily.wikidata.datamodel.lexeme.languageItem.$languageItem.senses", $count );
+				WikimediaGraphite::send( "daily.wikidata.datamodel.lexeme.languageItem.$languageItem.senses", $count, $date );
 			} else {
 				$otherCount += (int)$result['count']['value'];
 			}
@@ -89,7 +91,7 @@ SPARQL;
 		if ( $sentResults > self::MAX_DETAILED_RESULTS ) {
 			// send an aggregate count for the remaining language items,
 			// so that sum(daily.wikidata.datamodel.lexemes.languageItem.*.senses) is accurate
-			WikimediaGraphite::sendNow( 'daily.wikidata.datamodel.lexeme.languageItem.other.senses', $otherCount );
+			WikimediaGraphite::send( 'daily.wikidata.datamodel.lexeme.languageItem.other.senses', $otherCount, $date );
 		}
 	}
 
@@ -102,6 +104,7 @@ SELECT ?languageItem (COUNT(?form) AS ?count) WHERE {
 GROUP BY ?languageItem
 ORDER BY DESC(?count)
 SPARQL;
+		$date = date( DATE_ATOM );
 		$results = WikimediaSparql::query( $query );
 		$sentResults = 0;
 		$otherCount = 0;
@@ -109,7 +112,7 @@ SPARQL;
 			if ( ++$sentResults <= self::MAX_DETAILED_RESULTS ) { // send detailed metrics for top language items
 				$languageItem = WikimediaSparql::entityIriToId( $result['languageItem']['value'] );
 				$count = $result['count']['value'];
-				WikimediaGraphite::sendNow( "daily.wikidata.datamodel.lexeme.languageItem.$languageItem.forms", $count );
+				WikimediaGraphite::send( "daily.wikidata.datamodel.lexeme.languageItem.$languageItem.forms", $count, $date );
 			} else {
 				$otherCount += (int)$result['count']['value'];
 			}
@@ -117,7 +120,7 @@ SPARQL;
 		if ( $sentResults > self::MAX_DETAILED_RESULTS ) {
 			// send an aggregate count for the remaining language items,
 			// so that sum(daily.wikidata.datamodel.lexemes.languageItem.*.forms) is accurate
-			WikimediaGraphite::sendNow( 'daily.wikidata.datamodel.lexeme.languageItem.other.forms', $otherCount );
+			WikimediaGraphite::send( 'daily.wikidata.datamodel.lexeme.languageItem.other.forms', $otherCount, $date );
 		}
 	}
 
@@ -130,6 +133,7 @@ SELECT ?languageItem (SUM(IF(?hasSenses, 0, 1)) AS ?count) WHERE {
 GROUP BY ?languageItem
 ORDER BY DESC(?count)
 SPARQL;
+		$date = date( DATE_ATOM );
 		$results = WikimediaSparql::query( $query );
 		$sentResults = 0;
 		$otherCount = 0;
@@ -137,7 +141,7 @@ SPARQL;
 			if ( ++$sentResults <= self::MAX_DETAILED_RESULTS ) { // send detailed metrics for top language items
 				$languageItem = WikimediaSparql::entityIriToId( $result['languageItem']['value'] );
 				$count = $result['count']['value'];
-				WikimediaGraphite::sendNow( "daily.wikidata.datamodel.lexeme.languageItem.$languageItem.withoutSenses", $count );
+				WikimediaGraphite::send( "daily.wikidata.datamodel.lexeme.languageItem.$languageItem.withoutSenses", $count, $date );
 			} else {
 				$otherCount += (int)$result['count']['value'];
 			}
@@ -145,7 +149,7 @@ SPARQL;
 		if ( $sentResults > self::MAX_DETAILED_RESULTS ) {
 			// send an aggregate count for the remaining language items,
 			// so that sum(daily.wikidata.datamodel.lexemes.languageItem.*.withoutSenses) is accurate
-			WikimediaGraphite::sendNow( 'daily.wikidata.datamodel.lexeme.languageItem.other.withoutSenses', $otherCount );
+			WikimediaGraphite::send( 'daily.wikidata.datamodel.lexeme.languageItem.other.withoutSenses', $otherCount, $date );
 		}
 	}
 
@@ -158,6 +162,7 @@ SELECT ?languageItem (SUM(IF(?hasForms, 0, 1)) AS ?count) WHERE {
 GROUP BY ?languageItem
 ORDER BY DESC(?count)
 SPARQL;
+		$date = date( DATE_ATOM );
 		$results = WikimediaSparql::query( $query );
 		$sentResults = 0;
 		$otherCount = 0;
@@ -165,7 +170,7 @@ SPARQL;
 			if ( ++$sentResults <= self::MAX_DETAILED_RESULTS ) { // send detailed metrics for top language items
 				$languageItem = WikimediaSparql::entityIriToId( $result['languageItem']['value'] );
 				$count = $result['count']['value'];
-				WikimediaGraphite::sendNow( "daily.wikidata.datamodel.lexeme.languageItem.$languageItem.withoutForms", $count );
+				WikimediaGraphite::send( "daily.wikidata.datamodel.lexeme.languageItem.$languageItem.withoutForms", $count, $date );
 			} else {
 				$otherCount += (int)$result['count']['value'];
 			}
@@ -173,7 +178,7 @@ SPARQL;
 		if ( $sentResults > self::MAX_DETAILED_RESULTS ) {
 			// send an aggregate count for the remaining language items,
 			// so that sum(daily.wikidata.datamodel.lexemes.languageItem.*.withoutForms) is accurate
-			WikimediaGraphite::sendNow( 'daily.wikidata.datamodel.lexeme.languageItem.other.withoutForms', $otherCount );
+			WikimediaGraphite::send( 'daily.wikidata.datamodel.lexeme.languageItem.other.withoutForms', $otherCount, $date );
 		}
 	}
 
@@ -185,6 +190,7 @@ SELECT ?lexicalCategoryItem (COUNT(*) AS ?count) WHERE {
 GROUP BY ?lexicalCategoryItem
 ORDER BY DESC(?count)
 SPARQL;
+		$date = date( DATE_ATOM );
 		$results = WikimediaSparql::query( $query );
 		$sentResults = 0;
 		$otherCount = 0;
@@ -192,7 +198,7 @@ SPARQL;
 			if ( ++$sentResults <= self::MAX_DETAILED_RESULTS ) { // send detailed metrics for top lexical category items
 				$lexicalCategoryItem = WikimediaSparql::entityIriToId( $result['lexicalCategoryItem']['value'] );
 				$count = $result['count']['value'];
-				WikimediaGraphite::sendNow( "daily.wikidata.datamodel.lexeme.lexicalCategoryItem.$lexicalCategoryItem.lexemes", $count );
+				WikimediaGraphite::send( "daily.wikidata.datamodel.lexeme.lexicalCategoryItem.$lexicalCategoryItem.lexemes", $count, $date );
 			} else {
 				$otherCount += (int)$result['count']['value'];
 			}
@@ -200,7 +206,7 @@ SPARQL;
 		if ( $sentResults > self::MAX_DETAILED_RESULTS ) {
 			// send an aggregate count for the remaining lexical category items,
 			// so that sum(daily.wikidata.datamodel.lexemes.lexicalCategoryItem.*.lexemes) is accurate
-			WikimediaGraphite::sendNow( 'daily.wikidata.datamodel.lexeme.lexicalCategoryItem.other.lexemes', $otherCount );
+			WikimediaGraphite::send( 'daily.wikidata.datamodel.lexeme.lexicalCategoryItem.other.lexemes', $otherCount, $date );
 		}
 	}
 
@@ -212,6 +218,7 @@ SELECT ?grammaticalFeatureItem (COUNT(*) AS ?count) WHERE {
 GROUP BY ?grammaticalFeatureItem
 ORDER BY DESC(?count)
 SPARQL;
+		$date = date( DATE_ATOM );
 		$results = WikimediaSparql::query( $query );
 		$sentResults = 0;
 		$otherCount = 0;
@@ -219,7 +226,7 @@ SPARQL;
 			if ( ++$sentResults <= self::MAX_DETAILED_RESULTS ) { // send detailed metrics for top grammatical feature items
 				$grammaticalFeatureItem = WikimediaSparql::entityIriToId( $result['grammaticalFeatureItem']['value'] );
 				$count = $result['count']['value'];
-				WikimediaGraphite::sendNow( "daily.wikidata.datamodel.lexeme.grammaticalFeatureItem.$grammaticalFeatureItem.forms", $count );
+				WikimediaGraphite::send( "daily.wikidata.datamodel.lexeme.grammaticalFeatureItem.$grammaticalFeatureItem.forms", $count, $date );
 			} else {
 				$otherCount += (int)$result['count']['value'];
 			}
@@ -227,7 +234,7 @@ SPARQL;
 		if ( $sentResults > self::MAX_DETAILED_RESULTS ) {
 			// send an aggregate count for the remaining grammatical feature items,
 			// so that sum(daily.wikidata.datamodel.lexemes.grammaticalFeatureItem.*.forms) is accurate
-			WikimediaGraphite::sendNow( 'daily.wikidata.datamodel.lexeme.grammaticalFeatureItem.other.forms', $otherCount );
+			WikimediaGraphite::send( 'daily.wikidata.datamodel.lexeme.grammaticalFeatureItem.other.forms', $otherCount, $date );
 		}
 	}
 
@@ -240,6 +247,7 @@ SELECT ?languageCode (COUNT(*) AS ?count) WHERE {
 GROUP BY ?languageCode
 ORDER BY DESC(?count)
 SPARQL;
+		$date = date( DATE_ATOM );
 		$results = WikimediaSparql::query( $query );
 		$sentResults = 0;
 		$otherCount = 0;
@@ -247,7 +255,7 @@ SPARQL;
 			if ( ++$sentResults <= self::MAX_DETAILED_RESULTS ) { // send detailed metrics for top language codes
 				$languageCode = $result['languageCode']['value'];
 				$count = $result['count']['value'];
-				WikimediaGraphite::sendNow( "daily.wikidata.datamodel.lexeme.languageCode.$languageCode.lemmas", $count );
+				WikimediaGraphite::send( "daily.wikidata.datamodel.lexeme.languageCode.$languageCode.lemmas", $count, $date );
 			} else {
 				$otherCount += (int)$result['count']['value'];
 			}
@@ -255,7 +263,7 @@ SPARQL;
 		if ( $sentResults > self::MAX_DETAILED_RESULTS ) {
 			// send an aggregate count for the remaining language codes,
 			// so that sum(daily.wikidata.datamodel.lexemes.languageCode.*.lemmas) is accurate
-			WikimediaGraphite::sendNow( 'daily.wikidata.datamodel.lexeme.languageCode.other.lemmas', $otherCount );
+			WikimediaGraphite::send( 'daily.wikidata.datamodel.lexeme.languageCode.other.lemmas', $otherCount, $date );
 		}
 	}
 
@@ -268,6 +276,7 @@ SELECT ?languageCode (COUNT(*) AS ?count) WHERE {
 GROUP BY ?languageCode
 ORDER BY DESC(?count)
 SPARQL;
+		$date = date( DATE_ATOM );
 		$results = WikimediaSparql::query( $query );
 		$sentResults = 0;
 		$otherCount = 0;
@@ -275,7 +284,7 @@ SPARQL;
 			if ( ++$sentResults <= self::MAX_DETAILED_RESULTS ) { // send detailed metrics for top language codes
 				$languageCode = $result['languageCode']['value'];
 				$count = $result['count']['value'];
-				WikimediaGraphite::sendNow( "daily.wikidata.datamodel.lexeme.languageCode.$languageCode.representations", $count );
+				WikimediaGraphite::send( "daily.wikidata.datamodel.lexeme.languageCode.$languageCode.representations", $count, $date );
 			} else {
 				$otherCount += (int)$result['count']['value'];
 			}
@@ -283,7 +292,7 @@ SPARQL;
 		if ( $sentResults > self::MAX_DETAILED_RESULTS ) {
 			// send an aggregate count for the remaining language codes,
 			// so that sum(daily.wikidata.datamodel.lexemes.languageCode.*.representations) is accurate
-			WikimediaGraphite::sendNow( 'daily.wikidata.datamodel.lexeme.languageCode.other.representations', $otherCount );
+			WikimediaGraphite::send( 'daily.wikidata.datamodel.lexeme.languageCode.other.representations', $otherCount, $date );
 		}
 	}
 
