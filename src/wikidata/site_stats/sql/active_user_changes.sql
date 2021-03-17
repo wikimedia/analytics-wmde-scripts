@@ -1,5 +1,5 @@
 SELECT
-		actor_name AS user,
+		actor_name,
 		COUNT( * ) as changes
 	FROM wikidatawiki.recentchanges
 	JOIN wikidatawiki.actor ON rc_actor = actor_id
