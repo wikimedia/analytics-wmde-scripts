@@ -1,6 +1,6 @@
 SELECT
 		actor_name,
-		rc_namespace,
+		rc_namespace as namespace,
 		COUNT( * ) as changes
 	FROM wikidatawiki.recentchanges
 	JOIN wikidatawiki.actor ON rc_actor = actor_id
