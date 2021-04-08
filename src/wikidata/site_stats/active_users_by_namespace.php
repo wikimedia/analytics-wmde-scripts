@@ -52,7 +52,7 @@ class WikidataActiveUsersByNamespace {
 		}
 	}
 
-	private function collectNamespaces( array $rows ) {
+	private function collectNamespaces( Traversable $rows ) {
 		$namespaces = [];
 		foreach ( $rows as $row ) {
 			$namespaces[ $row['namespace'] ] = 1;
