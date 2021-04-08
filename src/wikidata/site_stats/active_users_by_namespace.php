@@ -23,13 +23,14 @@ class WikidataActiveUsersByNamespace {
 		}
 
 		$results = [];
-		foreach ( $this->collectNamespaces( $queryResult ) as $namespace ) {
-			$results[ $namespace ] = [ 1 => 0, 5 => 0, 100 => 0 ];
-		}
-
 		foreach ( $queryResult as $row ) {
 			$namespace = (int)$row['namespace'];
 			$changes = (int)$row['changes'];
+
+			if ( !array_key_exists( $namespace, $results ) ) {
+				$results[ $namespace ] = [ 1 => 0, 5 => 0, 100 => 0 ];
+			}
+
 			if ( $changes >= 100 ) {
 				$results[$namespace][100] += 1;
 				$results[$namespace][5] += 1;
@@ -50,14 +51,5 @@ class WikidataActiveUsersByNamespace {
 				);
 			}
 		}
-	}
-
-	private function collectNamespaces( Traversable $rows ) {
-		$namespaces = [];
-		foreach ( $rows as $row ) {
-			$namespaces[ $row['namespace'] ] = 1;
-		}
-
-		return array_keys( $namespaces );
 	}
 }
