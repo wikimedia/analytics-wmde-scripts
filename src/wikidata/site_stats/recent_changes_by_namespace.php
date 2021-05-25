@@ -18,26 +18,16 @@ class WikidataRecentChangesByNamespace {
 	public function execute( Output $output ) {
 		$dateTimeFrom = new DateTime( 'midnight 1 day ago UTC' );
 		$dateTimeTo = new DateTime( 'midnight today UTC' );
-		$editsByNamespace = [
-			0 => 0, # (Item)
-			1 => 0, # Talk (item talk)
-			120 => 0, # Property
-			121 => 0, # Property talk
-			146 => 0, # Lexeme
-			147 => 0, # Lexeme talk
-			640 => 0, # Schema
-			641 => 0, # Schema talk
-		];
+		$editsByNamespace = [];
 
 		$pdo = WikimediaDb::getPdoNewHosts( WikimediaDb::WIKIDATA_DB, new WikimediaDbSectionMapper() );
 		$pdoStatement = $pdo->prepare( file_get_contents( __DIR__ . '/sql/recent_changes_by_namespace.sql' ) );
-		$queryResult = $pdoStatement->execute( array_merge(
+		$queryResult = $pdoStatement->execute(
 			[
 				$dateTimeFrom->format( 'YmdHis' ),
 				$dateTimeTo->format( 'YmdHis' ),
-			],
-			array_keys( $editsByNamespace )
-		) );
+			]
+		);
 
 		if ( $queryResult === false ) {
 			$output->outputMessage( 'DB query failed:' );
