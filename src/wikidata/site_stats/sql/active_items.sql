@@ -1,5 +1,5 @@
 SELECT COUNT(*) AS count
-FROM (
+FROM ( -- subquery is more flexible and also faster than SELECT COUNT(DISTINCT rc_title)
 	SELECT rc_title
 	FROM wikidatawiki.recentchanges
 	WHERE rc_namespace = 0
