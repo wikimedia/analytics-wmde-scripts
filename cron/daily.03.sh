@@ -42,6 +42,7 @@ eval "$1/src/wikidata/site_stats/total_edits.php" &
 eval "$1/src/wikidata/site_stats/total_pages.php" &
 eval "$1/src/wikidata/site_stats/active_users.php" &
 eval "$1/src/wikidata/site_stats/active_users_by_namespace.php" &
+eval "$1/src/wikidata/site_stats/active_items.php" &
 eval "$1/src/wikidata/site_stats/users.php" &
 eval "$1/src/wikidata/site_stats/user_groups.php" &
 eval "$1/src/wikidata/site_stats/rolling_rc.php" &
