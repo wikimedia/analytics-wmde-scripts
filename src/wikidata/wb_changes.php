@@ -23,6 +23,6 @@ if ( !$rows ) {
 $max = DateTime::createFromFormat( 'YmdHis', $rows[0]['max'] );
 $min = DateTime::createFromFormat( 'YmdHis', $rows[0]['min'] );
 $now = new DateTime();
-WikimediaGraphite::sendNow( 'wikidata.dispatch_job.wb_changes.freshest', $max->diff( $now )->format( 's' ) );
-WikimediaGraphite::sendNow( 'wikidata.dispatch_job.wb_changes.stalest', $min->diff( $now )->format( 's' ) );
+WikimediaGraphite::sendNow( 'wikidata.dispatch_job.wb_changes.freshest', $now->getTimestamp() - $max->getTimestamp() );
+WikimediaGraphite::sendNow( 'wikidata.dispatch_job.wb_changes.stalest', $now->getTimestamp() - $min->getTimestamp() );
 $output->markEnd();
