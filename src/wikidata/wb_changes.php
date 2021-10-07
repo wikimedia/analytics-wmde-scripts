@@ -9,7 +9,7 @@ require_once __DIR__ . '/../../lib/load.php';
 $output = Output::forScript( 'wikidata-wb_changes' )->markStart();
 
 $pdo = WikimediaDb::getPdoNewHosts( WikimediaDb::WIKIDATA_DB, new WikimediaDbSectionMapper() );
-$queryResult = $pdo->query( 'SELECT MAX(change_time) AS max, MIN(change_time) AS min FROM wikidatawiki.wb_changes;' );
+$queryResult = $pdo->query( 'SELECT MAX(change_time) AS max, MIN(change_time) AS min, COUNT(*) AS changes FROM wikidatawiki.wb_changes;' );
 
 if ( $queryResult === false ) {
 	throw new RuntimeException( 'Something went wrong with the db query' );
@@ -25,4 +25,5 @@ $min = DateTime::createFromFormat( 'YmdHis', $rows[0]['min'] );
 $now = new DateTime();
 WikimediaGraphite::sendNow( 'wikidata.dispatch_job.wb_changes.freshest', $now->getTimestamp() - $max->getTimestamp() );
 WikimediaGraphite::sendNow( 'wikidata.dispatch_job.wb_changes.stalest', $now->getTimestamp() - $min->getTimestamp() );
+WikimediaGraphite::sendNow( 'wikidata.dispatch_job.wb_changes.number_of_rows', $rows[0]['changes'] );
 $output->markEnd();
