@@ -12,7 +12,6 @@ if [ -z "$1" ]
 fi
 date +"%F %T minutely.sh Started!"
 
-eval "$1/src/wikidata/dispatch.php" &
 eval "$1/src/wikidata/wb_changes.php" &
 eval "$1/src/wikidata/maxlag.php" &
 eval "$1/src/wikidata/recentChanges.php" &
