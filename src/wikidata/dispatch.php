@@ -18,6 +18,9 @@ if ( $json === false ) {
 }
 
 $json = json_decode( $json[1], true );
+if ( !array_key_exists( 'dispatch', $json['query']['statistics'] ) ) {
+	throw new RuntimeException( 'No dispatch stats in API response' );
+}
 $json = $json['query']['statistics']['dispatch'];
 
 $stats = [];
