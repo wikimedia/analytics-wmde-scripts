@@ -27,13 +27,10 @@ eval "$1/src/wikidata/dumpScanProcessing.php" &
 eval "$1/src/wikidata/entityUsage.php" &
 
 # Wikidata Social
-eval "$1/src/wikidata/social/facebook.php" &
 eval "$1/src/wikidata/social/identica.php" &
-eval "$1/src/wikidata/social/irc.php" &
 eval "$1/src/wikidata/social/mail.php" &
 eval "$1/src/wikidata/social/newsletter.php" &
 eval "$1/src/wikidata/social/techmail.php" &
-eval "$1/src/wikidata/social/twitter.php" &
 
 # Wikidata site stats
 eval "$1/src/wikidata/site_stats/good_articles.php" &
