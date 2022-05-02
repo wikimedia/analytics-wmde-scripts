@@ -8,7 +8,7 @@
  * Mailman does not provide an api or a public count thus this metric needs to access the roster using a registered email and password.
  *
  * This script requires various bits of private infomation which are currently in the config file.
- * This file contains 1 value per line, the key and value are seperated with a space
+ * This file contains 1 value per line, the key and value are separated with a space
  *
  * An example of this file would be:
  *
