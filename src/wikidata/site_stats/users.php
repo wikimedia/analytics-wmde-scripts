@@ -16,13 +16,13 @@ class WikidataUsers {
 
 	public function execute() {
 		$pdo = WikimediaDb::getPdoNewHosts( WikimediaDb::WIKIDATA_DB, new WikimediaDbSectionMapper() );
-		$result = $pdo->query( 'select ss_users from wikidatawiki.site_stats' );
+		$result = $pdo->query( 'select sum(ss_users) as users from wikidatawiki.site_stats' );
 
 		if ( $result === false ) {
 			throw new RuntimeException( 'Something went wrong with the db query for users' );
 		}
 		$rows = $result->fetchAll();
-		$count = $rows[0]['ss_users'];
+		$count = $rows[0]['users'];
 		WikimediaGraphite::sendNow( 'daily.wikidata.site_stats.users', $count );
 	}
 

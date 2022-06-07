@@ -16,13 +16,13 @@ class WikidataGoodArticles {
 
 	public function execute() {
 		$pdo = WikimediaDb::getPdoNewHosts( 'wikidatawiki', new WikimediaDbSectionMapper() );
-		$result = $pdo->query( 'select ss_good_articles from wikidatawiki.site_stats' );
+		$result = $pdo->query( 'select sum(ss_good_articles) as good_articles from wikidatawiki.site_stats' );
 
 		if ( $result === false ) {
 			throw new RuntimeException( 'Something went wrong with the db query for good_articles' );
 		}
 		$rows = $result->fetchAll();
-		$count = $rows[0]['ss_good_articles'];
+		$count = $rows[0]['good_articles'];
 		WikimediaGraphite::sendNow( 'daily.wikidata.site_stats.good_articles', $count );
 	}
 

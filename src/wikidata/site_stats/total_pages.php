@@ -16,13 +16,13 @@ class WikidataTotalPages {
 
 	public function execute() {
 		$pdo = WikimediaDb::getPdoNewHosts( WikimediaDb::WIKIDATA_DB, new WikimediaDbSectionMapper() );
-		$result = $pdo->query( 'select ss_total_pages from wikidatawiki.site_stats' );
+		$result = $pdo->query( 'select sum(ss_total_pages) as total_pages from wikidatawiki.site_stats' );
 
 		if ( $result === false ) {
 			throw new RuntimeException( 'Something went wrong with the db query for total_pages' );
 		}
 		$rows = $result->fetchAll();
-		$count = $rows[0]['ss_total_pages'];
+		$count = $rows[0]['total_pages'];
 		WikimediaGraphite::sendNow( 'daily.wikidata.site_stats.total_pages', $count );
 	}
 
