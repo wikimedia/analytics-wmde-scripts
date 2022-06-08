@@ -19,7 +19,7 @@ class WikidataRc {
 	private $graphiteDateTime;
 
 	/**
-	 * Set graphite and wm api times separatly
+	 * Set graphite and wm api times separately
 	 */
 	private function initDateTimes() {
 		$defaultTimezone = date_default_timezone_get();
