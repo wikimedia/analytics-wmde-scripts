@@ -15,6 +15,10 @@ $output->markEnd();
 class WikidataLexemes {
 
 	public function execute() {
+		$this->collectLexemePagePropStats();
+	}
+
+	private function collectLexemePagePropStats() {
 		$pdo = WikimediaDb::getPdoNewHosts( WikimediaDb::WIKIDATA_DB, new WikimediaDbSectionMapper() );
 		$queryResult = $pdo->query( file_get_contents( __DIR__ . '/sql/lexemes.sql' ) );
 
