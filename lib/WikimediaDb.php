@@ -63,7 +63,7 @@ class WikimediaDb {
 			$sql .= '(';
 			foreach ( $row as $datum ) {
 				$datum = json_encode( $datum );
-				$sql .= "${datum},";
+				$sql .= "{$datum},";
 			}
 			$sql = substr( $sql, 0, -1 ) . '),';
 		}
