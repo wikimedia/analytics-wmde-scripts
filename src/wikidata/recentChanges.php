@@ -4,7 +4,7 @@
 /**
  * @author Addshore
  * Gather data about the recent changes on Wikidata.org and send them ot graphite.
- * Used by: https://grafana.wikimedia.org/dashboard/db/wikidata-edits
+ * Used by: https://grafana.wikimedia.org/d/000000170/wikidata-edits
  */
 
 require_once __DIR__ . '/../../lib/load.php';
