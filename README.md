@@ -8,6 +8,8 @@ This repo is cloned in the statistics::wmde role in the wmf puppet repo.
 
 The master branch is a development branch.
 The production branch is automatically deployed and run on WMF analytics servers.
+When there is no ongoing development, both branches should contain the same code;
+normally, this is achieved by cherry-picking each reviewed change from master to production.
 
 ## Configuration
 
