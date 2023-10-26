@@ -5,7 +5,7 @@
  * @author Addshore
  * Created as part of https://phabricator.wikimedia.org/T68025
  * Sends data about the number slots on some wikis to graphite.
- * Used by: TBA...
+ * Used by: https://grafana.wikimedia.org/d/pwq8ZIxWk/large-site-db-tables
  */
 
 require_once __DIR__ . '/../../lib/load.php';
