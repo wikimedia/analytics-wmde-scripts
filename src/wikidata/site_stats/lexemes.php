@@ -3,7 +3,8 @@
 
 /**
  * @author Ladsgroup
- * Used by: https://grafana.wikimedia.org/dashboard/db/wikidata-site-stats
+ * Used by: https://grafana.wikimedia.org/d/000000167/wikidata-datamodel
+ *          https://grafana.wikimedia.org/d/UHV96YJGk/wikidata-datamodel-lexemes
  */
 
 require_once __DIR__ . '/../../../lib/load.php';
