@@ -4,7 +4,7 @@
 /**
  * @author Addshore
  *
- * Used by: https://grafana.wikimedia.org/dashboard/db/wikidata-datamodel-statements
+ * Used by: https://grafana.wikimedia.org/d/000000175/wikidata-datamodel-statements
  */
 
 require_once __DIR__ . '/../../../lib/load.php';
