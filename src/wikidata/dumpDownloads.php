@@ -4,6 +4,7 @@
  * @author Addshore
  * Track the downloads of Wikidata dumps
  * https://phabricator.wikimedia.org/T119070
+ * Used by: https://grafana.wikimedia.org/d/000000264/wikidata-dump-downloads
  */
 
 require_once __DIR__ . '/../../lib/load.php';

@@ -4,6 +4,7 @@
  *
  * @author Addshore
  * Track stats related to the wikibase docker images
+ * Used by: https://grafana.wikimedia.org/d/000000516/wikibase-docker-images
  */
 
 require_once __DIR__ . '/../../lib/load.php';
