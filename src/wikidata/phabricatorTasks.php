@@ -6,7 +6,7 @@
  * Sends data about the number of tasks in the wikidata project on phabricator and their state on
  * the main wikidata workboard (which column they are in)
  * NOTE: This may need to be updated after every phabricator update
- * Used by: https://grafana.wikimedia.org/dashboard/db/wikidata-tasks
+ * Used by: https://grafana.wikimedia.org/d/000000172/wikidata-tasks
  */
 
 require_once __DIR__ . '/../../lib/load.php';

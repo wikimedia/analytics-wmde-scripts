@@ -3,8 +3,8 @@
 /**
  * @author Addshore
  * Track Wikidata usage on clients in graphite
- * Used by: https://grafana.wikimedia.org/dashboard/db/wikidata-entity-usage
- *          https://grafana.wikimedia.org/dashboard/db/wikidata-entity-usage-project
+ * Used by: https://grafana.wikimedia.org/d/000000160/wikidata-entity-usage
+ *          https://grafana.wikimedia.org/d/000000176/wikidata-entity-usage-project
  *
  */
 

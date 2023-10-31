@@ -3,7 +3,7 @@
 
 /**
  * @author Addshore
- * Used by: https://grafana.wikimedia.org/dashboard/db/wikidata-site-stats
+ * Used by: https://grafana.wikimedia.org/d/000000162/wikidata-site-stats
  */
 
 require_once __DIR__ . '/../../../lib/load.php';
