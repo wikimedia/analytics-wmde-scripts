@@ -3,6 +3,8 @@
 
 /**
  * This script collects statistics about lexicographical data from the query service.
+ *
+ * Used by: https://grafana.wikimedia.org/d/UHV96YJGk/wikidata-datamodel-lexemes
  */
 
 require_once __DIR__ . '/../../../lib/load.php';
