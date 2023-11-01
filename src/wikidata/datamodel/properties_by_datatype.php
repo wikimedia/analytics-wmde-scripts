@@ -3,7 +3,7 @@
 
 /**
  * @author Addshore
- * Used by: https://grafana.wikimedia.org/dashboard/db/wikidata-datamodel
+ * Used by: https://grafana.wikimedia.org/d/000000167/wikidata-datamodel?viewPanel=6
  */
 
 require_once __DIR__ . '/../../../lib/load.php';

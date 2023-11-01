@@ -3,6 +3,7 @@
 
 /**
  * @author Amir Sarabadani
+ * Used by: https://grafana.wikimedia.org/d/000000344/wikidata-quality-constraints-wbqc?viewPanel=12
  */
 
 require_once __DIR__ . '/../../../lib/load.php';

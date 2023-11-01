@@ -4,7 +4,7 @@
 /**
  * Count edits having certain tags and send them to Graphite.
  * See T236893 for more information.
- * Used by: https://grafana.wikimedia.org/d/000000170/wikidata-edits
+ * Used by: https://grafana.wikimedia.org/d/000000170/wikidata-edits?viewPanel=13
  */
 
 require_once __DIR__ . '/../../../lib/load.php';
