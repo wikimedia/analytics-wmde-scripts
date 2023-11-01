@@ -4,7 +4,7 @@
 /**
  * Count edits in entity and associated talk namespaces on Wikidata.org
  * and send them to Graphite.
- * Used by: no board yet
+ * Used by: https://grafana.wikimedia.org/d/000000162/wikidata-site-stats?viewPanel=23
  */
 
 require_once __DIR__ . '/../../../lib/load.php';
