@@ -3,7 +3,7 @@
 /**
  * Sends data about the number of users that have the rollback confirmation prompt feature
  * actively disabled or enabled across all wikis as a whole to graphite.
- * Used by: https://grafana.wikimedia.org/dashboard/db/mediawiki-rollbackconf
+ * Used by: https://grafana.wikimedia.org/d/QJo90l9mz/mediawiki-rollbackconf
  */
 
 require_once __DIR__ . '/../../lib/load.php';

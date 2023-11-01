@@ -6,7 +6,7 @@
  * Sends data about the number of users that have the catwatch feature enabled by default across
  * all wikis as a whole to graphite along side the number of wikis that have at least 1 user
  * using the feature by default.
- * Used by: https://grafana.wikimedia.org/dashboard/db/mediawiki-catwatch-feature
+ * Used by: https://grafana.wikimedia.org/d/000000189/catwatch-feature
  */
 
 require_once __DIR__ . '/../../lib/load.php';

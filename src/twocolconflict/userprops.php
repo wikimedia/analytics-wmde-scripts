@@ -5,7 +5,7 @@
  * @author Christoph Jauera
  * Sends data about the number of unique users that have the TwoColConflict feature disabled
  * at at least one wiki to graphite.
- * Used by: https://grafana.wikimedia.org/dashboard/db/mediawiki-twocolconflict
+ * Used by: https://grafana.wikimedia.org/d/000000346/twocolconflict
  */
 
 require_once __DIR__ . '/../../lib/load.php';
