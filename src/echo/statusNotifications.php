@@ -4,6 +4,8 @@
  *
  * @author Addshore
  * Sends data about echo mention status notification usage to graphite
+ * Used by: https://grafana.wikimedia.org/d/000000270/echo-mention-status-notifications
+ * See https://phabricator.wikimedia.org/T140928
  */
 
 $userProperties = [

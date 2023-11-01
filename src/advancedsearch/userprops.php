@@ -5,7 +5,7 @@
  * @author Christoph Jauera
  * Sends data about the number of users that have the AdvancedSearch feature disabled across
  * all wikis as a whole to graphite.
- * Used by: https://grafana.wikimedia.org/dashboard/db/mediawiki-advancedsearch
+ * Used by: https://grafana.wikimedia.org/d/000000434/mediawiki-advancedsearch
  */
 
 require_once __DIR__ . '/../../lib/load.php';
