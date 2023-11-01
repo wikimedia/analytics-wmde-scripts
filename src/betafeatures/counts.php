@@ -8,26 +8,20 @@
  */
 
 /**
- * To update this list see wgBetaFeaturesWhitelist in
+ * To update this list see wgBetaFeaturesAllowList in
  * https://noc.wikimedia.org/conf/InitialiseSettings.php.txt
  */
 $currentFeatures = [
-	'visualeditor-enable',
 	'beta-feature-flow-user-talk-page',
 	'uls-compact-links',
 	'popups',
-	'popupsreferencepreviews',
+	'popupsreferencepreviews', // TechWish
 	'cx',
-	'visualeditor-newwikitext',
-	'twocolconflict',
-	'rcenhancedfilters',
-	'codemirror-syntax-highlight',
-	'advancedsearch',
-	'visualeditor-visualdiffpage',
-	'fileexporter',
-	'constraint-suggestions',
-	'templatewizard-betafeature',
-	'php7',
+	'twocolconflict', // TechWish
+	'discussiontools-betaenable',
+	'ipinfo-beta-feature-enable',
+	'wikistories-storiesonarticles',
+	'proofreadpage-editinsequence',
 ];
 
 require_once __DIR__ . '/../../lib/load.php';
