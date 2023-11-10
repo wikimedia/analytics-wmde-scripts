@@ -58,13 +58,6 @@ eval "$1/src/wikibase/dockerStats.php" &
 eval "$1/src/wikidata/phabricatorTasks.php" &
 eval "$1/src/wikidata/showcaseItems.php" &
 eval "$1/src/wikidata/dumpDownloads.php" &
-eval "$1/src/advancedsearch/userprops.php" &
-eval "$1/src/betafeatures/counts.php" &
-eval "$1/src/catwatch/userprops.php" &
-eval "$1/src/echo/statusNotifications.php" &
-eval "$1/src/revslider/userprops.php" &
-eval "$1/src/rollbackconfirmation/userprops.php" &
-eval "$1/src/twocolconflict/userprops.php" &
 
 date +"%F %T daily.03.sh Waiting!"
 wait
