@@ -39,16 +39,37 @@ class WikimediaDbSectionMapper {
 	}
 
 	private function loadDbMap() {
-		$eqiadDbData = WikimediaCurl::curlGetExternal( 'https://noc.wikimedia.org/conf/db-production.php.txt' );
-
-		if ( $eqiadDbData === false ) {
-			throw new RuntimeException( 'Failed to get db data! (request failed)' );
+		$this->dbMap = [];
+		$allByName = array_flip( $this->loadDbList( 'all' ) );
+		$sections = [ 's1', 's2', 's3', 's4', 's5', 's6', 's7', 's8', 's11' ];
+		foreach ( $sections as $section ) {
+			$wikis = $this->loadDbList( $section );
+			foreach ( $wikis as $wiki ) {
+				$this->dbMap[$wiki] = $section;
+				unset( $allByName[$wiki] );
+			}
 		}
+		if ( $allByName !== [] ) {
+			throw new RuntimeException(
+				'Error: We tried to get all wikis from ' . implode( ',', $sections ) .
+				', but the following all.dblist wikis were not found: ' . implode( ',', array_keys( $allByName ) )
+			);
+		}
+	}
 
-		$map = [];
-		preg_match_all( "/(?<=sectionsByDB' \=>) \[(.+?)\]/s", $eqiadDbData[1], $map );
-		eval( '$map = ' . $map[0][0] . ';' );
-		$this->dbMap = $map;
+	private function loadDbList( $name ) {
+		$response = WikimediaCurl::curlGetExternal( "https://noc.wikimedia.org/conf/dblists/$name.dblist" );
+		if ( $response === false ) {
+			throw new RuntimeException( "Failed to get db data for $name.dblist! (request failed)" );
+		}
+		$lines = explode( "\n", trim( $response[1] ) );
+		$wikis = [];
+		foreach ( $lines as $line ) {
+			if ( $line && $line[0] !== '#' ) {
+				$wikis[] = $line;
+			}
+		}
+		return $wikis;
 	}
 
 	/**
