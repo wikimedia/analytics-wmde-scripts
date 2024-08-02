@@ -124,7 +124,7 @@ class WikimediaCurl {
 	 * @param string $headerText
 	 * @return array
 	 */
-	private function parseHeaders( $headerText ) {
+	private static function parseHeaders( $headerText ) {
 		$headers = [];
 		foreach ( explode( "\r\n", $headerText ) as $i => $line ) {
 			if ( $i === 0 ) {
