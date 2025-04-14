@@ -26,6 +26,7 @@ class WikidataActiveItems {
 				'daily.wikidata.site_stats.active_items.1', // items with at least 1 edit
 				$row['count']
 			);
+			WikimediaStatsdExporter::sendNow( 'daily_wikidata_siteStats_activeItemsWithAtLeast1Edit_total', $row['count'] );
 		}
 	}
 

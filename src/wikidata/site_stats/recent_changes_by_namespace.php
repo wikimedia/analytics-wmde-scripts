@@ -45,6 +45,11 @@ class WikidataRecentChangesByNamespace {
 				'daily.wikidata.site_stats.edits_by_namespace.' . $namespace,
 				$count
 			);
+			WikimediaStatsdExporter::sendNow(
+				'daily_wikidata_siteStats_editsByNamespace_total',
+				$count,
+				[ 'namespace' => $namespace ]
+			);
 		}
 	}
 

@@ -24,6 +24,7 @@ class WikidataTotalEdits {
 		$rows = $result->fetchAll();
 		$count = $rows[0]['total_edits'];
 		WikimediaGraphite::sendNow( 'daily.wikidata.site_stats.total_edits', $count );
+		WikimediaStatsdExporter::sendNow( 'daily_wikidata_siteStats_edits_total', $count );
 	}
 
 }

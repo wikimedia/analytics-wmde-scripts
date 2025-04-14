@@ -29,6 +29,10 @@ class WikidataRollingRc {
 				'daily.wikidata.site_stats.rc.rolling30d',
 				$row['count']
 			);
+			WikimediaStatsdExporter::sendNow(
+				'daily_wikidata_siteStats_rc_rolling30d_total',
+				$row['count']
+			);
 		}
 	}
 

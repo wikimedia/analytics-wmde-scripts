@@ -35,7 +35,10 @@ class WikidataPagesByNamespace {
 				"daily.wikidata.site_stats.pages_by_namespace.$namespace.$type",
 				$row['count']
 			);
-
+			WikimediaStatsdExporter::sendNow(
+				'daily_wikidata_siteStats_pagesByNamespace_total',
+				$row['count'],
+			[ 'namespace' => $namespace, 'type' => $type ] );
 			$namespaceTotals[$row['namespace']] += $row['count'];
 		}
 

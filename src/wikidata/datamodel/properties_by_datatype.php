@@ -29,6 +29,7 @@ class WikidataPropertiesByDataType {
 		foreach ( $rows as $row ) {
 			$type = $row['type'];
 			WikimediaGraphite::sendNow( "daily.wikidata.datamodel.property.datatype.$type", $row['count'] );
+			WikimediaStatsdExporter::sendNow( 'daily_wikidata_datamodel_property_datatype_total', $row['count'], [ 'datatype' => $type ] );
 		}
 	}
 

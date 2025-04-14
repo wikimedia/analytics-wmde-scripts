@@ -22,12 +22,14 @@ if ( !$rows ) {
 
 $numberOfChanges = $rows[ 0 ][ 'changes' ];
 WikimediaGraphite::sendNow( 'wikidata.dispatch_job.wb_changes.number_of_rows', $numberOfChanges );
-
+WikimediaStatsdExporter::sendNow( 'wikidata_dispatch_job_wb_changes_number_of_rows_total', $numberOfChanges );
 if ( $numberOfChanges > 0 ) {
 	$max = DateTime::createFromFormat( 'YmdHis', $rows[ 0 ][ 'max' ] );
 	$min = DateTime::createFromFormat( 'YmdHis', $rows[ 0 ][ 'min' ] );
 	$now = new DateTime();
 	WikimediaGraphite::sendNow( 'wikidata.dispatch_job.wb_changes.freshest', $now->getTimestamp() - $max->getTimestamp() );
 	WikimediaGraphite::sendNow( 'wikidata.dispatch_job.wb_changes.stalest', $now->getTimestamp() - $min->getTimestamp() );
+	WikimediaStatsdExporter::sendNow( 'wikidata_dispatch_job_wb_changes_freshest_timestamp_seconds', $max->getTimestamp() );
+	WikimediaStatsdExporter::sendNow( 'wikidata_dispatch_job_wb_changes_stalest_timestamp_seconds', $min->getTimestamp() );
 }
 $output->markEnd();

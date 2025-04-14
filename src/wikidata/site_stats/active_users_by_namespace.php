@@ -49,6 +49,9 @@ class WikidataActiveUsersByNamespace {
 						"daily.wikidata.site_stats.active_users_by_namespace.$namespace.$changeCount",
 						$users
 				);
+				WikimediaStatsdExporter::sendNow( 'daily_wikidata_siteStats_activeUsersByNamespace_total',
+				$users,
+				[ 'namespace' => $namespace, 'changeCount' => $changeCount ] );
 			}
 		}
 	}

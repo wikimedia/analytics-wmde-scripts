@@ -23,6 +23,7 @@ class WikidataSocialMetric {
 	public function execute() {
 		$value = $this->getFacebookLikes();
 		WikimediaGraphite::sendNow( 'daily.wikidata.social.facebook.likes', $value );
+		WikimediaStatsdExporter::sendNow( 'daily_wikidata_social_facebook_likes_total', $value );
 	}
 
 	private function getFacebookLikes() {

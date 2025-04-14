@@ -95,6 +95,11 @@ class WikidataApiLogScanner {
 					'daily.wikidata.api.' . $name . '.' . $key,
 					$value
 				);
+				$this->sendMetricToPrometheus(
+					'daily_wikidata_api_total',
+					$value,
+					[ 'name' => $name, 'key' => $key ]
+				);
 			}
 		}
 	}
@@ -118,6 +123,12 @@ class WikidataApiLogScanner {
 	private function sendMetric( $name, $value ) {
 		$targetDate = $this->targetDate->format( 'Y-m-d' );
 		WikimediaGraphite::send( $name, $value, $targetDate );
+	}
+
+	private function sendMetricToPrometheus( $name, $value, $labels ) {
+		$targetDate = $this->targetDate->format( 'Y-m-d' );
+		$labels['targetDate'] = $targetDate;
+		WikimediaStatsdExporter::sendNow( $name, $value, $labels );
 	}
 
 }

@@ -38,6 +38,7 @@ class WikidataUserGroups {
 			$rows = $result->fetchAll();
 			$count = $rows[0]['count'];
 			WikimediaGraphite::sendNow( "daily.wikidata.site_stats.user_groups.$metricName", $count );
+			WikimediaStatsdExporter::sendNow( 'daily_wikidata_siteStats_userGroups_total', $count, [ 'name' => $metricName ] );
 		}
 	}
 

@@ -21,6 +21,7 @@ class WikidataSocialMetric {
 	public function execute() {
 		$value = $this->getNewsletterSubscribers();
 		WikimediaGraphite::sendNow( 'daily.wikidata.social.newsletter.subscribers', $value );
+		WikimediaStatsdExporter::sendNow( 'daily_wikidata_social_newsletter_subscribers_total', $value );
 	}
 
 	private function getNewsletterSubscribers() {

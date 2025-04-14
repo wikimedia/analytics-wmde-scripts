@@ -45,6 +45,11 @@ class WikidataRecentChangesByTags {
 				'daily.wikidata.site_stats.edits_by_tags.' . $tag,
 				$count
 			);
+			WikimediaStatsdExporter::sendNow(
+				'daily_wikidata_siteStats_editsByTags_total',
+				$count,
+				[ 'tag' => $tag ]
+			);
 		}
 	}
 

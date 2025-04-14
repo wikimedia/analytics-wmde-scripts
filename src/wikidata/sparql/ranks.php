@@ -32,13 +32,14 @@ SPARQL;
 			if ( array_key_exists( 'preferred', $binding ) ) {
 				$rankCount = $binding['preferred']['value'];
 				WikimediaGraphite::sendNow( 'daily.wikidata.datamodel.ranks.preferred', $rankCount );
+				WikimediaStatsdExporter::sendNow( 'daily_wikidata_datamodel_ranks_total', $rankCount, [ 'rank' => 'preferred' ] );
 			} elseif ( array_key_exists( 'deprecated', $binding ) ) {
 				$rankCount = $binding['deprecated']['value'];
 				WikimediaGraphite::sendNow( 'daily.wikidata.datamodel.ranks.deprecated', $rankCount );
+				WikimediaStatsdExporter::sendNow( 'daily_wikidata_datamodel_ranks_total', $rankCount, [ 'rank' => 'deprecated' ] );
 			} else {
 				trigger_error( 'SPARQL binding returned with unexpected keys ' . json_encode( $binding ), E_USER_WARNING );
 			}
-
 		}
 	}
 

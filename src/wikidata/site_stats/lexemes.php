@@ -45,6 +45,10 @@ class WikidataLexemes {
 			'daily.wikidata.site_stats.lexemes.new.ui',
 			$row['count']
 		);
+		WikimediaStatsdExporter::sendNow(
+			'daily_wikidata_siteStats_lexemes_new_ui_total',
+			$row['count']
+		);
 	}
 
 	private function collectLexemePagePropStats() {
@@ -62,6 +66,7 @@ class WikidataLexemes {
 				'daily.wikidata.site_stats.lexemes.' . $row['pp_propname'],
 				$row['count']
 			);
+			WikimediaStatsdExporter::sendNow( 'daily_wikidata_siteStats_lexemes_total', $row['count'], [ 'pp_propname' => $row['pp_propname'] ] );
 		}
 	}
 

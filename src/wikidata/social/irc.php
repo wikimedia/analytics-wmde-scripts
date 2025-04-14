@@ -23,6 +23,7 @@ class WikidataSocialMetric {
 	public function execute() {
 		$value = $this->getIrcChannelMembers();
 		WikimediaGraphite::sendNow( 'daily.wikidata.social.irc.members', $value );
+		WikimediaStatsdExporter::sendNow( 'daily_wikidata_social_irc_members_total', $value );
 	}
 
 	private function getIrcChannelMembers() {
