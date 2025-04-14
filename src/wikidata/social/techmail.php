@@ -36,6 +36,10 @@ class WikidataSocialMetric {
 			'daily.wikidata.social.email.wikidata-tech.subscribers',
 			$value
 		);
+		WikimediaStatsdExporter::sendNow(
+			'daily_wikidata_social_email_wikidataTech_subscribers_total',
+			$value
+		);
 	}
 
 	private function getMailingListSubscribers( $listname, $mailmanuser, $mailmanpass ) {

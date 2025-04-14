@@ -24,6 +24,7 @@ class WikidataGoodArticles {
 		$rows = $result->fetchAll();
 		$count = $rows[0]['good_articles'];
 		WikimediaGraphite::sendNow( 'daily.wikidata.site_stats.good_articles', $count );
+		WikimediaStatsdExporter::sendNow( 'daily_wikidata_siteStats_goodArticles', $count );
 	}
 
 }

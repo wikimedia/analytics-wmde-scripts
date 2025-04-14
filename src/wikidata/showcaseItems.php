@@ -25,5 +25,6 @@ $pageContent = $pageArray['revisions'][0]['*'];
 $showcaseItems = substr_count( $pageContent, '{{ShowcaseItem|' );
 
 WikimediaGraphite::sendNow( 'daily.wikidata.showcaseItems', $showcaseItems );
+WikimediaStatsdExporter::sendNow( 'daily_wikidata_showcaseItems_total', $showcaseItems );
 
 $output->markEnd();

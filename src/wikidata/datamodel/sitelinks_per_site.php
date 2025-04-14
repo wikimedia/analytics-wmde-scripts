@@ -31,6 +31,11 @@ class WikidataSiteSitelinkCounter {
 				'daily.wikidata.datamodel.item.sitelinks.sites.' . $row['site'],
 				$row['count']
 			);
+			WikimediaStatsdExporter::sendNow(
+				'daily_wikidata_datamodel_item_sitelinks_sites_total',
+				$row['count'],
+				[ 'site_id' => $row['site'] ]
+			);
 		}
 	}
 

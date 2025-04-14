@@ -34,6 +34,7 @@ class WikidataPhabricator {
 			$metricName = 'daily.wikidata.phabricator.board.columns.' . $name;
 			$cards = count( $column['cardPHIDs'] );
 			WikimediaGraphite::sendNow( $metricName, $cards );
+			WikimediaStatsdExporter::sendNow( 'daily_wikidata_phabricator_board_columns_total', $cards, [ 'column' => $name ] );
 		}
 
 		$this->countPriorities( $page );
@@ -68,6 +69,7 @@ class WikidataPhabricator {
 				$value = 0;
 			}
 			WikimediaGraphite::sendNow( $metricName, $value );
+			WikimediaStatsdExporter::sendNow( 'daily_wikidata_phabricator_board_priorities_total', $value, [ 'name' => $name ] );
 		}
 	}
 

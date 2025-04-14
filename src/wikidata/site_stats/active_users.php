@@ -39,6 +39,7 @@ class WikidataActiveUsers {
 
 		foreach ( $results as $changeCount => $users ) {
 			WikimediaGraphite::sendNow( "daily.wikidata.site_stats.active_users.$changeCount", $users );
+			WikimediaStatsdExporter::sendNow( 'daily_wikidata_siteStats_activeUsers_total', $users, [ 'changeCount' => $changeCount ] );
 		}
 	}
 

@@ -42,6 +42,7 @@ foreach ( $dirs as $dir ) {
 	foreach ( $data as $name => $value ) {
 		$metricName = "daily.wikidata.datamodel.$name";
 		WikimediaGraphite::send( $metricName, $value, $date );
+		WikimediaStatsdExporter::sendNow( 'daily_wikidata_datamodel_total', $value, [ 'name' => $name, 'targetDate' => $date ] );
 	}
 
 }

@@ -24,6 +24,7 @@ class WikidataTotalPages {
 		$rows = $result->fetchAll();
 		$count = $rows[0]['total_pages'];
 		WikimediaGraphite::sendNow( 'daily.wikidata.site_stats.total_pages', $count );
+		WikimediaStatsdExporter::sendNow( 'daily_wikidata_siteStats_pages_total', $count );
 	}
 
 }

@@ -22,6 +22,7 @@ class WikidataSocialMetric {
 	public function execute() {
 		$value = $this->getTwitterFollowers();
 		WikimediaGraphite::sendNow( 'daily.wikidata.social.twitter.followers', $value );
+		WikimediaStatsdExporter::sendNow( 'daily_wikidata_social_twitter_followers_total', $value );
 	}
 
 	/**

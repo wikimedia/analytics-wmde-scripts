@@ -39,6 +39,7 @@ EOF;
 		$constraintCount = $binding['count']['value'];
 		$constraint = WikimediaSparql::entityIriToId( $binding['type']['value'] );
 		WikimediaGraphite::sendNow( 'daily.wikidata.constraints.byType.' . $constraint, (int)$constraintCount );
+		WikimediaStatsdExporter::sendNow( 'daily_wikidata_constraints_byType_total', (int)$constraintCount, [ 'type' => $constraint ] );
 	}
 
 }

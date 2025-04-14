@@ -106,6 +106,7 @@ foreach ( $logFiles as $logFile ) {
 foreach ( $counters as $type => $value ) {
 	$metricName = 'daily.wikidata.dump_requests.' . $type;
 	WikimediaGraphite::send( $metricName, $value, $graphiteDate );
+	WikimediaStatsdExporter::sendNow( 'daily_wikidata_dumpRequests_total', $value, [ 'type' => $type, 'targetDate' => $graphiteDate ] );
 }
 
 $output->markEnd();

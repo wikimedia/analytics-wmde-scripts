@@ -22,6 +22,7 @@ class WikidataSocialMetric {
 	public function execute() {
 		$value = $this->getIdenticaFollowers();
 		WikimediaGraphite::sendNow( 'daily.wikidata.social.identica.followers', $value );
+		WikimediaStatsdExporter::sendNow( 'daily_wikidata_social_identica_followers_total', $value );
 	}
 
 	private function getIdenticaFollowers() {

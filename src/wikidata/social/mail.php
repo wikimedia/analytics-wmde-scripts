@@ -33,6 +33,7 @@ class WikidataSocialMetric {
 			Config::getValue( 'mm-wikidata-pass' )
 		);
 		WikimediaGraphite::sendNow( 'daily.wikidata.social.email.wikidata.subscribers', $value );
+		WikimediaStatsdExporter::sendNow( 'daily_wikidata_social_email_wikidata_subscribers_total', $value );
 	}
 
 	private function getMailingListSubscribers( $listname, $mailmanuser, $mailmanpass ) {

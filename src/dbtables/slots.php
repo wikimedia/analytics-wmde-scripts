@@ -40,6 +40,7 @@ foreach ( $dbs as $dbname ) {
 			$metricName = "daily.dbtables.$dbname.slots.byRole.$role";
 
 			WikimediaGraphite::sendNow( $metricName, $value );
+			WikimediaStatsdExporter::sendNow( 'daily_dbtables_slots_total', $value, [ 'name' => $dbname, 'role' => $role ] );
 		}
 	}
 }

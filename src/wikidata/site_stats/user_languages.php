@@ -36,6 +36,10 @@ class WikidataUserLanguages {
 				'daily.wikidata.site_stats.babel_users',
 				$row['count']
 			);
+			WikimediaStatsdExporter::sendNow(
+				'daily_wikidata_siteStats_babelUsers_total',
+				$row['count']
+			);
 		}
 	}
 
@@ -67,6 +71,11 @@ class WikidataUserLanguages {
 			WikimediaGraphite::sendNow(
 				"daily.wikidata.site_stats.language_usage.$lang",
 				$count
+			);
+			WikimediaStatsdExporter::sendNow(
+				'daily_wikidata_siteStats_languageUsage_total',
+				$row['count'],
+				[ 'language' => $lang ]
 			);
 		}
 	}

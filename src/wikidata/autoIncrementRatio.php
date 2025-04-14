@@ -49,14 +49,16 @@ foreach ( $queryResult as $row ) {
 		$maxAutoIncrementValue *= 2;
 	}
 
-	$ratio = ( $autoIncrementValue * 100 ) / $maxAutoIncrementValue;
+	$ratio = $autoIncrementValue / $maxAutoIncrementValue;
+	$percent = ( $autoIncrementValue * 100 ) / $maxAutoIncrementValue;
 	// Ignore below 1%
-	if ( $ratio < 1 ) {
+	if ( $percent < 1 ) {
 		continue;
 	}
 
 	$metricName = 'daily.wikidata.reliability_metrics.auto_increment_ratio.' . $tableName;
-	WikimediaGraphite::sendNow( $metricName, $ratio );
+	WikimediaGraphite::sendNow( $metricName, $percent );
+	WikimediaStatsdExporter::sendNow( 'daily_wikidata_reliability_metrics_auto_increment_ratio', $ratio, [ 'table' => $tableName ] );
 }
 
 $output->markEnd();

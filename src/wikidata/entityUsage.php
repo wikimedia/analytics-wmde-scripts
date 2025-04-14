@@ -40,6 +40,11 @@ foreach ( $dbs as $dbname ) {
 			$modifierSuffix = isset( $aspectWithModifier[1] ) ? '_' . $aspectWithModifier[1] : '';
 			$metricName = 'daily.wikidata.entity_usage.' . $dbname . '.' . $aspect . $modifierSuffix;
 			WikimediaGraphite::send( $metricName, $value, $date );
+			WikimediaStatsdExporter::sendNow(
+				'daily_wikidata_entityUsage_total',
+				$value,
+				[ 'site' => $dbname, 'aspect' => $aspect, 'modifier' => $modifierSuffix, 'targetDate' => $date ]
+			);
 			$perSiteValue += (int)$value;
 			$perAspectValues[$aspect] = ( $perAspectValues[$aspect] ?? 0 ) + (int)$value;
 		}
@@ -56,6 +61,11 @@ foreach ( $dbs as $dbname ) {
 		$metricName = 'daily.wikidata.entity_usage_pages.' . $dbname;
 		$value = $queryResult[0]['pages'];
 		WikimediaGraphite::send( $metricName, $value, $date );
+		WikimediaStatsdExporter::sendNow(
+			'daily_wikidata_entityUsagePages_total',
+			$value,
+			[ 'site' => $dbname, 'targetDate' => $date ]
+		);
 	}
 
 }
@@ -63,5 +73,10 @@ foreach ( $dbs as $dbname ) {
 foreach ( $perAspectValues as $aspect => $value ) {
 	$perAspectMetricName = 'daily.wikidata.entity_usage_per_aspect.' . $aspect;
 	WikimediaGraphite::send( $perAspectMetricName, $value, $date );
+	WikimediaStatsdExporter::sendNow(
+		'daily_wikidata_entityUsagePerAspect_total',
+		$value,
+		[ 'aspect' => $aspect, 'targetDate' => $date ]
+	);
 }
 $output->markEnd();

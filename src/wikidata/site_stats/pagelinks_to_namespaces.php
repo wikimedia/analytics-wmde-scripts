@@ -43,6 +43,7 @@ class WikidataPagelinksToNamespaces {
 				'daily.wikidata.site_stats.pagelinks_to_namespace.' . $namespace,
 				$count
 			);
+			WikimediaStatsdExporter::sendNow( 'daily_wikidata_siteStats_pagelinksToNamespace_total', $count, [ 'namespace' => $namespace ] );
 		}
 	}
 

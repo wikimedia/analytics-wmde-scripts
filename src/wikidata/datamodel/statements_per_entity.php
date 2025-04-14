@@ -67,6 +67,11 @@ class WikidataStatementCounter {
 				"daily.wikidata.datamodel.$entityType.$type.count." . $row['statements'],
 				$row['count']
 			);
+			WikimediaStatsdExporter::sendNow(
+				'daily_wikidata_datamodel_entities_with_statement_count',
+				$row['count'],
+				[ 'entityType' => $entityType, 'statements' => $row['statements'], 'type' => $type ]
+			);
 
 			if ( $maxes[$entityType][$type] < $row['statements'] ) {
 				$maxes[$entityType][$type] = $row['statements'];
@@ -79,10 +84,20 @@ class WikidataStatementCounter {
 					"daily.wikidata.datamodel.$entityType.$type.total",
 					$value
 				);
+				WikimediaStatsdExporter::sendNow(
+					'daily_wikidata_datamodel_entity_statements_total',
+					$value,
+					[ 'entityType' => $entityType, 'type' => $type ]
+				);
 				if ( $entitiesWithStatements[$entityType][$type] !== 0 ) {
 					WikimediaGraphite::sendNow(
 						"daily.wikidata.datamodel.$entityType.$type.avg",
 						$value / $entitiesWithStatements[$entityType][$type]
+					);
+					WikimediaStatsdExporter::sendNow(
+						'daily_wikidata_datamodel_entity_statements_avg',
+						$value / $entitiesWithStatements[$entityType][$type],
+						[ 'entityType' => $entityType, 'type' => $type ]
 					);
 				}
 			}
@@ -94,9 +109,19 @@ class WikidataStatementCounter {
 					"daily.wikidata.datamodel.$entityType.$type.max",
 					$value
 				);
+				WikimediaStatsdExporter::sendNow(
+					'daily_wikidata_datamodel_entity_statements_max',
+					$value,
+					[ 'entityType' => $entityType, 'type' => $type ]
+				);
 				WikimediaGraphite::sendNow(
 					"daily.wikidata.datamodel.$entityType.hasStatements",
 					$entitiesWithStatements[$entityType][$type]
+				);
+				WikimediaStatsdExporter::sendNow(
+					'daily_wikidata_datamodel_entity_hasStatements_total',
+					$entitiesWithStatements[$entityType][$type],
+					[ 'entityType' => $entityType, 'type' => $type ]
 				);
 			}
 
