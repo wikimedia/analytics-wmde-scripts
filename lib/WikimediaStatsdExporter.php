@@ -12,7 +12,7 @@ class WikimediaStatsdExporter {
 			);
 			$line .= '|#' . implode( ',', $allLabels );
 		}
-		exec( "echo '$line' | nc -u $host $port" );
+		exec( "echo '$line' | nc -u -w 1 $host $port" );
 	}
 
 	private static function getMetricType( $metricName ): string {
