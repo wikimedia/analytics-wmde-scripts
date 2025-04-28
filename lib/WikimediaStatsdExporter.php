@@ -17,7 +17,8 @@ class WikimediaStatsdExporter {
 
 	private static function getMetricType( $metricName ): string {
 		// There is no support for other types now.
-		if ( str_ends_with( $metricName, '_seconds' ) ) {
+		// TODO use str_ends_with( $metricName, '_seconds' ) in PHP 8
+		if ( substr( $metricName, -8 ) === '_seconds' ) {
 			return 'ms';
 		}
 		return 'c';
