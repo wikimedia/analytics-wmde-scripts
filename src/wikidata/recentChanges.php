@@ -115,26 +115,26 @@ class WikidataRc {
 
 		// Send everything to graphite!
 		$this->sendMetric( 'wikidata.rc.edits.total', $counters['total'], $this->graphiteDateTime );
-		$this->sendMetricToPrometheus( 'wikidata_rc_edits_all_total', $counters['total'], $this->graphiteDateTime );
+		$this->sendMetricToPrometheus( 'wikidata_rc_edits_all_total', $counters['total'] );
 		$this->sendMetric( 'wikidata.rc.edits.bot', $counters['bot'], $this->graphiteDateTime );
-		$this->sendMetricToPrometheus( 'wikidata_rc_edits_bot_total', $counters['bot'], $this->graphiteDateTime );
+		$this->sendMetricToPrometheus( 'wikidata_rc_edits_bot_total', $counters['bot'] );
 		$this->sendMetric( 'wikidata.rc.edits.anon', $counters['anon'], $this->graphiteDateTime );
-		$this->sendMetricToPrometheus( 'wikidata_rc_edits_anon_total', $counters['anon'], $this->graphiteDateTime );
+		$this->sendMetricToPrometheus( 'wikidata_rc_edits_anon_total', $counters['anon'] );
 		$this->sendMetric( 'wikidata.rc.edits.new', $counters['new'], $this->graphiteDateTime );
-		$this->sendMetricToPrometheus( 'wikidata_rc_edits_new_total', $counters['new'], $this->graphiteDateTime );
+		$this->sendMetricToPrometheus( 'wikidata_rc_edits_new_total', $counters['new'] );
 		$this->sendMetric( 'wikidata.rc.edits.length', $counters['length'], $this->graphiteDateTime );
-		$this->sendMetricToPrometheus( 'wikidata_rc_edits_length_total', $counters['length'], $this->graphiteDateTime );
+		$this->sendMetricToPrometheus( 'wikidata_rc_edits_length_total', $counters['length'] );
 		$this->sendMetric( 'wikidata.rc.edits.mobile', $counters['mobile'], $this->graphiteDateTime );
-		$this->sendMetricToPrometheus( 'wikidata_rc_edits_mobile_total', $counters['mobile'], $this->graphiteDateTime );
+		$this->sendMetricToPrometheus( 'wikidata_rc_edits_mobile_total', $counters['mobile'] );
 		$this->sendMetric( 'wikidata.rc.edits.maxForAUser', $counters['maxForAUser'], $this->graphiteDateTime );
-		$this->sendMetricToPrometheus( 'wikidata_rc_edits_maxForAUser_total', $counters['maxForAUser'], $this->graphiteDateTime );
+		$this->sendMetricToPrometheus( 'wikidata_rc_edits_maxForAUser_total', $counters['maxForAUser'] );
 		foreach ( $counters['oauth'] as $key => $value ) {
 			$this->sendMetric( "wikidata.rc.edits.oauth.$key", $value, $this->graphiteDateTime );
-			$this->sendMetricToPrometheus( 'wikidata_rc_edits_oauth_total', $value, $this->graphiteDateTime, [ 'key' => $key ] );
+			$this->sendMetricToPrometheus( 'wikidata_rc_edits_oauth_total', $value, [ 'key' => $key ] );
 		}
 		foreach ( $counters['summary'] as $key => $value ) {
 			$this->sendMetric( "wikidata.rc.edits.summary.$key", $value, $this->graphiteDateTime );
-			$this->sendMetricToPrometheus( 'wikidata_rc_edits_summary_total', $value, $this->graphiteDateTime, [ 'key' => $key ] );
+			$this->sendMetricToPrometheus( 'wikidata_rc_edits_summary_total', $value, [ 'key' => $key ] );
 		}
 	}
 
@@ -163,9 +163,7 @@ class WikidataRc {
 		WikimediaGraphite::send( $name, $value, $targetDate );
 	}
 
-	private function sendMetricToPrometheus( $name, $value, DateTime $targetDate, $labels = [] ) {
-		$targetDate = $targetDate->format( 'Y-m-d H:i:s' );
-		$labels['targetDate'] = $targetDate;
+	private function sendMetricToPrometheus( $name, $value, $labels = [] ) {
 		WikimediaStatsdExporter::sendNow( $name, $value, $labels );
 	}
 
