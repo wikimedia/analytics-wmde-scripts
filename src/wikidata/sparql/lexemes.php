@@ -182,8 +182,8 @@ SPARQL;
 				$count = $result[$countName]['value'];
 				WikimediaGraphite::send( "daily.wikidata.datamodel.lexeme.$categoryName.$category.$countName", $count, $date );
 				WikimediaStatsdExporter::sendNow( 'daily_wikidata_datamodel_lexeme_total',
-				$count,
-				[ 'categoryName' => $categoryName, 'category' => $category, 'countName' => $countName, 'targetDate' => $date ] );
+					$count,
+					[ 'categoryName' => $categoryName, 'category' => $category, 'countName' => $countName ] );
 			} else {
 				$otherCount += (int)$result[$countName]['value'];
 			}
@@ -193,8 +193,8 @@ SPARQL;
 			// so that sum(daily.wikidata.datamodel.lexeme.$categoryName.*.$countName) is accurate
 			WikimediaGraphite::send( "daily.wikidata.datamodel.lexeme.$categoryName.other.$countName", $otherCount, $date );
 			WikimediaStatsdExporter::sendNow( 'daily_wikidata_datamodel_lexeme_total',
-			$otherCount,
-			[ 'categoryName' => $categoryName, 'category' => 'other', 'countName' => $countName, 'targetDate' => $date ] );
+				$otherCount,
+				[ 'categoryName' => $categoryName, 'category' => 'other', 'countName' => $countName ] );
 		}
 	}
 
