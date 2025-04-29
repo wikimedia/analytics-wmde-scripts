@@ -43,7 +43,7 @@ foreach ( $dbs as $dbname ) {
 			WikimediaStatsdExporter::sendNow(
 				'daily_wikidata_entityUsage_total',
 				$value,
-				[ 'site' => $dbname, 'aspect' => $aspect, 'modifier' => $modifierSuffix, 'targetDate' => $date ]
+				[ 'site_id' => $dbname, 'aspect' => $aspect, 'modifier' => $modifierSuffix, 'targetDate' => $date ]
 			);
 			$perSiteValue += (int)$value;
 			$perAspectValues[$aspect] = ( $perAspectValues[$aspect] ?? 0 ) + (int)$value;
@@ -64,7 +64,7 @@ foreach ( $dbs as $dbname ) {
 		WikimediaStatsdExporter::sendNow(
 			'daily_wikidata_entityUsagePages_total',
 			$value,
-			[ 'site' => $dbname, 'targetDate' => $date ]
+			[ 'site_id' => $dbname, 'targetDate' => $date ]
 		);
 	}
 
