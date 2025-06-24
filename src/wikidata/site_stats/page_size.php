@@ -26,15 +26,7 @@ class WikidataPageSizes {
 
 		foreach ( $rows as $row ) {
 			$namespace = $row['namespace'];
-			WikimediaGraphite::sendNow(
-				"daily.wikidata.site_stats.page_length.$namespace.avg",
-				$row['avg']
-			);
 			WikimediaStatsdExporter::sendNow( 'daily_wikidata_siteStats_pageLength_avg', $row['avg'], [ 'namespace' => $namespace ] );
-			WikimediaGraphite::sendNow(
-				"daily.wikidata.site_stats.page_length.$namespace.max",
-				$row['max']
-			);
 			WikimediaStatsdExporter::sendNow( 'daily_wikidata_siteStats_pageLength_max', $row['max'], [ 'namespace' => $namespace ] );
 		}
 	}

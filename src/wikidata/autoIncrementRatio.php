@@ -56,8 +56,6 @@ foreach ( $queryResult as $row ) {
 		continue;
 	}
 
-	$metricName = 'daily.wikidata.reliability_metrics.auto_increment_ratio.' . $tableName;
-	WikimediaGraphite::sendNow( $metricName, $percent );
 	WikimediaStatsdExporter::sendNow( 'daily_wikidata_reliability_metrics_auto_increment_ratio', $ratio, [ 'table' => $tableName ] );
 }
 

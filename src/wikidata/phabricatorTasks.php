@@ -31,9 +31,7 @@ class WikidataPhabricator {
 		foreach ( $data['project-boards'][0]['columnTemplates'] as $column ) {
 			$name = $column['effects'][0]['content'];
 			$name = str_replace( ' ', '_', $name );
-			$metricName = 'daily.wikidata.phabricator.board.columns.' . $name;
 			$cards = count( $column['cardPHIDs'] );
-			WikimediaGraphite::sendNow( $metricName, $cards );
 			WikimediaStatsdExporter::sendNow( 'daily_wikidata_phabricator_board_columns_total', $cards, [ 'column' => $name ] );
 		}
 
@@ -61,14 +59,12 @@ class WikidataPhabricator {
 		$counts = array_count_values( $matches[1] );
 
 		foreach ( $priorities as $color => $name ) {
-			$metricName = 'daily.wikidata.phabricator.board.priorities.' . $name;
 			if ( array_key_exists( $color, $counts ) ) {
 				$value = $counts[$color];
 			} else {
 				// If there are no tasks matches, still submit a value
 				$value = 0;
 			}
-			WikimediaGraphite::sendNow( $metricName, $value );
 			WikimediaStatsdExporter::sendNow( 'daily_wikidata_phabricator_board_priorities_total', $value, [ 'name' => $name ] );
 		}
 	}

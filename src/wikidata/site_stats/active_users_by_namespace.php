@@ -45,13 +45,10 @@ class WikidataActiveUsersByNamespace {
 
 		foreach ( $results as $namespace => $userCount ) {
 			foreach ( $userCount as $changeCount => $users ) {
-				WikimediaGraphite::sendNow(
-						"daily.wikidata.site_stats.active_users_by_namespace.$namespace.$changeCount",
-						$users
-				);
 				WikimediaStatsdExporter::sendNow( 'daily_wikidata_siteStats_activeUsersByNamespace_total',
-				$users,
-				[ 'namespace' => $namespace, 'changeCount' => $changeCount ] );
+					$users,
+					[ 'namespace' => $namespace, 'changeCount' => $changeCount ]
+				);
 			}
 		}
 	}

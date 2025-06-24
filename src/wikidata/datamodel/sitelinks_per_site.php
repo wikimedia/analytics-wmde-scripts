@@ -27,10 +27,6 @@ class WikidataSiteSitelinkCounter {
 		$rows = $queryResult->fetchAll();
 
 		foreach ( $rows as $row ) {
-			WikimediaGraphite::sendNow(
-				'daily.wikidata.datamodel.item.sitelinks.sites.' . $row['site'],
-				$row['count']
-			);
 			WikimediaStatsdExporter::sendNow(
 				'daily_wikidata_datamodel_item_sitelinks_sites_total',
 				$row['count'],

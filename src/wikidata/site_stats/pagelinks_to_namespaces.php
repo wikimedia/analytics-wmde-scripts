@@ -3,7 +3,7 @@
 
 /**
  * Count links to entity and Schema namespaces on Wikidata.org
- * and send them to Graphite.
+ * and send them to Prometheus.
  * Used by: https://grafana.wikimedia.org/d/000000162/wikidata-site-stats?viewPanel=18
  */
 
@@ -39,10 +39,6 @@ class WikidataPagelinksToNamespaces {
 		}
 
 		foreach ( $pagelinksToNamespace as $namespace => $count ) {
-			WikimediaGraphite::sendNow(
-				'daily.wikidata.site_stats.pagelinks_to_namespace.' . $namespace,
-				$count
-			);
 			WikimediaStatsdExporter::sendNow( 'daily_wikidata_siteStats_pagelinksToNamespace_total', $count, [ 'namespace' => $namespace ] );
 		}
 	}

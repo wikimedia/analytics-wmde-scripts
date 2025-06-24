@@ -3,7 +3,7 @@
 
 /**
  * Count edits in entity and associated talk namespaces on Wikidata.org
- * and send them to Graphite.
+ * and send them to Prometheus.
  * Used by: https://grafana.wikimedia.org/d/000000162/wikidata-site-stats?viewPanel=23
  */
 
@@ -41,10 +41,6 @@ class WikidataRecentChangesByNamespace {
 		}
 
 		foreach ( $editsByNamespace as $namespace => $count ) {
-			WikimediaGraphite::sendNow(
-				'daily.wikidata.site_stats.edits_by_namespace.' . $namespace,
-				$count
-			);
 			WikimediaStatsdExporter::sendNow(
 				'daily_wikidata_siteStats_editsByNamespace_total',
 				$count,

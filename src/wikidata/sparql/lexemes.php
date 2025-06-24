@@ -48,7 +48,7 @@ SELECT ?languageItem (COUNT(*) AS ?lexemes) WHERE {
 GROUP BY ?languageItem
 ORDER BY DESC(?lexemes)
 SPARQL;
-		$this->queryCountsAndSendToGraphite( $query, 'languageItem', 'lexemes' );
+		$this->queryCountsAndSendToPrometheus( $query, 'languageItem', 'lexemes' );
 	}
 
 	private function countSensesByLanguageItem() {
@@ -60,7 +60,7 @@ SELECT ?languageItem (COUNT(?sense) AS ?senses) WHERE {
 GROUP BY ?languageItem
 ORDER BY DESC(?senses)
 SPARQL;
-		$this->queryCountsAndSendToGraphite( $query, 'languageItem', 'senses' );
+		$this->queryCountsAndSendToPrometheus( $query, 'languageItem', 'senses' );
 	}
 
 	private function countFormsByLanguageItem() {
@@ -72,7 +72,7 @@ SELECT ?languageItem (COUNT(?form) AS ?forms) WHERE {
 GROUP BY ?languageItem
 ORDER BY DESC(?forms)
 SPARQL;
-		$this->queryCountsAndSendToGraphite( $query, 'languageItem', 'forms' );
+		$this->queryCountsAndSendToPrometheus( $query, 'languageItem', 'forms' );
 	}
 
 	private function countLexemesWithoutSensesByLanguageItem() {
@@ -84,7 +84,7 @@ SELECT ?languageItem (SUM(IF(?hasSenses, 0, 1)) AS ?withoutSenses) WHERE {
 GROUP BY ?languageItem
 ORDER BY DESC(?withoutSenses)
 SPARQL;
-		$this->queryCountsAndSendToGraphite( $query, 'languageItem', 'withoutSenses' );
+		$this->queryCountsAndSendToPrometheus( $query, 'languageItem', 'withoutSenses' );
 	}
 
 	private function countLexemesWithoutFormsByLanguageItem() {
@@ -96,7 +96,7 @@ SELECT ?languageItem (SUM(IF(?hasForms, 0, 1)) AS ?withoutForms) WHERE {
 GROUP BY ?languageItem
 ORDER BY DESC(?withoutForms)
 SPARQL;
-		$this->queryCountsAndSendToGraphite( $query, 'languageItem', 'withoutForms' );
+		$this->queryCountsAndSendToPrometheus( $query, 'languageItem', 'withoutForms' );
 	}
 
 	private function countLexemesByLexicalCategoryItem() {
@@ -107,7 +107,7 @@ SELECT ?lexicalCategoryItem (COUNT(*) AS ?lexemes) WHERE {
 GROUP BY ?lexicalCategoryItem
 ORDER BY DESC(?lexemes)
 SPARQL;
-		$this->queryCountsAndSendToGraphite( $query, 'lexicalCategoryItem', 'lexemes' );
+		$this->queryCountsAndSendToPrometheus( $query, 'lexicalCategoryItem', 'lexemes' );
 	}
 
 	private function countFormsByGrammaticalFeatureItem() {
@@ -118,7 +118,7 @@ SELECT ?grammaticalFeatureItem (COUNT(*) AS ?forms) WHERE {
 GROUP BY ?grammaticalFeatureItem
 ORDER BY DESC(?forms)
 SPARQL;
-		$this->queryCountsAndSendToGraphite( $query, 'grammaticalFeatureItem', 'forms' );
+		$this->queryCountsAndSendToPrometheus( $query, 'grammaticalFeatureItem', 'forms' );
 	}
 
 	private function countLemmasByLanguageCode() {
@@ -130,7 +130,7 @@ SELECT ?languageCode (COUNT(*) AS ?lemmas) WHERE {
 GROUP BY ?languageCode
 ORDER BY DESC(?lemmas)
 SPARQL;
-		$this->queryCountsAndSendToGraphite( $query, 'languageCode', 'lemmas' );
+		$this->queryCountsAndSendToPrometheus( $query, 'languageCode', 'lemmas' );
 	}
 
 	private function countRepresentationsByLanguageCode() {
@@ -142,32 +142,34 @@ SELECT ?languageCode (COUNT(*) AS ?representations) WHERE {
 GROUP BY ?languageCode
 ORDER BY DESC(?representations)
 SPARQL;
-		$this->queryCountsAndSendToGraphite( $query, 'languageCode', 'representations' );
+		$this->queryCountsAndSendToPrometheus( $query, 'languageCode', 'representations' );
 	}
 
 	/**
-	 * Run a SPARQL query to count elements by category, and send the results to Graphite.
+	 * Run a SPARQL query to count elements by category, and send the results to Prometheus.
 	 *
 	 * Results are sent to the metric daily.wikidata.datamodel.lexeme.$categoryName.$category.$countName,
 	 * where $category is the value of the $categoryName variable of each result.
 	 * Only the top self::MAX_DETAILED_RESULTS results are sent with their individual $category;
 	 * all the remaining ones are summed together and sent in one metric,
-	 * with “other” as the $categoryName, to avoid sending too many metrics to Graphite.
+	 * with “other” as the $categoryName, to avoid sending too many metrics to Prometheus.
 	 * (Note that the sorting of top results is expected to be done in the query!)
+	 * (The limited number of metrics sent was important in Graphite;
+	 * it’s not clear whether it’s also important for Prometheus, but it’s kept that way for now.)
 	 *
 	 * @param string $query The SPARQL query.
 	 * It should select variables named $categoryName and $countName,
 	 * and be ordered by the $countName variable (descending).
 	 * @param string $categoryName The name of the category,
-	 * both in the SPARQL query and in the metric sent to Graphite.
+	 * both in the SPARQL query and in the metric sent to Prometheus.
 	 * If the name ends in “Item”, each category returned by the query
 	 * is turned into a plain ID with {@link WikimediaSparql::entityIriToId}.
 	 * Examples: “languageItem”, “lexicalCategoryItem”, “languageCode”.
 	 * @param string $countName The name of the count,
-	 * both in the SPARQL query and in the metric sent to Graphite.
+	 * both in the SPARQL query and in the metric sent to Prometheus.
 	 * Examples: “lexemes”, “senses”, “representations”.
 	 */
-	private function queryCountsAndSendToGraphite( string $query, string $categoryName, string $countName ) {
+	private function queryCountsAndSendToPrometheus( string $query, string $categoryName, string $countName ) {
 		$date = date( DATE_ATOM );
 		$results = WikimediaSparql::query( $query );
 		$sentResults = 0;
@@ -180,7 +182,6 @@ SPARQL;
 					$category = WikimediaSparql::entityIriToId( $category );
 				}
 				$count = $result[$countName]['value'];
-				WikimediaGraphite::send( "daily.wikidata.datamodel.lexeme.$categoryName.$category.$countName", $count, $date );
 				WikimediaStatsdExporter::sendNow( 'daily_wikidata_datamodel_lexeme_total',
 					$count,
 					[ 'categoryName' => $categoryName, 'category' => $category, 'countName' => $countName ] );
@@ -191,7 +192,6 @@ SPARQL;
 		if ( $sentResults > self::MAX_DETAILED_RESULTS ) {
 			// send an aggregate count for the remaining categories,
 			// so that sum(daily.wikidata.datamodel.lexeme.$categoryName.*.$countName) is accurate
-			WikimediaGraphite::send( "daily.wikidata.datamodel.lexeme.$categoryName.other.$countName", $otherCount, $date );
 			WikimediaStatsdExporter::sendNow( 'daily_wikidata_datamodel_lexeme_total',
 				$otherCount,
 				[ 'categoryName' => $categoryName, 'category' => 'other', 'countName' => $countName ] );

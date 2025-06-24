@@ -46,7 +46,6 @@ class WikibaseDockerStats {
 
 		$metricName = 'daily.wikibase.dockerImage.pulls.' . $image;
 		$this->out->outputMessage( 'Sending data for: ' . $org . '/' . $image );
-		WikimediaGraphite::sendNow( $metricName, $pullCount );
 		WikimediaStatsdExporter::sendNow( 'daily_wikibase_dockerImage_pulls_total', $pullCount, [ 'image' => $image ] );
 	}
 

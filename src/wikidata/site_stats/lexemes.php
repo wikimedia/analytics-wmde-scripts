@@ -41,10 +41,6 @@ class WikidataLexemes {
 		}
 
 		$row = $pdoStatement->fetch( PDO::FETCH_ASSOC );
-		WikimediaGraphite::sendNow(
-			'daily.wikidata.site_stats.lexemes.new.ui',
-			$row['count']
-		);
 		WikimediaStatsdExporter::sendNow(
 			'daily_wikidata_siteStats_lexemes_new_ui_total',
 			$row['count']
@@ -62,10 +58,6 @@ class WikidataLexemes {
 		$rows = $queryResult->fetchAll();
 
 		foreach ( $rows as $row ) {
-			WikimediaGraphite::sendNow(
-				'daily.wikidata.site_stats.lexemes.' . $row['pp_propname'],
-				$row['count']
-			);
 			WikimediaStatsdExporter::sendNow( 'daily_wikidata_siteStats_lexemes_total', $row['count'], [ 'pp_propname' => $row['pp_propname'] ] );
 		}
 	}

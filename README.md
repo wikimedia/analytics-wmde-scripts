@@ -32,12 +32,3 @@ All scripts have a maximum execution time set to **`one hour`**,
 after which if they are not done they fail automatically.
 The time limit is globaly set in `lib/scriptsTimeLimit.php` and included in all the scripts through `lib/load.php`.
 For reasons to this, see: [T243894](https://phabricator.wikimedia.org/T243894)
-
-## Graphite
-
-Metrics are currently stored in the following paths in graphite:
-
-    wikidata.*
-    daily.wikidata.*
-
-The paths to **statsd.eqiad.wmnet** and **graphite.eqiad.wmnet** are hardcoded everywhere.

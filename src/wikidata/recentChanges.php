@@ -3,7 +3,7 @@
 
 /**
  * @author Addshore
- * Gather data about the recent changes on Wikidata.org and send them ot graphite.
+ * Gather data about the recent changes on Wikidata.org
  * Used by: https://grafana.wikimedia.org/d/000000170/wikidata-edits
  */
 
@@ -16,11 +16,7 @@ $output->markEnd();
 class WikidataRc {
 
 	private $apiDateTime;
-	private $graphiteDateTime;
 
-	/**
-	 * Set graphite and wm api times separately
-	 */
 	private function initDateTimes() {
 		$defaultTimezone = date_default_timezone_get();
 
@@ -29,7 +25,6 @@ class WikidataRc {
 		$this->apiDateTime = new DateTime( 'now - 1 minute' );
 
 		date_default_timezone_set( $defaultTimezone );
-		$this->graphiteDateTime = new DateTime( 'now - 1 minute' );
 	}
 
 	public function execute() {
@@ -53,8 +48,6 @@ class WikidataRc {
 			}
 		}
 
-		// Things defined here will be automatically sent to graphite
-		// This can be at most 2 keys deep
 		$counters = [
 			'total' => 0,
 			'bot' => 0,
@@ -113,27 +106,18 @@ class WikidataRc {
 			}
 		}
 
-		// Send everything to graphite!
-		$this->sendMetric( 'wikidata.rc.edits.total', $counters['total'], $this->graphiteDateTime );
+		// Send everything to Prometheus!
 		$this->sendMetricToPrometheus( 'wikidata_rc_edits_all_total', $counters['total'] );
-		$this->sendMetric( 'wikidata.rc.edits.bot', $counters['bot'], $this->graphiteDateTime );
 		$this->sendMetricToPrometheus( 'wikidata_rc_edits_bot_total', $counters['bot'] );
-		$this->sendMetric( 'wikidata.rc.edits.anon', $counters['anon'], $this->graphiteDateTime );
 		$this->sendMetricToPrometheus( 'wikidata_rc_edits_anon_total', $counters['anon'] );
-		$this->sendMetric( 'wikidata.rc.edits.new', $counters['new'], $this->graphiteDateTime );
 		$this->sendMetricToPrometheus( 'wikidata_rc_edits_new_total', $counters['new'] );
-		$this->sendMetric( 'wikidata.rc.edits.length', $counters['length'], $this->graphiteDateTime );
 		$this->sendMetricToPrometheus( 'wikidata_rc_edits_length_total', $counters['length'] );
-		$this->sendMetric( 'wikidata.rc.edits.mobile', $counters['mobile'], $this->graphiteDateTime );
 		$this->sendMetricToPrometheus( 'wikidata_rc_edits_mobile_total', $counters['mobile'] );
-		$this->sendMetric( 'wikidata.rc.edits.maxForAUser', $counters['maxForAUser'], $this->graphiteDateTime );
 		$this->sendMetricToPrometheus( 'wikidata_rc_edits_maxForAUser_total', $counters['maxForAUser'] );
 		foreach ( $counters['oauth'] as $key => $value ) {
-			$this->sendMetric( "wikidata.rc.edits.oauth.$key", $value, $this->graphiteDateTime );
 			$this->sendMetricToPrometheus( 'wikidata_rc_edits_oauth_total', $value, [ 'key' => $key ] );
 		}
 		foreach ( $counters['summary'] as $key => $value ) {
-			$this->sendMetric( "wikidata.rc.edits.summary.$key", $value, $this->graphiteDateTime );
 			$this->sendMetricToPrometheus( 'wikidata_rc_edits_summary_total', $value, [ 'key' => $key ] );
 		}
 	}
@@ -156,11 +140,6 @@ class WikidataRc {
 		}
 
 		return $url;
-	}
-
-	private function sendMetric( $name, $value, DateTime $targetDate ) {
-		$targetDate = $targetDate->format( 'Y-m-d H:i:s' );
-		WikimediaGraphite::send( $name, $value, $targetDate );
 	}
 
 	private function sendMetricToPrometheus( $name, $value, $labels = [] ) {
