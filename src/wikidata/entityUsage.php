@@ -11,14 +11,7 @@
 require_once __DIR__ . '/../../lib/load.php';
 $output = Output::forScript( 'wikidata-entityUsage' )->markStart();
 
-$dblist = WikimediaCurl::curlGetExternal(
-	'https://noc.wikimedia.org/conf/dblists/wikidataclient.dblist'
-);
-if ( $dblist === false ) {
-	throw new RuntimeException( 'Failed to get db list for EntityUsage tracking!' );
-}
-$dbs = explode( "\n", $dblist[1] );
-$dbs = array_filter( $dbs );
+$dbs = WikimediaDbList::get( 'wikidataclient' );
 
 $sectionMapper = new WikimediaDbSectionMapper();
 $date = date( DATE_ATOM );
