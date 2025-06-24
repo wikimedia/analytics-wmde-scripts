@@ -40,10 +40,10 @@ class WikimediaDbSectionMapper {
 
 	private function loadDbMap() {
 		$this->dbMap = [];
-		$allByName = array_flip( $this->loadDbList( 'all' ) );
+		$allByName = array_flip( WikimediaDbList::get( 'all' ) );
 		$sections = [ 's1', 's2', 's3', 's4', 's5', 's6', 's7', 's8', 's11' ];
 		foreach ( $sections as $section ) {
-			$wikis = $this->loadDbList( $section );
+			$wikis = WikimediaDbList::get( $section );
 			foreach ( $wikis as $wiki ) {
 				$this->dbMap[$wiki] = $section;
 				unset( $allByName[$wiki] );
@@ -55,21 +55,6 @@ class WikimediaDbSectionMapper {
 				', but the following all.dblist wikis were not found: ' . implode( ',', array_keys( $allByName ) )
 			);
 		}
-	}
-
-	private function loadDbList( $name ) {
-		$response = WikimediaCurl::curlGetExternal( "https://noc.wikimedia.org/conf/dblists/$name.dblist" );
-		if ( $response === false ) {
-			throw new RuntimeException( "Failed to get db data for $name.dblist! (request failed)" );
-		}
-		$lines = explode( "\n", trim( $response[1] ) );
-		$wikis = [];
-		foreach ( $lines as $line ) {
-			if ( $line && $line[0] !== '#' ) {
-				$wikis[] = $line;
-			}
-		}
-		return $wikis;
 	}
 
 	/**
