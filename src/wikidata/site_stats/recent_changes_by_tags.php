@@ -2,7 +2,7 @@
 <?php
 
 /**
- * Count edits having certain tags and send them to Graphite.
+ * Count edits having certain tags and send them to Prometheus.
  * See T236893 for more information.
  * Used by: https://grafana.wikimedia.org/d/000000170/wikidata-edits?viewPanel=13
  */
@@ -41,10 +41,6 @@ class WikidataRecentChangesByTags {
 		}
 
 		foreach ( $editsByTags as $tag => $count ) {
-			WikimediaGraphite::sendNow(
-				'daily.wikidata.site_stats.edits_by_tags.' . $tag,
-				$count
-			);
 			WikimediaStatsdExporter::sendNow(
 				'daily_wikidata_siteStats_editsByTags_total',
 				$count,

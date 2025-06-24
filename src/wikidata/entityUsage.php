@@ -2,7 +2,7 @@
 <?php
 /**
  * @author Addshore
- * Track Wikidata usage on clients in graphite
+ * Track Wikidata usage on clients
  * Used by: https://grafana.wikimedia.org/d/000000160/wikidata-entity-usage
  *          https://grafana.wikimedia.org/d/000000176/wikidata-entity-usage-project
  *
@@ -22,7 +22,6 @@ foreach ( $dbs as $dbname ) {
 	$sql = "SELECT eu_aspect as aspect, count(*) as count FROM $dbname.wbc_entity_usage GROUP BY eu_aspect";
 	$queryResult = $pdo->query( $sql );
 	$perSiteValue = 0;
-	$perSiteMetricName = 'daily.wikidata.entity_usage_per_site.' . $dbname;
 	if ( $queryResult === false ) {
 		$output->outputMessage( "EntityUsage DB query failed for $dbname, Skipping!!" );
 	} else {
@@ -31,8 +30,6 @@ foreach ( $dbs as $dbname ) {
 			$aspectWithModifier = explode( '.', $row['aspect'] );
 			$aspect = $aspectWithModifier[0];
 			$modifierSuffix = isset( $aspectWithModifier[1] ) ? '_' . $aspectWithModifier[1] : '';
-			$metricName = 'daily.wikidata.entity_usage.' . $dbname . '.' . $aspect . $modifierSuffix;
-			WikimediaGraphite::send( $metricName, $value, $date );
 			WikimediaStatsdExporter::sendNow(
 				'daily_wikidata_entityUsage_total',
 				$value,
@@ -41,7 +38,6 @@ foreach ( $dbs as $dbname ) {
 			$perSiteValue += (int)$value;
 			$perAspectValues[$aspect] = ( $perAspectValues[$aspect] ?? 0 ) + (int)$value;
 		}
-		WikimediaGraphite::send( $perSiteMetricName, $perSiteValue, $date );
 	}
 
 	// Count usage (excluding sitelinks) on distinct pages
@@ -51,9 +47,7 @@ foreach ( $dbs as $dbname ) {
 		$output->outputMessage( "EntityUsage page DB query failed for $dbname, Skipping!!" );
 	} else {
 		$queryResult = $queryResult->fetchAll();
-		$metricName = 'daily.wikidata.entity_usage_pages.' . $dbname;
 		$value = $queryResult[0]['pages'];
-		WikimediaGraphite::send( $metricName, $value, $date );
 		WikimediaStatsdExporter::sendNow(
 			'daily_wikidata_entityUsagePages_total',
 			$value,
@@ -64,8 +58,6 @@ foreach ( $dbs as $dbname ) {
 }
 
 foreach ( $perAspectValues as $aspect => $value ) {
-	$perAspectMetricName = 'daily.wikidata.entity_usage_per_aspect.' . $aspect;
-	WikimediaGraphite::send( $perAspectMetricName, $value, $date );
 	WikimediaStatsdExporter::sendNow(
 		'daily_wikidata_entityUsagePerAspect_total',
 		$value,

@@ -23,7 +23,6 @@ class WikidataUsers {
 		}
 		$rows = $result->fetchAll();
 		$count = $rows[0]['users'];
-		WikimediaGraphite::sendNow( 'daily.wikidata.site_stats.users', $count );
 		WikimediaStatsdExporter::sendNow( 'daily_wikidata_siteStats_users_total', $count );
 	}
 

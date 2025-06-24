@@ -26,7 +26,7 @@ if ( count( $dirs ) <= 1 ) {
 	$output->outputMessage( 'Not many output dirs found!' );
 }
 
-// Get the outputs and send to graphite
+// Get the outputs and send to Prometheus
 foreach ( $dirs as $dir ) {
 	$dir = rtrim( $dir, '\/' );
 	$dirParts = explode( '/', $dir );
@@ -40,8 +40,6 @@ foreach ( $dirs as $dir ) {
 
 	$data = json_decode( file_get_contents( $file ), true );
 	foreach ( $data as $name => $value ) {
-		$metricName = "daily.wikidata.datamodel.$name";
-		WikimediaGraphite::send( $metricName, $value, $date );
 		WikimediaStatsdExporter::sendNow( 'daily_wikidata_datamodel_total', $value, [ 'name' => $name, 'targetDate' => $date ] );
 	}
 

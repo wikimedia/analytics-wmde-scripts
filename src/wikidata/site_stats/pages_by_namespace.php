@@ -26,26 +26,14 @@ class WikidataPagesByNamespace {
 
 		$rows = $queryResult->fetchAll();
 
-		$namespaceTotals = [ 0 => 0, 1 => 0, 120 => 0, 146 => 0, 640 => 0 ];
 		foreach ( $rows as $row ) {
 			$namespace = $row['namespace'];
 			$type = $row['redirect'] == 1 ? 'redirects' : 'nonredirects';
 
-			WikimediaGraphite::sendNow(
-				"daily.wikidata.site_stats.pages_by_namespace.$namespace.$type",
-				$row['count']
-			);
 			WikimediaStatsdExporter::sendNow(
 				'daily_wikidata_siteStats_pagesByNamespace_total',
 				$row['count'],
-			[ 'namespace' => $namespace, 'type' => $type ] );
-			$namespaceTotals[$row['namespace']] += $row['count'];
-		}
-
-		foreach ( $namespaceTotals as $namespace => $total ) {
-			WikimediaGraphite::sendNow(
-				"daily.wikidata.site_stats.pages_by_namespace.$namespace.total",
-				$total
+				[ 'namespace' => $namespace, 'type' => $type ]
 			);
 		}
 	}

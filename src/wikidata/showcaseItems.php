@@ -3,7 +3,7 @@
 
 /**
  * @author Addshore
- * Sends data about the number of showcase items on Wikidata to graphite based on the
+ * Sends data about the number of showcase items on Wikidata to Prometheus based on the
  * Wikidata:Showcase_items page
  * Used by: https://grafana.wikimedia.org/d/000000162/wikidata-site-stats
  */
@@ -24,7 +24,6 @@ $pageContent = $pageArray['revisions'][0]['*'];
 
 $showcaseItems = substr_count( $pageContent, '{{ShowcaseItem|' );
 
-WikimediaGraphite::sendNow( 'daily.wikidata.showcaseItems', $showcaseItems );
 WikimediaStatsdExporter::sendNow( 'daily_wikidata_showcaseItems_total', $showcaseItems );
 
 $output->markEnd();

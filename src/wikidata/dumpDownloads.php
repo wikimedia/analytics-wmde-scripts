@@ -52,7 +52,7 @@ if ( array_key_exists( 1, $argv ) ) {
 }
 
 $targetDate = date( 'd/M/Y', $targetTime );// For format [01/Jul/2016:
-$graphiteDate = date( 'Y-m-d', $targetTime );// Date formatted for graphite
+$prometheusDate = date( 'Y-m-d', $targetTime );// Date formatted for prometheus
 $fileFormatDayAfter = date( 'Ymd', strtotime( '+1 days', $targetTime ) );
 $fileFormatTargetDate = date( 'Ymd', $targetTime );
 
@@ -102,11 +102,9 @@ foreach ( $logFiles as $logFile ) {
 	fclose( $handle );
 }
 
-// Send everything to graphite!
+// Send everything to Prometheus!
 foreach ( $counters as $type => $value ) {
-	$metricName = 'daily.wikidata.dump_requests.' . $type;
-	WikimediaGraphite::send( $metricName, $value, $graphiteDate );
-	WikimediaStatsdExporter::sendNow( 'daily_wikidata_dumpRequests_total', $value, [ 'type' => $type, 'targetDate' => $graphiteDate ] );
+	WikimediaStatsdExporter::sendNow( 'daily_wikidata_dumpRequests_total', $value, [ 'type' => $type, 'targetDate' => $prometheusDate ] );
 }
 
 $output->markEnd();

@@ -3,7 +3,7 @@
 
 /**
  * @author Addshore
- * Extracts data from api log files including the formats used and sends the data to graphite.
+ * Extracts data from api log files including the formats used and sends the data to Prometheus.
  *
  * @note Logrotate is at 6:25, + time for rsync (hourly?), 12 gives us roughly 6 hours
  * @note this is built for stat1002
@@ -82,7 +82,7 @@ class WikidataApiLogScanner {
 			fclose( $handle );
 		}
 
-		// Send everything to graphite!
+		// Send everything to Prometheus!
 		foreach ( $counters as $name => $counter ) {
 			foreach ( $counter as $key => $value ) {
 				if (
@@ -91,10 +91,6 @@ class WikidataApiLogScanner {
 				) {
 					continue;
 				}
-				$this->sendMetric(
-					'daily.wikidata.api.' . $name . '.' . $key,
-					$value
-				);
 				$this->sendMetricToPrometheus(
 					'daily_wikidata_api_total',
 					$value,
@@ -118,11 +114,6 @@ class WikidataApiLogScanner {
 			$logDir . '/api.log-' . $this->targetDate->format( 'Ymd' ) . '.gz',
 			$logDir . '/api.log-' . $this->dayAfter->format( 'Ymd' ) . '.gz',
 		];
-	}
-
-	private function sendMetric( $name, $value ) {
-		$targetDate = $this->targetDate->format( 'Y-m-d' );
-		WikimediaGraphite::send( $name, $value, $targetDate );
 	}
 
 	private function sendMetricToPrometheus( $name, $value, $labels ) {

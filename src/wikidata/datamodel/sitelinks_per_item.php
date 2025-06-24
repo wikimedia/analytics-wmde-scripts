@@ -30,10 +30,6 @@ class WikidataItemSitelinkCounter {
 		$sitelinks = 0;
 		$itemsWithSitelinks = 0;
 		foreach ( $rows as $row ) {
-			WikimediaGraphite::sendNow(
-				'daily.wikidata.datamodel.item.sitelinks.count.' . $row['sitelinks'],
-				$row['count']
-			);
 			WikimediaStatsdExporter::sendNow( 'daily_wikidata_datamodel_item_sitelinks_count', $row['count'], [ 'sitelinks' => $row['sitelinks'] ] );
 			$itemsWithSitelinks += $row['count'];
 			$sitelinks += ( $row['sitelinks'] * $row['count'] );
@@ -42,20 +38,8 @@ class WikidataItemSitelinkCounter {
 			}
 		}
 
-		WikimediaGraphite::sendNow(
-			'daily.wikidata.datamodel.item.sitelinks.max',
-			$max
-		);
 		WikimediaStatsdExporter::sendNow( 'daily_wikidata_datamodel_item_sitelinks_max', $max );
-		WikimediaGraphite::sendNow(
-			'daily.wikidata.datamodel.item.sitelinks.avg',
-			$sitelinks / $itemsWithSitelinks
-		);
 		WikimediaStatsdExporter::sendNow( 'daily_wikidata_datamodel_item_sitelinks_avg', $sitelinks / $itemsWithSitelinks );
-		WikimediaGraphite::sendNow(
-			'daily.wikidata.datamodel.item.hasSitelinks',
-			$itemsWithSitelinks
-		);
 		WikimediaStatsdExporter::sendNow( 'daily_wikidata_datamodel_item_hasSitelinks_total', $itemsWithSitelinks );
 	}
 

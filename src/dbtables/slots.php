@@ -4,7 +4,7 @@
  *
  * @author Addshore
  * Created as part of https://phabricator.wikimedia.org/T68025
- * Sends data about the number slots on some wikis to graphite.
+ * Sends data about the number slots on some wikis to Prometheus.
  * Used by: https://grafana.wikimedia.org/d/pwq8ZIxWk/large-site-db-tables
  */
 
@@ -39,7 +39,6 @@ foreach ( $dbs as $dbname ) {
 			$value = $row['slots'];
 			$metricName = "daily.dbtables.$dbname.slots.byRole.$role";
 
-			WikimediaGraphite::sendNow( $metricName, $value );
 			WikimediaStatsdExporter::sendNow( 'daily_dbtables_slots_total', $value, [ 'name' => $dbname, 'role' => $role ] );
 		}
 	}
