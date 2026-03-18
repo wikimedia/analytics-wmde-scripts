@@ -95,7 +95,13 @@ git review
 
 We [cherry-pick](https://git-scm.com/docs/git-cherry-pick) reviewed changes from `master` to `production` using the Gerrit UI:
 
+- Wait for your patch to be merged into `master` by jenkins-bot
 - Select the three dot menu at the top right of the patch UI
 - Select `Cherry pick`
 - Select `production` as the destination branch in the `Cherry Pick to branch` dialog
-- Select `CHERRY PICK` at the bottom right to apply the changes to `production`
+- Select `CHERRY PICK` at the bottom right
+- You'll be navigated to the cherry-picked patch to `production`
+- Code-Review +2 your own cherry-picked patch, but don't merge
+- Check that jenkins-bot is merging the patch in the Change Log
+  - You should see "Starting gate-and-submit jobs."
+- The changes will soon be merged!
