@@ -73,7 +73,9 @@ class WikidataApiLogScanner {
 				}
 
 				// Extract the format (if set)
-				if ( $formatStart = ( strpos( $line, ' format=' ) + 8 ) ) {
+				$formatStart = strpos( $line, ' format=' );
+				if ( $formatStart !== false ) {
+					$formatStart += 8;
 					$format = strtolower( substr( $line, $formatStart, strpos( $line, ' ', $formatStart ) - $formatStart ) );
 					@$counters['formats'][$format]++;
 				}

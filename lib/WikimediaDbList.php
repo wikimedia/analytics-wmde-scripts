@@ -22,7 +22,7 @@ class WikimediaDbList {
 		$dbs = explode( "\n", $dblist[1] );
 		$dbs = array_filter(
 			$dbs,
-			function ( $name ) {
+			static function ( $name ) {
 				return $name && $name[0] !== '#';
 			}
 		);

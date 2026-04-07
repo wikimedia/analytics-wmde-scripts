@@ -38,7 +38,7 @@ class WikimediaCurl {
 	/**
 	 * @param string $url
 	 * @param bool $useWebProxy
-	 * @return resource a cURL handle
+	 * @return CurlHandle
 	 * @throws Exception if the config cant be loaded for some reason
 	 */
 	public static function curlInit( $url, $useWebProxy ) {
@@ -77,8 +77,6 @@ class WikimediaCurl {
 		$headerSize = curl_getinfo( $ch, CURLINFO_HEADER_SIZE );
 		$headers = self::parseHeaders( substr( $response, 0, $headerSize ) );
 		$body = substr( $response, $headerSize );
-
-		curl_close( $ch );
 
 		return [ $headers, $body ];
 	}
@@ -130,7 +128,7 @@ class WikimediaCurl {
 			if ( $i === 0 ) {
 				$headers['http_code'] = $line;
 			} else {
-				@list( $key, $value ) = explode( ': ', $line, 2 );
+				@[ $key, $value ] = explode( ': ', $line, 2 );
 				if ( !empty( $key ) ) {
 					$headers[$key] = $value;
 				}
