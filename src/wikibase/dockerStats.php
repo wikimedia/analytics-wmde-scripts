@@ -30,7 +30,7 @@ class WikibaseDockerStats {
 
 	public function execute( array $imageList ) {
 		foreach ( $imageList as $imageData ) {
-			list( $orgName, $imageName ) = $imageData;
+			[ $orgName, $imageName ] = $imageData;
 			$this->executeForImage( $orgName, $imageName );
 		}
 	}

@@ -2,7 +2,7 @@
 
 class WikimediaStatsdExporter {
 	public static function sendNow( $metricName, $value, $labels = [] ) {
-		list( $host, $port ) = self::getHostAndPort();
+		[ $host, $port ] = self::getHostAndPort();
 		$line = $metricName . ':' . $value . '|' . self::getMetricType( $metricName );
 		if ( $labels !== [] ) {
 			$allLabels = array_map(

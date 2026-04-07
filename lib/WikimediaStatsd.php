@@ -6,7 +6,7 @@
 class WikimediaStatsd {
 
 	public static function sendGauge( $metricName, $value ) {
-		list( $host, $port ) = self::getHostAndPort();
+		[ $host, $port ] = self::getHostAndPort();
 		exec( "echo \"$metricName:$value|g\" | nc -w 1 -u $host $port" );
 	}
 

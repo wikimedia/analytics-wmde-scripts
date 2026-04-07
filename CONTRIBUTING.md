@@ -31,6 +31,9 @@ sudo apt install php-xmlwriter
 
 # Generate a lock file and install dependencies:
 composer install
+
+# To update dependencies, update the version in composer.json and run:
+composer update
 ```
 
 ## Patches

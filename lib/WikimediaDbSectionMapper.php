@@ -13,7 +13,7 @@ class WikimediaDbSectionMapper {
 	/**
 	 * @param string[]|null $dbMap
 	 */
-	public function __construct( array $dbMap = null ) {
+	public function __construct( ?array $dbMap = null ) {
 		$this->dbMap = $dbMap;
 	}
 
