@@ -14,65 +14,49 @@ $output->markEnd();
 
 class WikidataActiveUsers {
 
-	public function execute() {
-		$pdo = WikimediaDb::getPdoNewHosts( WikimediaDb::WIKIDATA_DB, new WikimediaDbSectionMapper() );
-
-		$userQueryResult = $pdo->query( file_get_contents( __DIR__ . '/sql/changes/active_user_changes.sql' ) );
-		if ( $userQueryResult === false ) {
-			throw new RuntimeException( 'Failed to run file active_user_changes.sql' );
+	private function runQueryAndSendMetrics( $pdo, $sqlFile, $metricName ) {
+		$queryResult = $pdo->query( file_get_contents( $sqlFile ) );
+		if ( $queryResult === false ) {
+			throw new RuntimeException( 'Failed to run file ' . basename( $sqlFile ) );
 		}
 
-		$userResults = [ 1 => 0, 5 => 0, 100 => 0 ];
-		foreach ( $userQueryResult as $row ) {
-			$userChanges = (int)$row['changes'];
-			if ( $userChanges >= 100 ) {
-				$userResults[100] += 1;
-				$userResults[5] += 1;
-				$userResults[1] += 1;
-			} elseif ( $userChanges >= 5 ) {
-				$userResults[5] += 1;
-				$userResults[1] += 1;
-			} elseif ( $userChanges >= 1 ) {
-				$userResults[1] += 1;
+		$results = [ 1 => 0, 5 => 0, 100 => 0 ];
+		foreach ( $queryResult as $row ) {
+			$changes = (int)$row['changes'];
+			if ( $changes >= 100 ) {
+				$results[100] += 1;
+				$results[5] += 1;
+				$results[1] += 1;
+			} elseif ( $changes >= 5 ) {
+				$results[5] += 1;
+				$results[1] += 1;
+			} elseif ( $changes >= 1 ) {
+				$results[1] += 1;
 			}
 		}
 
-		foreach ( $userResults as $changeCount => $users ) {
+		foreach ( $results as $changeCount => $users ) {
 			WikimediaStatsdExporter::sendNow(
-				'daily_wikidata_siteStats_activeUsers_total',
+				$metricName,
 				$users,
 				[ 'changeCount' => $changeCount ]
 			);
 		}
+	}
 
-		$tempAccountQueryResult = $pdo->query(
-			file_get_contents( __DIR__ . '/sql/changes/active_temporary_account_changes.sql' )
+	public function execute() {
+		$pdo = WikimediaDb::getPdoNewHosts( WikimediaDb::WIKIDATA_DB, new WikimediaDbSectionMapper() );
+
+		$this->runQueryAndSendMetrics(
+			$pdo,
+			__DIR__ . '/sql/active_user_changes/permanent_user.sql',
+			'daily_wikidata_siteStats_activeUsers_total'
 		);
-		if ( $tempAccountQueryResult === false ) {
-			throw new RuntimeException( 'Failed to run file active_temporary_account_changes.sql' );
-		}
 
-		$tempAccountResults = [ 1 => 0, 5 => 0, 100 => 0 ];
-		foreach ( $tempAccountQueryResult as $row ) {
-			$tempAccountChanges = (int)$row['changes'];
-			if ( $tempAccountChanges >= 100 ) {
-				$tempAccountResults[100] += 1;
-				$tempAccountResults[5] += 1;
-				$tempAccountResults[1] += 1;
-			} elseif ( $tempAccountChanges >= 5 ) {
-				$tempAccountResults[5] += 1;
-				$tempAccountResults[1] += 1;
-			} elseif ( $tempAccountChanges >= 1 ) {
-				$tempAccountResults[1] += 1;
-			}
-		}
-
-		foreach ( $tempAccountResults as $changeCount => $tempAccounts ) {
-			WikimediaStatsdExporter::sendNow(
-				'daily_wikidata_siteStats_activeTemporaryAccounts_total',
-				$tempAccounts,
-				[ 'changeCount' => $changeCount ]
-			);
-		}
+		$this->runQueryAndSendMetrics(
+			$pdo,
+			__DIR__ . '/sql/active_user_changes/temporary_user.sql',
+			'daily_wikidata_siteStats_activeTemporaryAccounts_total'
+		);
 	}
 }

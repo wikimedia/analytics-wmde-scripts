@@ -14,12 +14,10 @@ $output->markEnd();
 
 class WikidataActiveUsersByNamespace {
 
-	public function execute() {
-		$pdo = WikimediaDb::getPdoNewHosts( WikimediaDb::WIKIDATA_DB, new WikimediaDbSectionMapper() );
-
-		$queryResult = $pdo->query( file_get_contents( __DIR__ . '/sql/active_user_changes_by_namespace.sql' ) );
+	private function runQueryAndSendMetrics( $pdo, $sqlFile, $metricName ) {
+		$queryResult = $pdo->query( file_get_contents( $sqlFile ) );
 		if ( $queryResult === false ) {
-			throw new RuntimeException( 'Failed to run file active_user_changes_by_namespace sql' );
+			throw new RuntimeException( 'Failed to run file ' . basename( $sqlFile ) );
 		}
 
 		$results = [];
@@ -45,11 +43,28 @@ class WikidataActiveUsersByNamespace {
 
 		foreach ( $results as $namespace => $userCount ) {
 			foreach ( $userCount as $changeCount => $users ) {
-				WikimediaStatsdExporter::sendNow( 'daily_wikidata_siteStats_activeUsersByNamespace_total',
+				WikimediaStatsdExporter::sendNow(
+					$metricName,
 					$users,
 					[ 'namespace' => $namespace, 'changeCount' => $changeCount ]
 				);
 			}
 		}
+	}
+
+	public function execute() {
+		$pdo = WikimediaDb::getPdoNewHosts( WikimediaDb::WIKIDATA_DB, new WikimediaDbSectionMapper() );
+
+		$this->runQueryAndSendMetrics(
+			$pdo,
+			__DIR__ . '/sql/active_user_changes_by_namespace/permanent_user.sql',
+			'daily_wikidata_siteStats_activeUsersByNamespace_total'
+		);
+
+		$this->runQueryAndSendMetrics(
+			$pdo,
+			__DIR__ . '/sql/active_user_changes_by_namespace/temporary_user.sql',
+			'daily_wikidata_siteStats_activeTemporaryUsersByNamespace_total'
+		);
 	}
 }
