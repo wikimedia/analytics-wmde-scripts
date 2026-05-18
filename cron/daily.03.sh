@@ -56,6 +56,9 @@ eval "$1/src/wikidata/phabricatorTasks.php" &
 eval "$1/src/wikidata/showcaseItems.php" &
 eval "$1/src/wikidata/dumpDownloads.php" &
 
+# Wikipedia site stats
+eval "$1/src/wikipedia/recentChanges.php" &
+
 date +"%F %T daily.03.sh Waiting!"
 wait
 date +"%F %T daily.03.sh Ended!"
