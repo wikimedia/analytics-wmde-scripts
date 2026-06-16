@@ -44,8 +44,8 @@ class WikipediaRecentChanges {
 			$row = $pdoStatement->fetch( PDO::FETCH_ASSOC );
 
 			// Send everything to Prometheus!
-			$this->sendMetricToPrometheus( "{$wiki}_rc_all_total", $row['total_changes'] );
-			$this->sendMetricToPrometheus( "{$wiki}_rc_wikidata_total", $row['wikidata_changes'] );
+			$this->sendMetricToPrometheus( 'recent_changes_all_total', $row['total_changes'], [ 'wiki' => $wiki ] );
+			$this->sendMetricToPrometheus( 'recent_changes_wikidata_total', $row['wikidata_changes'], [ 'wiki' => $wiki ] );
 		}
 	}
 
