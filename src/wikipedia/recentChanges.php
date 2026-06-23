@@ -49,7 +49,7 @@ class WikipediaRecentChanges {
 		}
 	}
 
-	private function sendMetricToPrometheus( mixed $name, mixed $value, $labels = [] ) {
+	private function sendMetricToPrometheus( $name, $value, $labels = [] ) {
 		WikimediaStatsdExporter::sendNow( $name, $value, $labels );
 	}
 }
